@@ -20,6 +20,13 @@ class AddToCart extends StatefulWidget {
 }
 
 class _AddToCartState extends State<AddToCart> {
+
+  void reload()async{
+    await Future.delayed(const Duration(milliseconds: 50));
+    setState(() {});
+  }
+
+
   //var label="";
   Future<void> RemoveProductfromcart(var id) async {
     var httprequest = GetConnect();
@@ -33,12 +40,13 @@ class _AddToCartState extends State<AddToCart> {
     }
   }
 
-  Future<List<CustomerApi.CartItems>>? pdetails;
-  @override
-  void initState() {
-    super.initState();
-    pdetails = cartitemdetails(int.parse(login_user_id!));
-  }
+  //Future<List<CustomerApi.CartItems>>? pdetails;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   cartitemdetails(int.parse(login_user_id!));
+  //   reload();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +67,7 @@ class _AddToCartState extends State<AddToCart> {
         )))],
       ),
       body: FutureBuilder<List<CustomerApi.CartItems>>(
-        future: pdetails,
+        future: cartitemdetails(int.parse(login_user_id!)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -114,12 +122,14 @@ class _AddToCartState extends State<AddToCart> {
                                                       decoration: TextDecoration
                                                           .underline)),
                                               onPressed: () {
-
+                                                setState(() {
                                                   RemoveProductfromcart(snapshot
                                                       .data![index].pid);
-                                                setState(() {
-
                                                 });
+                                                  setState(() {
+
+                                                  });
+                                                //reload();
                                               },
                                               child: const Text('Remove')),
                                         ],
