@@ -108,7 +108,7 @@ class _VendorHomeState extends State<VendorHome> {
                 backgroundColor: Colors.green[400],
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: Text(
                   'SHOW ORDERS',
                   style: TextStyle(
