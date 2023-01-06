@@ -17,7 +17,7 @@ import 'package:the_builders/API/CustomerApis/productDetails.dart'
     as CustomerApi;
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 //String? pid_for_cartItem;
 //List<dynamic> CartItems = List.empty(growable: true);
@@ -30,20 +30,16 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  TextEditingController quantity =TextEditingController();
   var pid = Get.arguments;
   late String pname;
   late String pimage;
   late int unitcost;
 
   Future<void> addtocart() async {
+    var httprequest=GetConnect();
     var response =
-        await http.post(Uri.parse("${global.url}/addCartItem"), body: {
-      "pid": Customer_product_id.toString(),
-      "p_desc": pname,
-      "p_image": pimage,
-      "cid": login_user_id.toString(),
-      "unitprice": unitcost.toString(),
-    });
+        await httprequest.post("${global.url}/addCartItem?pid=${Customer_product_id.toString()}&p_desc=$pname&p_image=$pimage&cid=${login_user_id.toString()}&unitprice=${unitcost.toString()}&vid=${Vendor_product_id_in_customer.toString()}&qty=${quantity.text}",{});
     if (response.statusCode == 200) {
       Get.snackbar("Message", "Product  added");
     } else {
@@ -191,9 +187,26 @@ class _ProductDetailState extends State<ProductDetail> {
                                               255, 255, 81, 0),
                                           fontSize: 38.sp),
                                     ),
-                                    ElevatedButton(
-                                        onPressed: () {},
-                                        child: const Text('cart'))
+                                    SizedBox(width: 70.w),
+                                    Text("Quantity :  "),
+                                    SizedBox(width: 100.w,height: 30.h,
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                          controller:  quantity  ,
+                                          style: TextStyle(fontSize: 16.sp),
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                      ),
+                                    ),
+                                    // ElevatedButton(
+                                    //     onPressed: () {},
+                                    //     child: const Text('cart'))
                                   ],
                                 ),
                               ],

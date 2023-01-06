@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart';
-//import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart' as CustomerApi;
 import 'package:the_builders/GUI/globalApi.dart' as global;
 import 'package:the_builders/Global/global.dart';
-//import 'package:http/http.dart' as http;
+
 
 //List<dynamic>? CartItemss;
 
@@ -21,6 +20,7 @@ class AddToCart extends StatefulWidget {
 }
 
 class _AddToCartState extends State<AddToCart> {
+  //var label="";
   Future<void> RemoveProductfromcart(var id) async {
     var httprequest = GetConnect();
     var response = await httprequest.delete(
@@ -52,6 +52,11 @@ class _AddToCartState extends State<AddToCart> {
           'My Cart',
           style: TextStyle(fontSize: 30.sp),
         ),
+        actions: [TextButton(onPressed: (){
+          Get.to(CustomerHome());
+        }, child: Text("Add More >",style: TextStyle(
+          color:  Colors.white
+        )))],
       ),
       body: FutureBuilder<List<CustomerApi.CartItems>>(
         future: pdetails,
@@ -109,9 +114,11 @@ class _AddToCartState extends State<AddToCart> {
                                                       decoration: TextDecoration
                                                           .underline)),
                                               onPressed: () {
-                                                setState(() {
+
                                                   RemoveProductfromcart(snapshot
                                                       .data![index].pid);
+                                                setState(() {
+
                                                 });
                                               },
                                               child: const Text('Remove')),
@@ -158,15 +165,8 @@ class _AddToCartState extends State<AddToCart> {
                                           IconButton(
                                               onPressed: () {},
                                               icon: const Icon(Icons.remove)),
-                                          SizedBox(
-                                            width: 60.w,
-                                            height: 20.h,
-                                            child: TextField(
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                style:
-                                                    TextStyle(fontSize: 12.sp)),
-                                          ),
+                                          Text(snapshot.data![index].qty
+                                              .toString(),style: TextStyle(fontSize: 14.sp)),
                                           // Text(
                                           //   '2',
                                           //   style: TextStyle(fontSize: 18.sp),

@@ -192,9 +192,10 @@ class _CustomerHomeState extends State<CustomerHome> {
                         onTap: () {
                           Customer_product_id =
                               snapshot.data![index].pid.toString();
+                          Vendor_product_id_in_customer=snapshot.data![index].id.toString();
                           //print(Customer_product_id);
                           Get.to(const ProductDetail(),
-                              arguments: snapshot.data![index].pid);
+                              arguments: [snapshot.data![index].pid,snapshot.data![index].id ] );
                         },
                         child: Container(
                           decoration: const BoxDecoration(

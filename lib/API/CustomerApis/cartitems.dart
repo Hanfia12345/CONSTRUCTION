@@ -20,6 +20,12 @@ class CartItems {
     this.unitprice,
     this.pid,
     this.cid,
+    this.vid,
+    this.qty,
+
+  // "vid": 1,
+  // "qty": 12
+
   });
 
   int? cartid;
@@ -28,6 +34,8 @@ class CartItems {
   int? unitprice;
   int? pid;
   int? cid;
+  int?vid;
+  int?qty;
 
   factory CartItems.fromJson(Map<String, dynamic> json) => CartItems(
         cartid: json["cartid"],
@@ -36,6 +44,8 @@ class CartItems {
         unitprice: json["unitprice"],
         pid: json["pid"],
         cid: json["cid"],
+        vid:json["vid"],
+        qty:json["qty"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +55,8 @@ class CartItems {
         "unitprice": unitprice,
         "pid": pid,
         "cid": cid,
+        "vid":vid,
+        "qty":qty,
       };
 }
 
