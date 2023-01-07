@@ -152,7 +152,7 @@ class _ShowOrdersState extends State<ShowOrders> {
                         trailing: TextButton(
                           onPressed: () {
                             Get.to(const PendingOrderDetails(),
-                                arguments: "$vid${snapshot.data![index].soid}");
+                                arguments: [vid,snapshot.data![index].soid]);
                           },
                           child: Text('Show Details',
                               style: TextStyle(

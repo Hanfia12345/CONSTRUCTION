@@ -17,11 +17,11 @@ class CartItems {
     this.cartid,
     this.pDesc,
     this.pImage,
-    this.unitprice,
+   required this.unitprice,
     this.pid,
     this.cid,
     this.vid,
-    this.qty,
+   required this.qty,
 
   // "vid": 1,
   // "qty": 12
@@ -31,11 +31,11 @@ class CartItems {
   int? cartid;
   String? pDesc;
   String? pImage;
-  int? unitprice;
+  int unitprice;
   int? pid;
   int? cid;
   int?vid;
-  int?qty;
+  int qty;
 
   factory CartItems.fromJson(Map<String, dynamic> json) => CartItems(
         cartid: json["cartid"],

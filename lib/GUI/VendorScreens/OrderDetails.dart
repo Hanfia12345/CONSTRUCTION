@@ -65,7 +65,11 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
     var httprequest = GetConnect();
     var response =
         await httprequest.get("${global.url}/orderdetails?oid=${vid[1]}");
+    //print(vid[1]);
+    //print(response.body);
+    //print(response.statusCode);
     if (response.statusCode == 200) {
+
       var res = orderdetailssFromJson(response.bodyString!);
       //List res = jsonDecode(response.bodyString!);
       //return res.map((e) => OrderDetailss.fromJson(e)).toList();
@@ -118,7 +122,9 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                           //OrderItems.add(i.pQty);
                         }
                       }
+                    //print(snapshot.data);
 
+                    //print(snapshot.data![0].name.toString());
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -160,6 +166,8 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                             shrinkWrap: true,
                             itemCount: 1,
                             itemBuilder: (context, index) {
+                              //print(vid[1]);
+
                               return Column(
                                 children: [
                                   Row(
@@ -177,7 +185,7 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                                         width: 75.w,
                                       ),
                                       Text(
-                                        vid[1],
+                                        vid[1].toString(),
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 22.sp),
@@ -323,7 +331,7 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                   padding: EdgeInsets.only(left: 210.w),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(const ShowOrders(), arguments: "${vid[0]}");
+                      Get.off(const ShowOrders(), arguments: "${vid[0]}");
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green[400],

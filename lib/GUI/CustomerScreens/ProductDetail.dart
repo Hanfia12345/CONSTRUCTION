@@ -188,7 +188,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           fontSize: 38.sp),
                                     ),
                                     SizedBox(width: 70.w),
-                                    Text("Quantity :  "),
+                                    const Text("Quantity :  "),
                                     SizedBox(width: 100.w,height: 30.h,
                                       child: TextFormField(
                                         keyboardType: TextInputType.number,
