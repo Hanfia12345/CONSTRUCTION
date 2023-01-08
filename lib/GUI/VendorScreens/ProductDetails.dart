@@ -137,7 +137,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Price Per Piece :',
+                              'Price Per Unit :',
                               style: TextStyle(
                                   color: Colors.white, fontSize: 22.sp),
                             ),
@@ -249,6 +249,7 @@ class _EditProductState extends State<EditProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orangeAccent[200],
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 255, 81, 0),
@@ -257,7 +258,7 @@ class _EditProductState extends State<EditProduct> {
           style: TextStyle(color: Colors.white, fontSize: 38.sp),
         ),
       ),
-      backgroundColor: const Color.fromARGB(255, 255, 110, 43),
+      //backgroundColor: const Color.fromARGB(255, 255, 110, 43),
       body: SingleChildScrollView(
         child: Column(
           children: [

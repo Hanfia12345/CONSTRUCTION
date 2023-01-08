@@ -160,7 +160,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     Container(
                       color: Colors.white,
-                      height: 120.h,
+                      height: 130.h,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +175,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                       fontWeight: FontWeight.bold,
                                       color:
                                           const Color.fromARGB(255, 255, 81, 0),
-                                      fontSize: 38.sp),
+                                      fontSize: 18.sp),
                                 ),
                                 Row(
                                   children: [
@@ -185,7 +185,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           fontWeight: FontWeight.bold,
                                           color: const Color.fromARGB(
                                               255, 255, 81, 0),
-                                          fontSize: 38.sp),
+                                          fontSize: 20.sp),
                                     ),
                                     SizedBox(width: 70.w),
                                     const Text("Quantity :  "),
@@ -221,13 +221,29 @@ class _ProductDetailState extends State<ProductDetail> {
                                   //color: Color.fromARGB(255, 255, 81, 0),
                                   fontSize: 28.sp),
                             ),
+
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              snapshot.data![0].pCtg.toString(),
+                              style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                //color: Color.fromARGB(255, 255, 81, 0),
+                                  fontSize: 28.sp),
+                            ),
+
                           ),
                         ],
                       ),
                     ),
+                    const Divider(
+                      height: 1.5,
+                      color: Colors.white,
+                    ),
                     Container(
                       color: Colors.white,
-                      height: 170.h,
+                      height: 120.h,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,

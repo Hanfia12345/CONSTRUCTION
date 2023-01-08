@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart';
 import 'package:the_builders/API/CustomerApis/placeOrder.dart';
+import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart' as CustomerApi;
 import 'package:the_builders/GUI/globalApi.dart' as global;
@@ -22,13 +23,13 @@ class AddToCart extends StatefulWidget {
 
 class _AddToCartState extends State<AddToCart> {
 
+
+
+  dynamic total=0;
   void reload()async{
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 100));
     setState(() {});
   }
-
-  var total=0;
-  //List<dynamic> pricee = List.empty(growable: true);
   //var label="";
   Future<void> RemoveProductfromcart(var id) async {
     var httprequest = GetConnect();
@@ -43,12 +44,12 @@ class _AddToCartState extends State<AddToCart> {
   }
 
   //Future<List<CustomerApi.CartItems>>? pdetails;
-  // @override
-  // void initState() {
+   @override
+   void initState() {
   //   super.initState();
   //   cartitemdetails(int.parse(login_user_id!));
-  //   reload();
-  // }
+     reload();
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -68,150 +69,208 @@ class _AddToCartState extends State<AddToCart> {
           color:  Colors.white
         )))],
       ),
-      body: FutureBuilder<List<CustomerApi.CartItems>>(
-        future: cartitemdetails(int.parse(login_user_id!)),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // List<CustomerApi.CartItems> totalprice =
-            // snapshot.data as List<CustomerApi.CartItems>;
-            // for(var i in totalprice){
-            //   var t=i.qty * i.unitprice;
-            //   pricee.add(t);
-            //   //print(total);
-            // }
-            // total=pricee[0];
-            // print(total);
-            // print(pricee[0]);
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, int index) {
-                  return Column(
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        height: 130.h,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: 130.h,
-                              width: 130.w,
-                              child: Image.network(
-                                global.pImagesUrl +
-                                    snapshot.data![index].pImage.toString(),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 260.w,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          SizedBox(
-                                            //height: 50.h,
-                                            width: 180.w,
-                                            child: Text(
-                                              snapshot.data![index].pDesc
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 18.sp),
-                                              maxLines: 2,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          TextButton(
-                                              style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 255, 81, 0),
-                                                  textStyle: const TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline)),
-                                              onPressed: () {
-                                                setState(() {
-                                                  RemoveProductfromcart(snapshot
-                                                      .data![index].pid);
-                                                });
-                                                  setState(() {
-
-                                                  });
-                                                //reload();
-                                              },
-                                              child: const Text('Remove')),
-                                        ],
-                                      ),
-                                    ],
+      body: Column(
+        children: [
+          FutureBuilder<List<CustomerApi.CartItems>>(
+            future: cartitemdetails(int.parse(login_user_id!)),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<dynamic> pricee = List.empty(growable: true);
+                List<CustomerApi.CartItems> totalprice =
+                snapshot.data as List<CustomerApi.CartItems>;
+                if(pricee.isEmpty){
+                  total=0;
+                  for(var i in totalprice){
+                    var t=i.qty * i.unitprice;
+                    pricee.add(t);
+                  }
+                  for(var j in pricee){
+                    total=total+j;
+                  }
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, int index) {
+                      return Column(
+                        children: [
+                          Container(
+                            color: Colors.white,
+                            height: 130.h,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 130.h,
+                                  width: 130.w,
+                                  child: Image.network(
+                                    global.pImagesUrl +
+                                        snapshot.data![index].pImage.toString(),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                ),
+                                SizedBox(
+                                  width: 260.w,
+                                  child: Column(
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            'Rs. ',
-                                            style: TextStyle(
-                                                //fontWeight: FontWeight.bold,
-                                                color: const Color.fromARGB(
-                                                    255, 255, 81, 0),
-                                                fontSize: 18.sp),
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                //height: 50.h,
+                                                width: 180.w,
+                                                child: Text(
+                                                  snapshot.data![index].pDesc
+                                                      .toString(),
+                                                  style: TextStyle(fontSize: 18.sp),
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            snapshot.data![index].unitprice
-                                                .toString(),
-                                            style: TextStyle(
-                                                //fontWeight: FontWeight.bold,
-                                                color: const Color.fromARGB(
-                                                    255, 255, 81, 0),
-                                                fontSize: 18.sp),
+                                          Column(
+                                            children: [
+                                              TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      foregroundColor:
+                                                          const Color.fromARGB(
+                                                              255, 255, 81, 0),
+                                                      textStyle: const TextStyle(
+                                                          decoration: TextDecoration
+                                                              .underline)),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      RemoveProductfromcart(snapshot
+                                                          .data![index].pid);
+                                                    });
+                                                      setState(() {
+
+                                                      });
+                                                    //reload();
+                                                  },
+                                                  child: const Text('Remove')),
+                                            ],
                                           ),
                                         ],
                                       ),
-
-                                      // SizedBox(
-                                      //   height: 10.h,
-                                      // ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        //crossAxisAlignment: CrossAxisAlignment.end,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(Icons.remove)),
-                                          Text(snapshot.data![index].qty
-                                              .toString(),style: TextStyle(fontSize: 14.sp)),
-                                          // Text(
-                                          //   '2',
-                                          //   style: TextStyle(fontSize: 18.sp),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Rs. ',
+                                                style: TextStyle(
+                                                    //fontWeight: FontWeight.bold,
+                                                    color: const Color.fromARGB(
+                                                        255, 255, 81, 0),
+                                                    fontSize: 18.sp),
+                                              ),
+                                              Text(
+                                                snapshot.data![index].unitprice
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    //fontWeight: FontWeight.bold,
+                                                    color: const Color.fromARGB(
+                                                        255, 255, 81, 0),
+                                                    fontSize: 18.sp),
+                                              ),
+                                            ],
+                                          ),
+
+                                          // SizedBox(
+                                          //   height: 10.h,
                                           // ),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(Icons.add)),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            //crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons.remove)),
+                                              Text(snapshot.data![index].qty
+                                                  .toString(),style: TextStyle(fontSize: 14.sp)),
+                                              // Text(
+                                              //   '2',
+                                              //   style: TextStyle(fontSize: 18.sp),
+                                              // ),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons.add)),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                });
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+                          ),
+                        ],
+                      );
+                    });
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          ElevatedButton(
+            onPressed: () {
+        Get.to(()=>BookVehicle());
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => const CheckOut()));
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(20,15,20,15),
+              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+            ),
+            child: Text(
+              'Book Vehicle',
+              style: TextStyle(
+                fontSize: 22.sp,
+                color: Colors.white,
+                //fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+          SizedBox(height: 20,),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Delivery Charges: : ',
+          style: TextStyle(
+            fontSize: 22.sp,
+          ),
+        ),
+        Text(
+          'Rs. ',
+          style: TextStyle(
+            color:  Colors.white,
+            fontSize: 22.sp,
+          ),
+        ),
+        Text(
+          '1300',
+          style: TextStyle(
+            color:  Colors.white,
+            fontSize: 22.sp,
+          ),
+        ),
+      ],
+    )
+
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 0.sp,
@@ -236,7 +295,7 @@ class _AddToCartState extends State<AddToCart> {
                       ),
                     ),
                     Text(
-                      "$total",
+                      "${total+1300}",
                       style: TextStyle(
                         color: const Color.fromARGB(255, 255, 81, 0),
                         fontSize: 22.sp,
@@ -249,10 +308,7 @@ class _AddToCartState extends State<AddToCart> {
               icon: ElevatedButton(
                 onPressed: () {
                   //cartitemmsss();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CheckOut()));
+                  Get.to(CheckOut(),arguments: [total]);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
@@ -268,7 +324,9 @@ class _AddToCartState extends State<AddToCart> {
                 ),
               ),
             ),
-          ]),
+          ]
+      ),
+
     );
   }
 }
@@ -281,6 +339,7 @@ class CheckOut extends StatefulWidget {
 }
 
 class _CheckOutState extends State<CheckOut> {
+var total=Get.arguments;
 
 
   @override
@@ -296,415 +355,168 @@ class _CheckOutState extends State<CheckOut> {
           style: TextStyle(fontSize: 30.sp),
         ),
       ),
-       body: FutureBuilder<List<CustomerApi.CartItems>>(
-         future: cartitemdetails(int.parse(login_user_id!)),
-         builder: (context, snapshot) {
-           if (snapshot.hasData) {
-             // List<CustomerApi.CartItems> totalprice =
-             // snapshot.data as List<CustomerApi.CartItems>;
-             // for(var i in totalprice){
-             //   var t=i.qty * i.unitprice;
-             //   pricee.add(t);
-             //   //print(total);
-             // }
-             // total=pricee[0];
-             // print(total);
-             // print(pricee[0]);
-             return ListView.builder(
-                 shrinkWrap: true,
-                 itemCount: snapshot.data!.length,
-                 itemBuilder: (context, int index) {
-                   return Column(
-                     children: [
+       body: Column(
+         children: [
+           FutureBuilder<List<CustomerApi.CartItems>>(
+             future: cartitemdetails(int.parse(login_user_id!)),
+             builder: (context, snapshot) {
+               if (snapshot.hasData) {
+                 // List<CustomerApi.CartItems> totalprice =
+                 // snapshot.data as List<CustomerApi.CartItems>;
+                 // for(var i in totalprice){
+                 //   var t=i.qty * i.unitprice;
+                 //   pricee.add(t);
+                 //   //print(total);
+                 // }
+                 // total=pricee[0];
+                 // print(total);
+                 // print(pricee[0]);
+                 return ListView.builder(
+                     shrinkWrap: true,
+                     itemCount: snapshot.data!.length,
+                     itemBuilder: (context, int index) {
+                       return Column(
+                         children: [
 
-                       Container(
-                         color: Colors.white,
-                         height: 130.h,
-                         child: Row(
-                           children: [
-                             SizedBox(
-                               height: 130.h,
-                               width: 130.w,
-                               child: Image.network(
-                                 global.pImagesUrl +
-                                     snapshot.data![index].pImage.toString(),
-                                 fit: BoxFit.cover,
-                               ),
-                             ),
-                             SizedBox(
-                               width: 260.w,
-                               child: Column(
-                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                 children: [
-                                   Row(
-                                     mainAxisAlignment:
-                                     MainAxisAlignment.spaceBetween,
-                                     children: [
-                                       Column(
-                                         children: [
-                                           SizedBox(
-                                             //height: 50.h,
-                                             width: 180.w,
-                                             child: Text(
-                                               snapshot.data![index].pDesc
-                                                   .toString(),
-                                               style: TextStyle(fontSize: 18.sp),
-                                               maxLines: 2,
-                                             ),
-                                           ),
-                                         ],
-                                       ),
-                                       Row(mainAxisAlignment: MainAxisAlignment.end,
-
-                                         children: [
-                                         Text("Quantity ")
-                                       ],)
-                                     ],
+                           Container(
+                             color: Colors.white,
+                             height: 130.h,
+                             child: Row(
+                               children: [
+                                 SizedBox(
+                                   height: 130.h,
+                                   width: 130.w,
+                                   child: Image.network(
+                                     global.pImagesUrl +
+                                         snapshot.data![index].pImage.toString(),
+                                     fit: BoxFit.cover,
                                    ),
-                                   Row(
-                                     mainAxisAlignment:
-                                     MainAxisAlignment.spaceBetween,
+                                 ),
+                                 SizedBox(
+                                   width: 260.w,
+                                   child: Column(
+                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                      children: [
                                        Row(
                                          mainAxisAlignment:
-                                         MainAxisAlignment.start,
+                                         MainAxisAlignment.spaceBetween,
                                          children: [
-                                           Text(
-                                             'Rs. ',
-                                             style: TextStyle(
-                                               //fontWeight: FontWeight.bold,
-                                                 color: const Color.fromARGB(
-                                                     255, 255, 81, 0),
-                                                 fontSize: 18.sp),
+                                           Column(
+                                             children: [
+                                               SizedBox(
+                                                 //height: 50.h,
+                                                 width: 180.w,
+                                                 child: Text(
+                                                   snapshot.data![index].pDesc
+                                                       .toString(),
+                                                   style: TextStyle(fontSize: 18.sp),
+                                                   maxLines: 2,
+                                                 ),
+                                               ),
+                                             ],
                                            ),
-                                           Text(
-                                             snapshot.data![index].unitprice
-                                                 .toString(),
-                                             style: TextStyle(
-                                               //fontWeight: FontWeight.bold,
-                                                 color: const Color.fromARGB(
-                                                     255, 255, 81, 0),
-                                                 fontSize: 18.sp),
-                                           ),
+                                           Row(mainAxisAlignment: MainAxisAlignment.end,
+
+                                             children: [
+                                             Text("Quantity ")
+                                           ],)
                                          ],
                                        ),
-
                                        Row(
                                          mainAxisAlignment:
-                                         MainAxisAlignment.end,
+                                         MainAxisAlignment.spaceBetween,
                                          children: [
+                                           Row(
+                                             mainAxisAlignment:
+                                             MainAxisAlignment.start,
+                                             children: [
+                                               Text(
+                                                 'Rs. ',
+                                                 style: TextStyle(
+                                                   //fontWeight: FontWeight.bold,
+                                                     color: const Color.fromARGB(
+                                                         255, 255, 81, 0),
+                                                     fontSize: 18.sp),
+                                               ),
+                                               Text(
+                                                 snapshot.data![index].unitprice
+                                                     .toString(),
+                                                 style: TextStyle(
+                                                   //fontWeight: FontWeight.bold,
+                                                     color: const Color.fromARGB(
+                                                         255, 255, 81, 0),
+                                                     fontSize: 18.sp),
+                                               ),
+                                             ],
+                                           ),
 
-                                           Padding(
-                                             padding: const EdgeInsets.fromLTRB(0,0,20,0),
-                                             child: Text(snapshot.data![index].qty
-                                                 .toString(),style: TextStyle(fontSize: 14.sp,
-                                                  color: const Color.fromARGB(
-                                                 255, 255, 81, 0),),),
+                                           Row(
+                                             mainAxisAlignment:
+                                             MainAxisAlignment.end,
+                                             children: [
+
+                                               Padding(
+                                                 padding: const EdgeInsets.fromLTRB(0,0,20,0),
+                                                 child: Text(snapshot.data![index].qty
+                                                     .toString(),style: TextStyle(fontSize: 14.sp,
+                                                      color: const Color.fromARGB(
+                                                     255, 255, 81, 0),),),
+                                               ),
+                                             ],
                                            ),
                                          ],
                                        ),
                                      ],
                                    ),
-                                 ],
-                               ),
+                                 ),
+                               ],
                              ),
-                           ],
-                         ),
+                           ),
+                         ],
+                       );
+                     });
+               }
+               return const Center(child: CircularProgressIndicator());
+             },
+           ),
+
+           Container(color:Colors.white,
+           height: 100,
+             child: Column(mainAxisAlignment: MainAxisAlignment.center,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Text(
+                       'Delivery Charges: : ',
+                       style: TextStyle(
+                         fontSize: 22.sp,
                        ),
-                     ],
-                   );
-                 });
-           }
-           return const Center(child: CircularProgressIndicator());
-         },
+                     ),
+                     Text(
+                       'Rs. ',
+                       style: TextStyle(
+                         color:  Colors.white,
+                         fontSize: 22.sp,
+                       ),
+                     ),
+                     Text(
+                       '1300',
+                       style: TextStyle(
+                         color:  Color.fromARGB(255, 255, 81, 0),
+                         fontSize: 22.sp,
+                       ),
+                     ),
+                   ],
+                 )
+             ],),
+           )
+         ],
        ),
 
 
-      // ListView(
-      //   children: [
-      //     Container(
-      //       height: 100.h,
-      //       color: Colors.white,
-      //     ),
-      //     Container(
-      //       color: Colors.white,
-      //       height: 100.h,
-      //       child: Row(
-      //         children: [
-      //           SizedBox(
-      //             height: 100.h,
-      //             width: 130.w,
-      //             child: Image.asset(
-      //               'assets/b.png',
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             width: 260.w,
-      //             child: Column(
-      //               children: [
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Column(
-      //                       children: [
-      //                         SizedBox(
-      //                           //height: 50.h,
-      //                           width: 190.w,
-      //                           child: Text(
-      //                             'Sand Lime Bricks  ',
-      //                             style: TextStyle(fontSize: 18.sp),
-      //                             maxLines: 2,
-      //                           ),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ],
-      //                 ),
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.start,
-      //                       children: [
-      //                         Text(
-      //                           'Rs. ',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '13',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //
-      //                     // SizedBox(
-      //                     //   height: 10.h,
-      //                     // ),
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.end,
-      //                       //crossAxisAlignment: CrossAxisAlignment.end,
-      //                       children: [
-      //                         Text(
-      //                           'Qty: ',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '1',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //     Container(
-      //       color: Colors.white,
-      //       height: 100.h,
-      //       child: Row(
-      //         children: [
-      //           SizedBox(
-      //             height: 100.h,
-      //             width: 130.w,
-      //             child: Image.asset(
-      //               'assets/sand.png',
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             width: 260.w,
-      //             child: Column(
-      //               children: [
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Column(
-      //                       children: [
-      //                         SizedBox(
-      //                           //height: 50.h,
-      //                           width: 190.w,
-      //                           child: Text(
-      //                             'Sand ',
-      //                             style: TextStyle(fontSize: 18.sp),
-      //                             maxLines: 2,
-      //                           ),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ],
-      //                 ),
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.start,
-      //                       children: [
-      //                         Text(
-      //                           'Rs. ',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '800',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //
-      //                     // SizedBox(
-      //                     //   height: 10.h,
-      //                     // ),
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.end,
-      //                       //crossAxisAlignment: CrossAxisAlignment.end,
-      //                       children: [
-      //                         Text(
-      //                           'Qty: ',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '1',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //     Container(
-      //       color: Colors.white,
-      //       height: 100.h,
-      //       child: Row(
-      //         children: [
-      //           SizedBox(
-      //             height: 100.h,
-      //             width: 130.w,
-      //             child: Image.asset(
-      //               'assets/cc.png',
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             width: 260.w,
-      //             child: Column(
-      //               children: [
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     SizedBox(
-      //                       //height: 50.h,
-      //                       width: 190.w,
-      //                       child: Text(
-      //                         'Mapple Leaf Cement ',
-      //                         style: TextStyle(fontSize: 18.sp),
-      //                         maxLines: 2,
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   children: [
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.start,
-      //                       children: [
-      //                         Text(
-      //                           'Rs. ',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '780',
-      //                           style: TextStyle(
-      //                               //fontWeight: FontWeight.bold,
-      //                               color:
-      //                                   const Color.fromARGB(255, 255, 81, 0),
-      //                               fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //
-      //                     // SizedBox(
-      //                     //   height: 10.h,
-      //                     // ),
-      //                     Row(
-      //                       mainAxisAlignment: MainAxisAlignment.end,
-      //                       //crossAxisAlignment: CrossAxisAlignment.end,
-      //                       children: [
-      //                         Text(
-      //                           'Qty: ',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                         Text(
-      //                           '2',
-      //                           style: TextStyle(fontSize: 18.sp),
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //     Container(
-      //       color: Colors.white,
-      //       height: 100.h,
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           Text(
-      //             'Delivery Charges: : ',
-      //             style: TextStyle(
-      //               fontSize: 22.sp,
-      //             ),
-      //           ),
-      //           Text(
-      //             'Rs. ',
-      //             style: TextStyle(
-      //               color: const Color.fromARGB(255, 255, 81, 0),
-      //               fontSize: 22.sp,
-      //             ),
-      //           ),
-      //           Text(
-      //             '800',
-      //             style: TextStyle(
-      //               color: const Color.fromARGB(255, 255, 81, 0),
-      //               fontSize: 22.sp,
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     )
-      //   ],
-      // ),
+
       bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 0.sp,
           showSelectedLabels: false,
@@ -728,7 +540,7 @@ class _CheckOutState extends State<CheckOut> {
                       ),
                     ),
                     Text(
-                      '3173',
+                      '${total[0]+1300}',
                       style: TextStyle(
                         color: const Color.fromARGB(255, 255, 81, 0),
                         fontSize: 22.sp,

@@ -2,7 +2,7 @@
 
 // ignore_for_file: file_names
 
-var ip = "192.168.1.14";
+var ip = "192.168.1.16";
 var url = "http://$ip/apii/api/apii";
 var pImagesUrl = "http://$ip/apii/Images/productImages/";
 

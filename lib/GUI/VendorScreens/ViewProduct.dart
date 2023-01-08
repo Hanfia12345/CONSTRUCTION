@@ -74,8 +74,9 @@ class _ViewProductsState extends State<ViewProducts> {
   Future<List<VendorProductss>> GetVendorProducts() async {
     var httprequest = GetConnect();
     httprequest.timeout = const Duration(seconds: 20);
+    print(login_user_id);
     var response = await httprequest
-        .get("${global.url}/displayVendorProducts?id=${vid[0]}");
+        .get("${global.url}/displayVendorProducts?id=${login_user_id}");
     if (response.statusCode == 200) {
       var res = vendorProductssFromJson(response.bodyString!);
       return res;

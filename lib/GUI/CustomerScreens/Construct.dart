@@ -274,8 +274,10 @@ class _EstimateButtonState extends State<EstimateButton> {
       int height = int.parse(wallheight.text);
       var total_sqft = length * height;
       var bricks_sqft = 12;
-      var cement_sqft = 0.0194444444;
-      var sand_sqft = 0.071875;
+      //var cement_sqft = 0.0194444444;
+      var cement_sqft = 0.015;
+      //var sand_sqft = 0.071875;
+      var sand_sqft = 0.0993377483;
       var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
       var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
       var totalbricks = bricks_sqft * total_sqft;
@@ -288,8 +290,10 @@ class _EstimateButtonState extends State<EstimateButton> {
       int height = int.parse(wallheight.text);
       var total_sqft = length * height;
       var bricks_sqft = 12 / 2;
-      var cement_sqft = 0.0194444444 / 2;
-      var sand_sqft = 0.071875 / 2;
+      //var cement_sqft = 0.0194444444 / 2;
+      var cement_sqft = 0.015 / 2;
+      //var sand_sqft = 0.071875 / 2;
+      var sand_sqft = 0.0993377483 / 2;
       var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
       var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
       var totalbricks = bricks_sqft * total_sqft;
@@ -302,8 +306,12 @@ class _EstimateButtonState extends State<EstimateButton> {
       int height = int.parse(wallheight.text);
       var total_sqft = length * height;
       var bricks_sqft = 12 * 1.5;
-      var cement_sqft = 0.0194444444 * 1.5;
-      var sand_sqft = 0.071875 * 1.5;
+      //var cement_sqft = 0.0194444444 * 1.5;
+
+      //by 1:6
+      var cement_sqft = 0.015 * 1.5;
+      //var sand_sqft = 0.071875 * 1.5;
+      var sand_sqft = 0.0993377483 * 1.5;
       var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
       var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
       var totalbricks = bricks_sqft * total_sqft;

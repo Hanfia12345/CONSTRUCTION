@@ -35,16 +35,20 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
 
   String label = "";
   void RequiredMatrialForHouse() {
+
     var coveredArea = int.parse(coveredarea.text);
     //if (coveredArea <= 1250 && coveredArea > 0) {
     var totalWall_in_sqft =
         int.parse(wallLength.text) * int.parse(wallHeight.text);
-    print(totalWall_in_sqft);
+    //print(totalWall_in_sqft);
     var bricks_sqft = 12;
-    var cement_sqft = 0.0194444444;
-    var sand_sqft = 0.071875;
-    var totalsand = (totalWall_in_sqft * sand_sqft);
-    var totalcement = (totalWall_in_sqft * cement_sqft);
+    //var cement_sqft = 0.0194444444;
+    var cement_sqft = 0.015;
+    //var sand_sqft = 0.071875;
+    var sand_sqft = 0.0993377483;
+
+    var totalsand = totalWall_in_sqft * sand_sqft;
+    var totalcement = totalWall_in_sqft * cement_sqft;
     var totalbricks = bricks_sqft * totalWall_in_sqft;
 
     //Roof Estimation For House :
@@ -59,16 +63,49 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
     var totalsand_for_Roof = totalRoof_in_sqft * sand_sqft_for_Roof;
     var totalcement_for_Roof = totalRoof_in_sqft * cement_sqft_for_Roof;
 
+    //Foundation Material Requirements for 3 feet
+
+      //for 22.5" inch wall 1 feet height
+        var bricks_persqft_in_22_inch=bricks_sqft*2.5;
+        var cement_persqft_in_22_inch=cement_sqft*2.5;
+        var sand_persqft_in_22_inch=sand_sqft*2.5;
+        var total_bricks_in_22_inch=bricks_persqft_in_22_inch*int.parse(wallLength.text);
+        var total_cement_in_22_inch=cement_persqft_in_22_inch*int.parse(wallLength.text);
+        var total_sand_in_22_inch=sand_persqft_in_22_inch*int.parse(wallLength.text);
+
+      //for 18" inch wall 1 feet height
+        var bricks_persqft_in_18_inch=bricks_sqft*2;
+        var cement_persqft_in_18_inch=cement_sqft*2;
+        var sand_persqft_in_18_inch = sand_sqft*2;
+        var total_bricks_in_18_inch=bricks_persqft_in_18_inch*int.parse(wallLength.text);
+        var total_cement_in_18_inch=cement_persqft_in_18_inch*int.parse(wallLength.text);
+        var total_sand_in_18_inch=sand_persqft_in_18_inch*int.parse(wallLength.text);
+
+      //for 13.5" inch wall 1 feet height
+        var bricks_persqft_in_13_inch=bricks_sqft*1.5;
+        var cement_persqft_in_13_inch=cement_sqft*1.5;
+        var sand_persqft_in_13_inch=sand_sqft*1.5;
+        var total_sand_in_13_inch=sand_persqft_in_13_inch*int.parse(wallLength.text);
+        var total_bricks_in_13_inch=bricks_persqft_in_13_inch*int.parse(wallLength.text);
+        var total_cement_in_13_inch=cement_persqft_in_13_inch*int.parse(wallLength.text);
+    var total_bricks_in_foundation=total_bricks_in_22_inch+total_bricks_in_18_inch+total_bricks_in_13_inch;
+    var total_cement_in_foundation=total_cement_in_22_inch+total_cement_in_18_inch+total_cement_in_13_inch;
+    var total_sand_in_foundation=total_sand_in_22_inch+total_sand_in_18_inch+total_sand_in_13_inch;
+
+
+
     //Total Requirements For House
 
     var total_Steel_Required = total_steel_for_Roof.toStringAsFixed(2);
     var total_Sand_Required =
-        (totalsand_for_Roof + totalsand).toStringAsFixed(2);
+        (totalsand_for_Roof + totalsand+total_sand_in_foundation).toStringAsFixed(2);
     var total_Crush_Required = total_crush_for_Roof.toStringAsFixed(2);
-    var total_Bricks_Required = totalbricks;
+    var total_Bricks_Required = totalbricks+total_bricks_in_foundation;
     var total_Cement_Required =
-        (totalcement_for_Roof + totalcement).toStringAsFixed(2);
-
+        (totalcement_for_Roof + totalcement+total_cement_in_foundation).toStringAsFixed(2);
+    print(total_Bricks_Required);
+    print(total_Sand_Required);
+    print(total_Cement_Required);
     bricksrequired.text = "${total_Bricks_Required.toString()} Pieces";
     cementrequired.text = "$total_Cement_Required bags";
     sandrequired.text = "$total_Sand_Required Cft";
