@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -72,23 +71,34 @@ class _ProductDetailsState extends State<ProductDetails> {
               if (snapshot.hasData) {
                 return ListView(
                   children: [
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    SizedBox(height: 20.h,),
                     Center(
-                      child: Text(
-                        snapshot.data![0].pDesc.toString(),
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 228, 200, 150),
-                            fontSize: 38.sp),
+                      child: Container(
+                        width: 160.w,
+                        height: 150.h,
+                        decoration: BoxDecoration(
+                            // borderRadius: const BorderRadius.all(
+                            //     Radius.circular(10)),
+                            //border: Border.all(width: 1.w),
+                            image: DecorationImage(
+                              image: NetworkImage(global.pImagesUrl +
+                                  snapshot.data![0].pImage
+                                      .toString()),
+                              fit: BoxFit.fill,
+                            )),
                       ),
                     ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    SizedBox(height: 20.h,),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Text(
+                          snapshot.data![0].pDesc.toString(),
+                          style: TextStyle(
+                              color:  Colors.white,
+                              fontSize: 38.sp),
+                        ),
+                        SizedBox(height: 30.h,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -158,7 +168,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ElevatedButton(
                               onPressed: () {
                                 Get.to(
-                                  () => const EditProduct(),
+                                        () => const EditProduct(),
+                                    arguments: [snapshot.data![0].pImage,
+                                                snapshot.data![0].pDesc,
+                                                snapshot.data![0].stock,
+                                                snapshot.data![0].unitcost]
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -196,6 +210,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                         )
                       ],
                     ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+
                   ],
                 );
               }
@@ -218,6 +236,8 @@ class _EditProductState extends State<EditProduct> {
   TextEditingController pDesc = TextEditingController();
   TextEditingController pUnitPrice = TextEditingController();
   TextEditingController AvailableStock = TextEditingController();
+  //var detail=Get.arguments;
+
   File? _imageFIle;
   Future<void> UpdateProduct(File f) async {
     String uri = "${global.url}/updateproduct";
@@ -245,6 +265,7 @@ class _EditProductState extends State<EditProduct> {
       Get.to(const VendorHome());
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

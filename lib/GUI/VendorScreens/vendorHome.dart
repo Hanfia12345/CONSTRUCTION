@@ -18,7 +18,11 @@ class VendorHome extends StatefulWidget {
 
 class _VendorHomeState extends State<VendorHome> {
   var id = Get.arguments;
-
+  @override
+  void initState(){
+    super.initState();
+    // Get.dialog(Text("data"),transitionDuration: Duration(milliseconds: 40));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
