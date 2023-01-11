@@ -11,6 +11,8 @@ import 'package:the_builders/API/CustomerApis/cartitems.dart' as CustomerApi;
 import 'package:the_builders/GUI/globalApi.dart' as global;
 import 'package:the_builders/Global/global.dart';
 
+import 'addAddress.dart';
+
 
 //List<dynamic>? CartItemss;
 
@@ -46,7 +48,7 @@ class _AddToCartState extends State<AddToCart> {
   //Future<List<CustomerApi.CartItems>>? pdetails;
    @override
    void initState() {
-  //   super.initState();
+     super.initState();
   //   cartitemdetails(int.parse(login_user_id!));
      reload();
    }
@@ -69,208 +71,211 @@ class _AddToCartState extends State<AddToCart> {
           color:  Colors.white
         )))],
       ),
-      body: Column(
-        children: [
-          FutureBuilder<List<CustomerApi.CartItems>>(
-            future: cartitemdetails(int.parse(login_user_id!)),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<dynamic> pricee = List.empty(growable: true);
-                List<CustomerApi.CartItems> totalprice =
-                snapshot.data as List<CustomerApi.CartItems>;
-                if(pricee.isEmpty){
-                  total=0;
-                  for(var i in totalprice){
-                    var t=i.qty * i.unitprice;
-                    pricee.add(t);
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FutureBuilder<List<CustomerApi.CartItems>>(
+              future: cartitemdetails(int.parse(login_user_id!)),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<dynamic> pricee = List.empty(growable: true);
+                  List<CustomerApi.CartItems> totalprice =
+                  snapshot.data as List<CustomerApi.CartItems>;
+                  if(pricee.isEmpty){
+                    total=0;
+                    for(var i in totalprice){
+                      var t=i.qty * i.unitprice;
+                      pricee.add(t);
+                    }
+                    for(var j in pricee){
+                      total=total+j;
+                      reload();
+                    }
                   }
-                  for(var j in pricee){
-                    total=total+j;
-                  }
-                }
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, int index) {
-                      return Column(
-                        children: [
-                          Container(
-                            color: Colors.white,
-                            height: 130.h,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  height: 130.h,
-                                  width: 130.w,
-                                  child: Image.network(
-                                    global.pImagesUrl +
-                                        snapshot.data![index].pImage.toString(),
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, int index) {
+                        return Column(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              height: 130.h,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 130.h,
+                                    width: 130.w,
+                                    child: Image.network(
+                                      global.pImagesUrl +
+                                          snapshot.data![index].pImage.toString(),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 260.w,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                //height: 50.h,
-                                                width: 180.w,
-                                                child: Text(
-                                                  snapshot.data![index].pDesc
-                                                      .toString(),
-                                                  style: TextStyle(fontSize: 18.sp),
-                                                  maxLines: 2,
+                                  SizedBox(
+                                    width: 260.w,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  //height: 50.h,
+                                                  width: 180.w,
+                                                  child: Text(
+                                                    snapshot.data![index].pDesc
+                                                        .toString(),
+                                                    style: TextStyle(fontSize: 18.sp),
+                                                    maxLines: 2,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              TextButton(
-                                                  style: TextButton.styleFrom(
-                                                      foregroundColor:
-                                                          const Color.fromARGB(
-                                                              255, 255, 81, 0),
-                                                      textStyle: const TextStyle(
-                                                          decoration: TextDecoration
-                                                              .underline)),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      RemoveProductfromcart(snapshot
-                                                          .data![index].pid);
-                                                    });
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                TextButton(
+                                                    style: TextButton.styleFrom(
+                                                        foregroundColor:
+                                                            const Color.fromARGB(
+                                                                255, 255, 81, 0),
+                                                        textStyle: const TextStyle(
+                                                            decoration: TextDecoration
+                                                                .underline)),
+                                                    onPressed: () {
                                                       setState(() {
-
+                                                        RemoveProductfromcart(snapshot
+                                                            .data![index].pid);
                                                       });
-                                                    //reload();
-                                                  },
-                                                  child: const Text('Remove')),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Rs. ',
-                                                style: TextStyle(
-                                                    //fontWeight: FontWeight.bold,
-                                                    color: const Color.fromARGB(
-                                                        255, 255, 81, 0),
-                                                    fontSize: 18.sp),
-                                              ),
-                                              Text(
-                                                snapshot.data![index].unitprice
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    //fontWeight: FontWeight.bold,
-                                                    color: const Color.fromARGB(
-                                                        255, 255, 81, 0),
-                                                    fontSize: 18.sp),
-                                              ),
-                                            ],
-                                          ),
+                                                        setState(() {
 
-                                          // SizedBox(
-                                          //   height: 10.h,
-                                          // ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            //crossAxisAlignment: CrossAxisAlignment.end,
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: const Icon(Icons.remove)),
-                                              Text(snapshot.data![index].qty
-                                                  .toString(),style: TextStyle(fontSize: 14.sp)),
-                                              // Text(
-                                              //   '2',
-                                              //   style: TextStyle(fontSize: 18.sp),
-                                              // ),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: const Icon(Icons.add)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                                        });
+                                                      //reload();
+                                                    },
+                                                    child: const Text('Remove')),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Rs. ',
+                                                  style: TextStyle(
+                                                      //fontWeight: FontWeight.bold,
+                                                      color: const Color.fromARGB(
+                                                          255, 255, 81, 0),
+                                                      fontSize: 18.sp),
+                                                ),
+                                                Text(
+                                                  snapshot.data![index].unitprice
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      //fontWeight: FontWeight.bold,
+                                                      color: const Color.fromARGB(
+                                                          255, 255, 81, 0),
+                                                      fontSize: 18.sp),
+                                                ),
+                                              ],
+                                            ),
+
+                                            // SizedBox(
+                                            //   height: 10.h,
+                                            // ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              //crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(Icons.remove)),
+                                                Text(snapshot.data![index].qty
+                                                    .toString(),style: TextStyle(fontSize: 14.sp)),
+                                                // Text(
+                                                //   '2',
+                                                //   style: TextStyle(fontSize: 18.sp),
+                                                // ),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(Icons.add)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    });
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          ElevatedButton(
-            onPressed: () {
-        Get.to(()=>BookVehicle());
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => const CheckOut()));
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.fromLTRB(20,15,20,15),
-              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                          ],
+                        );
+                      });
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
             ),
-            child: Text(
-              'Book Vehicle',
-              style: TextStyle(
-                fontSize: 22.sp,
-                color: Colors.white,
-                //fontWeight: FontWeight.bold
+            SizedBox(
+              height: 20.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+          Get.to(()=>const AddAddressincart());
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => const CheckOut()));
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.fromLTRB(20,15,20,15),
+                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+              ),
+              child: Text(
+                'Book Vehicle',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  color: Colors.white,
+                  //fontWeight: FontWeight.bold
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 20,),
+             SizedBox(height: 20.h,),
     Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Delivery Charges: : ',
-          style: TextStyle(
-            fontSize: 22.sp,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Delivery Charges: : ',
+            style: TextStyle(
+              fontSize: 22.sp,
+            ),
           ),
-        ),
-        Text(
-          'Rs. ',
-          style: TextStyle(
-            color:  Colors.white,
-            fontSize: 22.sp,
+          Text(
+            'Rs. ',
+            style: TextStyle(
+              color:  Colors.white,
+              fontSize: 22.sp,
+            ),
           ),
-        ),
-        Text(
-          '1300',
-          style: TextStyle(
-            color:  Colors.white,
-            fontSize: 22.sp,
+          Text(
+            '1300',
+            style: TextStyle(
+              color:  Colors.white,
+              fontSize: 22.sp,
+            ),
           ),
-        ),
-      ],
+        ],
     )
 
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 0.sp,
@@ -308,7 +313,7 @@ class _AddToCartState extends State<AddToCart> {
               icon: ElevatedButton(
                 onPressed: () {
                   //cartitemmsss();
-                  Get.to(CheckOut(),arguments: [total]);
+                  Get.to(const CheckOut(),arguments: [total]);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
@@ -417,7 +422,7 @@ var total=Get.arguments;
                                            ),
                                            Row(mainAxisAlignment: MainAxisAlignment.end,
 
-                                             children: [
+                                             children: const [
                                              Text("Quantity ")
                                            ],)
                                          ],
@@ -504,7 +509,7 @@ var total=Get.arguments;
                      Text(
                        '1300',
                        style: TextStyle(
-                         color:  Color.fromARGB(255, 255, 81, 0),
+                         color:  const Color.fromARGB(255, 255, 81, 0),
                          fontSize: 22.sp,
                        ),
                      ),

@@ -62,7 +62,7 @@ class _ShowOrdersState extends State<ShowOrders> {
             'Orders',
             style: TextStyle(color: Colors.white, fontSize: 38.sp),
           ),
-          bottom: TabBar(tabs: [Tab(text: "Pending Orders",),Tab(text: "Delivered Orders",),],
+          bottom: const TabBar(tabs: [Tab(text: "Pending Orders",),Tab(text: "Delivered Orders",),],
             indicatorColor: Colors.white,
           ),
         ),

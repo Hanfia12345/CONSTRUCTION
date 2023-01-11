@@ -155,6 +155,44 @@ class _CustomerHomeState extends State<CustomerHome> {
               ),
               ListTile(
                 leading: Icon(
+                  Icons.shopping_cart,
+                  color: const Color.fromARGB(255, 255, 81, 0),
+                  size: 33.r,
+                ),
+                title: Text(
+                  'Orders',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 81, 0),
+                      fontSize: 22.sp),
+                ),
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const CustomerHome()));
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.history,
+                  color: const Color.fromARGB(255, 255, 81, 0),
+                  size: 33.r,
+                ),
+                title: Text(
+                  'History',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 81, 0),
+                      fontSize: 22.sp),
+                ),
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const CustomerHome()));
+                },
+              ),
+              ListTile(
+                leading: Icon(
                   Icons.logout,
                   color: const Color.fromARGB(255, 255, 81, 0),
                   size: 33.r,

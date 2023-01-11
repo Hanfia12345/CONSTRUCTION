@@ -178,12 +178,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                   width: 100.w,
                   child: ElevatedButton(
                     onPressed: () {
-                      print(name.text);
-                      print(address.text);
-                      print(phone.text);
-                      print(email.text);
-                      print(password.text);
-                      print(confirmpassword.text);
+
                       if (password.text == confirmpassword.text) {
                         register.RegistorUser(name.text, address.text,
                             phone.text, email.text, password.text, 'vendor');

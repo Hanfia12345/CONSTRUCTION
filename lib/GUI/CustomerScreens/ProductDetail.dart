@@ -19,8 +19,7 @@ import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
 //import 'package:http/http.dart' as http;
 
-//String? pid_for_cartItem;
-//List<dynamic> CartItems = List.empty(growable: true);
+
 
 class ProductDetail extends StatefulWidget {
   const ProductDetail({Key? key}) : super(key: key);
@@ -535,7 +534,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   //print(i);
                   // }
                   //Get.to(const AddToCart(), arguments: CartItems);
-                  Get.to(const AddToCart());
+                  Get.off(const AddToCart());
                   addtocart();
                 },
                 style: ElevatedButton.styleFrom(
