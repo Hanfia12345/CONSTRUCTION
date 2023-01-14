@@ -19,12 +19,14 @@ class Orderdetailss {
     this.name,
     this.pDesc,
     this.pQty,
+    this.pCtg,
     required this.oDate,
     required this.deliveryTime,
   });
 
   String? name;
   String? pDesc;
+  String? pCtg;
   int? pQty;
   DateTime oDate;
   DateTime deliveryTime;
@@ -32,6 +34,7 @@ class Orderdetailss {
   factory Orderdetailss.fromJson(Map<String, dynamic> json) => Orderdetailss(
         name: json["name"],
         pDesc: json["p_desc"],
+        pCtg: json["p_ctg"],
         pQty: json["p_qty"],
         oDate: DateTime.parse(json["O_date"]),
         deliveryTime: DateTime.parse(json["Delivery_time"]),
@@ -40,6 +43,7 @@ class Orderdetailss {
   Map<String, dynamic> toJson() => {
         "name": name,
         "p_desc": pDesc,
+        "p_ctg" :pCtg,
         "p_qty": pQty,
         "O_date": oDate.toIso8601String(),
         "Delivery_time": deliveryTime.toIso8601String(),
@@ -58,6 +62,7 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
 
   List<dynamic> OrderItems = List.empty(growable: true);
   List<dynamic> ItemsQty = List.empty(growable: true);
+  List<dynamic> ItemsCtg = List.empty(growable: true);
   //var OrderItems = [];
   // var a = OrderItems.toSet().toList();
   //var ditinct =OrderItems.toSet;
@@ -82,8 +87,8 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
     }
   }
 
-  String DropdownValue = 'Processing';
-  var items = ['Processing', 'Delivered', 'Canceled'];
+  String DropdownValue = 'In Progress';
+  var items = ['In Progress', 'Delivered'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +127,12 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                           //OrderItems.add(i.pQty);
                         }
                       }
+                      if (ItemsCtg.isEmpty) {
+                        for (var i in Order) {
+                          ItemsCtg.add(i.pCtg);
+                          //OrderItems.add(i.pQty);
+                        }
+                      }
                     //print(snapshot.data);
 
                     //print(snapshot.data![0].name.toString());
@@ -143,9 +154,9 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                     contentPadding:
-                                        const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                                        const EdgeInsets.fromLTRB(20, 0, 40, 0),
                                     leading: Text(
-                                      ">${OrderItems[index].toString()}",
+                                      ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 22.sp),
                                     ),

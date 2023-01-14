@@ -59,3 +59,15 @@ Future<List<ProductDetail>> viewProductDetails(var pid) async {
     throw Exception('Failed to load data');
   }
 }
+
+Future<List<ProductDetail>> SuggestionList(var pid) async {
+  var httprequest = GetConnect();
+  httprequest.timeout = const Duration(seconds: 20);
+  var response = await httprequest.get("${global.url}/suggestionsList?pid=$pid");
+  if (response.statusCode == 200) {
+    var res = productDetailFromJson(response.bodyString!);
+    return res;
+  } else {
+    throw Exception('Failed to load data');
+  }
+}

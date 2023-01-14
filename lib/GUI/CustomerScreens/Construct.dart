@@ -125,6 +125,9 @@ class _EstimateState extends State<Estimate> {
                         if (DropdownValue == 'Roof') {
                           Get.to(() => const RoofEstimate());
                         }
+                        if (DropdownValue == 'wall Paster') {
+                          Get.to(() => const Plaster());
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green[400],
@@ -1121,5 +1124,401 @@ class _RoofEstimateState extends State<RoofEstimate> {
                         ),
                       ])))
         ]));
+  }
+}
+
+
+
+class Plaster extends StatefulWidget {
+  const Plaster({Key? key}) : super(key: key);
+
+  @override
+  State<Plaster> createState() => _PlasterState();
+}
+
+class _PlasterState extends State<Plaster> {
+
+
+
+  TextEditingController wallheight = TextEditingController();
+  TextEditingController wallLength = TextEditingController();
+  TextEditingController cementrequired = TextEditingController();
+  TextEditingController sandrequired = TextEditingController();
+  bool isvisible = false;
+  bool visible = false;
+  void PlasterEstimate() {
+
+      int length = int.parse(wallLength.text);
+      int height = int.parse(wallheight.text);
+      var total_sqft = length * height;
+
+      //var cement_sqft = 0.0194444444;
+      var cement_sqft = 0.0085141796;
+      //var sand_sqft = 0.071875;
+      var sand_sqft = 0.0418897637;
+      var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
+      var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
+      cementrequired.text = "$totalcement bags";
+      sandrequired.text = "$totalsand cuft";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+        title: Text(
+          'Plaster',
+          style: TextStyle(color: Colors.white, fontSize: 38.sp),
+        ),
+      ),
+      body: ListView(
+        children: [
+          Container(
+            height: 300.h,
+            margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(29, 255, 102, 0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Walls Dimensions',
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 255, 81, 0),
+                          fontSize: 28.sp),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          controller: wallheight,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: "Walls Height (Feet)",
+                            // hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          controller: wallLength,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: "Walls Length (Feet)",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                PlasterEstimate();
+                isvisible = !isvisible;
+                setState(() {});
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32)),
+                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                //maximumSize: Size(100.w, 40.h),
+                padding: const EdgeInsets.all(20),
+              ),
+              child: Text(
+                'Calculate',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  color: Colors.white,
+                  //fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: isvisible,
+            child: Container(
+              height: 450.h,
+              margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(29, 255, 102, 0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Plaster Requirements',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 28.sp),
+                      )
+                    ],
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cement Required',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 20.sp),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                        width: 180.w,
+                        child: TextField(
+                            readOnly: true,
+                            controller: cementrequired,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "2.8 bags",
+                              hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 81, 0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Sand Required',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 20.sp),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                        width: 180.w,
+                        child: TextField(
+                            readOnly: true,
+                            controller: sandrequired,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "10.35 cft",
+                              hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 81, 0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        visible = !visible;
+                        setState(() {});
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Calculate Cost',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Visibility(
+            visible: visible,
+            child: Container(
+              height: 450.h,
+              margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(29, 255, 102, 0),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Plaster Cost',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 28.sp),
+                      )
+                    ],
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cement Cost',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 20.sp),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                        width: 180.w,
+                        child: TextField(
+                            readOnly: true,
+                            controller: cementrequired,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "2160 Rs",
+                              hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 81, 0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Sand Cost',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 20.sp),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                        width: 180.w,
+                        child: TextField(
+                            readOnly: true,
+                            controller: sandrequired,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "207 Rs",
+                              hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 81, 0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total Cost',
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 255, 81, 0),
+                            fontSize: 20.sp),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                        width: 180.w,
+                        child: TextField(
+                            readOnly: true,
+                            controller: sandrequired,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "19647 Rs",
+                              hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 81, 0)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

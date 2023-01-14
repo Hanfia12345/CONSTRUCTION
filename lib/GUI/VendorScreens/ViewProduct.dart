@@ -130,7 +130,7 @@ class _ViewProductsState extends State<ViewProducts> {
                           child: Column(
                             children: [
                               Expanded(
-                                flex: 4,
+                                flex: 5,
                                 child: Container(
                                   width: 180.w,
                                   height: 180.h,
@@ -151,6 +151,16 @@ class _ViewProductsState extends State<ViewProducts> {
                                 child: Center(
                                   child: Text(
                                     snapshot.data![index].pDesc.toString(),
+                                    style: TextStyle(
+                                        fontSize: 20.sp, color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Center(
+                                  child: Text('Rs. ${snapshot.data![index].unitcost.toString()}'
+                                    ,
                                     style: TextStyle(
                                         fontSize: 20.sp, color: Colors.black),
                                   ),

@@ -46,6 +46,10 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
+
+
+
+
   Future<List<CustomerApi.ProductDetail>>? pdetails;
 
   @override

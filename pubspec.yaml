@@ -44,6 +44,10 @@ dependencies:
   image_picker: ^0.8.6
   google_maps_flutter: ^2.2.2
 
+  geolocator: ^9.0.2
+  google_maps_webservice: ^0.0.19
+  geocoding: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
