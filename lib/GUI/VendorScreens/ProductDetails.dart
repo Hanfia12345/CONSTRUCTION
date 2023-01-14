@@ -11,6 +11,8 @@ import 'package:the_builders/Global/global.dart';
 // ignore: library_prefixes
 import 'package:the_builders/API/vendorApi.dart' as vendorApi;
 
+import '../globalApi.dart';
+
 class ProductDetails extends StatefulWidget {
   const ProductDetails({Key? key}) : super(key: key);
 
@@ -236,36 +238,58 @@ class _EditProductState extends State<EditProduct> {
   TextEditingController pDesc = TextEditingController();
   TextEditingController pUnitPrice = TextEditingController();
   TextEditingController AvailableStock = TextEditingController();
-  //var detail=Get.arguments;
+  var detail=Get.arguments;
 
   File? _imageFIle;
-  Future<void> UpdateProduct(File f) async {
-    String uri = "${global.url}/updateproduct";
-    var request = http.MultipartRequest(
-      'Patch',
-      Uri.parse(uri),
-    );
-    request.headers.addAll({'Content-type': 'multipart/form-data'});
-    //print(image.path);
-    request.files.add(await http.MultipartFile.fromPath("", f.path));
-    request.fields.addAll({
-      "pid": vendor_product_id.toString(),
-      "p_desc": pDesc.text.toString(),
-      "unitcost": pUnitPrice.text.toString(),
-      "stock": AvailableStock.text.toString(),
-    });
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      Get.snackbar("Message", "Product  Updated");
-      Get.to(const VendorHome());
-      //Get.back();
-    } else {
-      //print(response.statusCode);
-      Get.snackbar("Message", "Product not Updated");
-      Get.to(const VendorHome());
+  Future<void> UpdateProduct(String desc,int pid, String stock,String img,String unitprice) async {
+    if(_imageFIle!=null){
+      String uri = "${global.url}/updateproduct?pid=${pid}&p_desc=${desc}&stock=${stock}&oldimageUrl=${img}&unitcost=${unitprice}";
+      var request = http.MultipartRequest(
+        'Patch',
+        Uri.parse(uri),
+      );
+      request.headers.addAll({'Content-type': 'multipart/form-data'});
+      //print(image.path);
+      request.files.add(await http.MultipartFile.fromPath("", _imageFIle!.path));
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        Get.snackbar("Message", "Product  Updated");
+        Get.to(const VendorHome());
+        //Get.back();
+      } else {
+        //print(response.statusCode);
+        Get.snackbar("Message", "Product not Updated");
+        Get.to(const VendorHome());
+      }
     }
+    else{
+
+      var httprequest=GetConnect();
+      var response=await httprequest.patch("${global.url}/updateproduct?pid=${pid}&p_desc=${desc}&stock=${stock}&oldimageUrl=${img}&unitcost=${unitprice}", {});
+      if (response.statusCode == 200) {
+        Get.snackbar("Message", "Product  Updated");
+        Get.to(const VendorHome());
+        //Get.back();
+      } else {
+        print(response.statusCode);
+        //print(response.statusCode);
+        Get.snackbar("Message", "Product not Updated");
+        Get.to(const VendorHome());
+      }
+    }
+
+
   }
 
+@override
+  void initState() {
+    // TODO: implement initState
+  pDesc.text=detail[1];
+  pUnitPrice.text=detail[3].toString();
+  AvailableStock.text=detail[2].toString();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,9 +312,9 @@ class _EditProductState extends State<EditProduct> {
               child: Container(
                 height: 180.h,
                 width: 180.w,
-                color: Colors.white,
+                //color: Colors.white,
                 child: _imageFIle == null
-                    ? const Center(child: Text('NO Image'))
+                    ?  Center(child:Image.network(pImagesUrl+detail[0],fit: BoxFit.fill,))
                     : Image.file(
                         _imageFIle!,
                         fit: BoxFit.fill,
@@ -422,7 +446,12 @@ class _EditProductState extends State<EditProduct> {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    UpdateProduct(_imageFIle!);
+                    print(pUnitPrice.text);
+                    print(AvailableStock.text);
+                    print(pDesc.text);
+                    print(detail[0].toString());
+
+                    UpdateProduct(pDesc.text.toString(),int.parse(vendor_product_id!),AvailableStock.text.toString(),detail[0].toString(),pUnitPrice.text.toString());
                   });
 
                   Get.to(

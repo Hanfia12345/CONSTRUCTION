@@ -27,11 +27,15 @@ class _AddToCartState extends State<AddToCart> {
 
 
 
+
   dynamic total=0;
   void reload()async{
     await Future.delayed(const Duration(milliseconds: 100));
     setState(() {});
   }
+
+
+
   //var label="";
   Future<void> RemoveProductfromcart(var id) async {
     var httprequest = GetConnect();
@@ -195,7 +199,12 @@ class _AddToCartState extends State<AddToCart> {
                                               //crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      CustomerApi.UpdateCartQty(snapshot.data![index].pid.toString(),login_user_id,"minus");
+                                                      setState(() {
+
+                                                      });
+                                                    },
                                                     icon: const Icon(Icons.remove)),
                                                 Text(snapshot.data![index].qty
                                                     .toString(),style: TextStyle(fontSize: 14.sp)),
@@ -204,7 +213,14 @@ class _AddToCartState extends State<AddToCart> {
                                                 //   style: TextStyle(fontSize: 18.sp),
                                                 // ),
                                                 IconButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      // print(snapshot.data![index].qty+1);
+                                                      // snapshot.data![index].qty= snapshot.data![index].qty+1;
+                                                      CustomerApi.UpdateCartQty(snapshot.data![index].pid.toString(),login_user_id,"plus");
+                                                      setState(() {
+
+                                                      });
+                                                    },
                                                     icon: const Icon(Icons.add)),
                                               ],
                                             ),
