@@ -296,6 +296,8 @@ class _ProductDetailState extends State<ProductDetail> {
                           color: Colors.white,
                           height: 215.h,
                           child: Column(
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 flex:1,
