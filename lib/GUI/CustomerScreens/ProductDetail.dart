@@ -51,12 +51,16 @@ class _ProductDetailState extends State<ProductDetail> {
 
 
   Future<List<CustomerApi.ProductDetail>>? pdetails;
+  Future<List<CustomerApi.ProductDetail>>? Suggestions;
 
   @override
   void initState() {
     super.initState();
     //print(Customer_product_id);
+
     pdetails = CustomerApi.viewProductDetails(Customer_product_id);
+    Suggestions = CustomerApi.SuggestionList(Customer_product_id);
+
   }
 
   @override
@@ -284,216 +288,90 @@ class _ProductDetailState extends State<ProductDetail> {
                         ],
                       ),
                     ),
-                    Container(
-                      color: Colors.white,
-                      height: 215.h,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Rocommended For You',
-                              style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 20.sp),
-                            ),
+                    FutureBuilder<List<CustomerApi.ProductDetail>>(
+                      future:Suggestions,
+                      builder: (context,snapshot) {
+                        if(snapshot.hasData){
+                        return Container(
+                          color: Colors.white,
+                          height: 215.h,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex:1,
+                                child: Text(
+                                  'Recommended For You',
+                                  style: TextStyle(
+                                    //fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(255, 255, 81, 0),
+                                      fontSize: 20.sp),
+                                ),
+                              ),
+                              Expanded(
+                                  flex:5,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder:(context, int index){
+                                      return GestureDetector(
+                                        onTap: () {
+                                          pdetails=CustomerApi.viewProductDetails(snapshot.data![index].Pid.toString());
+                                         Suggestions=CustomerApi.SuggestionList(snapshot.data![index].Pid.toString());
+                                          setState(() {
+
+                                          });
+
+                                        },
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            // borderRadius:
+                                            //     BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                flex: 4,
+                                                child: Container(
+                                                  width: 180.w,
+                                                  height: 140.h,
+                                                  decoration:  BoxDecoration(
+                                                      borderRadius: const BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          global.pImagesUrl +
+                                                              snapshot.data![index].pImage.toString(),
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Center(
+                                                    child: Text(
+                                                      snapshot.data![index].pCtg.toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 22.sp,
+                                                          color: Colors.black),
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                ),
+                              ),
+                            ],
                           ),
-                          // SizedBox(
-                          //   height: 15.h,
-                          // ),
-                          Expanded(
-                            flex: 5,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(const ProductFromDifferentVendors());
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      // borderRadius:
-                                      //     BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            width: 180.w,
-                                            height: 140.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/sand.png',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                )),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Center(
-                                              child: Text(
-                                            'Sand',
-                                            style: TextStyle(
-                                                fontSize: 22.sp,
-                                                color: Colors.black),
-                                          )),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProductFromDifferentVendors()));
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      // borderRadius:
-                                      //     BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            width: 180.w,
-                                            height: 140.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/cc.png',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                )),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Center(
-                                              child: Text(
-                                            'Cement',
-                                            style: TextStyle(
-                                                fontSize: 22.sp,
-                                                color: Colors.black),
-                                          )),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProductFromDifferentVendors()));
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      // borderRadius:
-                                      //     BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            width: 180.w,
-                                            height: 140.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/tiles.png',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                )),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Center(
-                                              child: Text(
-                                            'Tiles',
-                                            style: TextStyle(
-                                                fontSize: 22.sp,
-                                                color: Colors.black),
-                                          )),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProductFromDifferentVendors()));
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      // borderRadius:
-                                      //     BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            width: 180.w,
-                                            height: 140.h,
-                                            decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/marble.png',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                )),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Center(
-                                              child: Text(
-                                            'Marble',
-                                            style: TextStyle(
-                                                fontSize: 22.sp,
-                                                color: Colors.black),
-                                          )),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                        }
+                        return const Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ]),
                 ),

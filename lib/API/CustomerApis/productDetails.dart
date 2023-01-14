@@ -14,6 +14,7 @@ String productDetailToJson(List<ProductDetail> data) =>
 
 class ProductDetail {
   ProductDetail({
+    this.Pid,
     this.pDesc,
     this.pImage,
     this.unitcost,
@@ -24,6 +25,7 @@ class ProductDetail {
 
   String? pDesc;
   String? pImage;
+  int? Pid;
   int? unitcost;
   String? name;
   String? location;
@@ -36,6 +38,7 @@ class ProductDetail {
         name: json["name"],
         location: json["location"],
         pCtg: json["p_ctg"],
+        Pid: json["pid"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +48,7 @@ class ProductDetail {
         "name": name,
         "location": location,
         "p_ctg":pCtg,
+        "pid":Pid,
       };
 }
 
