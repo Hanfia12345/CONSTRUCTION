@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart';
 import 'package:the_builders/API/CustomerApis/placeOrder.dart';
-import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
+//import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 import 'package:the_builders/API/CustomerApis/cartitems.dart' as CustomerApi;
 import 'package:the_builders/GUI/globalApi.dart' as global;
@@ -255,7 +255,7 @@ class _AddToCartState extends State<AddToCart> {
                 backgroundColor: const Color.fromARGB(255, 255, 81, 0),
               ),
               child: Text(
-                'Book Vehicle',
+                'Add Address',
                 style: TextStyle(
                   fontSize: 22.sp,
                   color: Colors.white,

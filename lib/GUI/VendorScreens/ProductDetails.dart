@@ -243,7 +243,7 @@ class _EditProductState extends State<EditProduct> {
   File? _imageFIle;
   Future<void> UpdateProduct(String desc,int pid, String stock,String img,String unitprice) async {
     if(_imageFIle!=null){
-      String uri = "${global.url}/updateproduct?pid=${pid}&p_desc=${desc}&stock=${stock}&oldimageUrl=${img}&unitcost=${unitprice}";
+      String uri = "${global.url}/updateproduct?pid=$pid&p_desc=$desc&stock=$stock&oldimageUrl=$img&unitcost=$unitprice";
       var request = http.MultipartRequest(
         'Patch',
         Uri.parse(uri),
@@ -265,13 +265,12 @@ class _EditProductState extends State<EditProduct> {
     else{
 
       var httprequest=GetConnect();
-      var response=await httprequest.patch("${global.url}/updateproduct?pid=${pid}&p_desc=${desc}&stock=${stock}&oldimageUrl=${img}&unitcost=${unitprice}", {});
+      var response=await httprequest.patch("${global.url}/updateproduct?pid=$pid&p_desc=$desc&stock=$stock&oldimageUrl=$img&unitcost=$unitprice", {});
       if (response.statusCode == 200) {
         Get.snackbar("Message", "Product  Updated");
         Get.to(const VendorHome());
         //Get.back();
       } else {
-        print(response.statusCode);
         //print(response.statusCode);
         Get.snackbar("Message", "Product not Updated");
         Get.to(const VendorHome());
@@ -309,7 +308,7 @@ class _EditProductState extends State<EditProduct> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: SizedBox(
                 height: 180.h,
                 width: 180.w,
                 //color: Colors.white,
@@ -446,10 +445,6 @@ class _EditProductState extends State<EditProduct> {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    print(pUnitPrice.text);
-                    print(AvailableStock.text);
-                    print(pDesc.text);
-                    print(detail[0].toString());
 
                     UpdateProduct(pDesc.text.toString(),int.parse(vendor_product_id!),AvailableStock.text.toString(),detail[0].toString(),pUnitPrice.text.toString());
                   });

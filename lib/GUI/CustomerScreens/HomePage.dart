@@ -6,62 +6,12 @@ import 'package:get/get.dart';
 import 'package:the_builders/GUI/CustomerScreens/Cart.dart';
 import 'package:the_builders/GUI/CustomerScreens/Construct.dart';
 import 'package:the_builders/GUI/CustomerScreens/ProductDetail.dart';
+import 'package:the_builders/GUI/CustomerScreens/searchbar.dart';
 import 'package:the_builders/GUI/loginpages.dart';
-import 'dart:convert';
+import 'package:the_builders/API/CustomerApis/homepageViewAllProducts.dart' as homeapi;
 import 'package:the_builders/GUI/globalApi.dart' as global;
 import 'package:the_builders/Global/global.dart';
 
-List<ViewAllProducts> viewAllProductsFromJson(String str) =>
-    List<ViewAllProducts>.from(
-        json.decode(str).map((x) => ViewAllProducts.fromJson(x)));
-
-String viewAllProductsToJson(List<ViewAllProducts> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class ViewAllProducts {
-  ViewAllProducts({
-    this.pid,
-    this.pDesc,
-    this.pCtg,
-    this.pUnit,
-    this.pImage,
-    this.unitcost,
-    this.name,
-    this.id,
-  });
-
-  int? pid;
-  String? pDesc;
-  String? pCtg;
-  String? pUnit;
-  String? pImage;
-  int? unitcost;
-  String? name;
-  int? id;
-
-  factory ViewAllProducts.fromJson(Map<String, dynamic> json) =>
-      ViewAllProducts(
-        pid: json["pid"],
-        pDesc: json["p_desc"],
-        pCtg: json["p_ctg"],
-        pUnit: json["p_unit"],
-        pImage: json["P_image"],
-        unitcost: json["unitcost"],
-        name: json["name"],
-        id: json["id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "pid": pid,
-        "p_desc": pDesc,
-        "p_ctg": pCtg,
-        "p_unit": pUnit,
-        "P_image": pImage,
-        "unitcost": unitcost,
-        "name": name,
-        "id": id,
-      };
-}
 
 class CustomerHome extends StatefulWidget {
   const CustomerHome({Key? key}) : super(key: key);
@@ -71,18 +21,7 @@ class CustomerHome extends StatefulWidget {
 }
 
 class _CustomerHomeState extends State<CustomerHome> {
-  Future<List<ViewAllProducts>> GetAllProducts() async {
-    var httprequest = GetConnect();
-    httprequest.timeout = const Duration(seconds: 20);
-    var response = await httprequest.get("${global.url}/displayProducts");
-    //print(response.statusCode);
-    if (response.statusCode == 200) {
-      var res = viewAllProductsFromJson(response.bodyString!);
-      return res;
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +35,18 @@ class _CustomerHomeState extends State<CustomerHome> {
             style: TextStyle(color: Colors.white, fontSize: 38.sp),
           ),
           actions: <Widget>[
+            IconButton(onPressed: () {
+              showSearch(context: context, delegate: searchProducts());
+            },
+              icon: const Icon(Icons.search_sharp),
+            ),
             IconButton(
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 Get.to(const AddToCart());
               },
             ),
+
           ],
         ),
         drawer: Drawer(
@@ -212,8 +157,8 @@ class _CustomerHomeState extends State<CustomerHome> {
           ),
         ),
         body: Center(
-          child: FutureBuilder<List<ViewAllProducts>>(
-            future: GetAllProducts(),
+          child: FutureBuilder<List<homeapi.ViewAllProducts>>(
+            future: homeapi.GetAllProducts(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return GridView.builder(

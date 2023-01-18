@@ -73,7 +73,7 @@ Future<void> UpdateCartQty(var pid, var cid, String btn) async {
   var response =
   await httprequest.post("${global.url}/updateItemsQty?pid=${int.parse(pid)}&cid=${int.parse(cid)}&buttonpressed=$btn",{});
   if (response.statusCode == 200) {
-    Get.snackbar("Message", response.body);
+    //Get.snackbar("Message", response.body);
   } else {
     Get.snackbar("Message", response.body);
   }
