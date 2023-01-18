@@ -800,27 +800,46 @@ class _RoofEstimateState extends State<RoofEstimate> {
   TextEditingController cementrequired = TextEditingController();
   TextEditingController sandrequired = TextEditingController();
   TextEditingController steelrequired = TextEditingController();
+  TextEditingController cementpart = TextEditingController();
+  TextEditingController sandpart = TextEditingController();
+  TextEditingController crushpart = TextEditingController();
   bool isvisible = false;
   bool visible = false;
   void RoofEstimate() {
+
+    var totalratio=int.parse(cementpart.text)+int.parse(sandpart.text)+int.parse(crushpart.text);
+    var thickness;
+
     if (DropdownValue == '4"') {
-      int length = int.parse(RoofLength.text);
-      int Width = int.parse(RoofWidth.text);
-      var total_sqft = length * Width;
-      var steel_sqft = 0.0023809524;
-      var cement_sqft = 0.08648;
-      var sand_sqft = 0.141;
-      var crush_sqft = 0.2486742857;
-      var total_steel = (steel_sqft * total_sqft).toStringAsFixed(2);
-      //print(total_steel);
-      var total_crush = (crush_sqft * total_sqft).toStringAsFixed(2);
-      var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
-      var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
-      steelrequired.text = "$total_steel ton";
-      crushrequired.text = "$total_crush cuft";
-      cementrequired.text = "$totalcement bags";
-      sandrequired.text = "$totalsand cuft";
+      thickness=4;
     }
+    else if(DropdownValue == '5"'){
+      thickness=5;
+    }
+    else if(DropdownValue == '6"'){
+      thickness=6;
+    }
+    var thicknessinfoot=thickness/12;
+    var wetVolumeincft= int.parse(RoofLength.text)*int.parse(RoofWidth.text)*thicknessinfoot ;
+    //for steel calculation convert wet volume from cft to m3 or metre cube;
+    var wetvolumeinmetrecube=wetVolumeincft/35.3147;
+    //80 kg steel per one metre cube;
+    var steeltotal=wetvolumeinmetrecube*80;
+
+    // after applying water to the dry concrete mix, the volume of the dry concrete mix is reduced by about 54%. = 1.54;
+    // so to calculate dryvolume multplying wetvolume with 1.54;
+    var dryVolumeincft=wetVolumeincft*1.54;
+
+    var cementtotal=dryVolumeincft*int.parse(cementpart.text)/totalratio;
+
+    // volume of one cement bag is 1.22 cft. to convert cement from cft to bags we mill divide it by 1.22;
+
+    cementrequired.text="${(cementtotal/1.22).toStringAsFixed(2)} bags";
+
+    steelrequired.text="${(steeltotal/1000).toStringAsFixed(2)} Ton";
+    sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
+    crushrequired.text="${(dryVolumeincft*int.parse(crushpart.text)/totalratio).toStringAsFixed(2)} cft";
+
   }
 
   @override
@@ -836,7 +855,7 @@ class _RoofEstimateState extends State<RoofEstimate> {
         ),
         body: ListView(children: [
           Container(
-            height: 300.h,
+            height: 500.h,
             margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
@@ -845,7 +864,7 @@ class _RoofEstimateState extends State<RoofEstimate> {
                   Radius.circular(15),
                 )),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   children: [
@@ -863,11 +882,13 @@ class _RoofEstimateState extends State<RoofEstimate> {
                       height: 55.h,
                       width: 340.w,
                       child: TextField(
+                          keyboardType: TextInputType.number,
                           controller: RoofLength,
                           style: TextStyle(
                             fontSize: 16.sp,
                           ),
                           decoration: InputDecoration(
+                            labelText: "Length",
                             hintText: "Roof Length (Feet)",
                             // hintStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(
@@ -886,12 +907,90 @@ class _RoofEstimateState extends State<RoofEstimate> {
                       height: 55.h,
                       width: 340.w,
                       child: TextField(
+                          keyboardType: TextInputType.number,
                           controller: RoofWidth,
                           style: TextStyle(
                             fontSize: 16.sp,
                           ),
                           decoration: InputDecoration(
+                            labelText: "Width",
                             hintText: "Roof Width (Feet)",
+                            //contentPadding: EdgeInsets.only(top: 10),
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                          controller: cementpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Cement Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: sandpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Sand Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: crushpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Crush Part",
+                            hintText: "1-9",
                             //hintStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -1109,7 +1208,7 @@ class _RoofEstimateState extends State<RoofEstimate> {
                                         const Color.fromARGB(255, 255, 81, 0),
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: "10.35 cft",
+                                    //hintText: "10.35 cft",
                                     hintStyle: const TextStyle(
                                         color: Color.fromARGB(255, 255, 81, 0)),
                                     border: OutlineInputBorder(
