@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/GUI/CustomerScreens/Cart.dart';
 import 'package:the_builders/GUI/CustomerScreens/Construct.dart';
+import 'package:the_builders/GUI/CustomerScreens/PendingOrders.dart';
 import 'package:the_builders/GUI/CustomerScreens/ProductDetail.dart';
+import 'package:the_builders/GUI/CustomerScreens/orderHistory.dart';
 import 'package:the_builders/GUI/CustomerScreens/searchbar.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:the_builders/API/CustomerApis/homepageViewAllProducts.dart' as homeapi;
@@ -111,10 +113,7 @@ class _CustomerHomeState extends State<CustomerHome> {
                       fontSize: 22.sp),
                 ),
                 onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const CustomerHome()));
+                 Get.to(const CustomerOrders());
                 },
               ),
               ListTile(
@@ -130,6 +129,8 @@ class _CustomerHomeState extends State<CustomerHome> {
                       fontSize: 22.sp),
                 ),
                 onTap: () {
+
+                  Get.to(OrderHistory());
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

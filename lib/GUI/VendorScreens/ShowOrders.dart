@@ -48,7 +48,18 @@ class _ShowOrdersState extends State<ShowOrders> {
       throw Exception('Failed to load data');
     }
   }
-
+  Future<List<Orders>> DeliveredOrdersList() async {
+    var response = await http.get(Uri.parse(
+      "${global.url}/ShowDeliveredOrders?id=$vid",
+    ));
+    //print(response.statusCode);
+    if (response.statusCode == 200) {
+      List res = jsonDecode(response.body);
+      return res.map((e) => Orders.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -134,7 +145,12 @@ class _ShowOrdersState extends State<ShowOrders> {
             Center(
               child: ListView(
                 children: [
-
+                  SizedBox(
+                    height: 150.h,
+                    child: Center(
+                        child: Text('Delivered',
+                            style: TextStyle(color: Colors.white, fontSize: 38.sp))),
+                  ),
                   Row(
                     children: [
                       SizedBox(
@@ -149,9 +165,40 @@ class _ShowOrdersState extends State<ShowOrders> {
                   ),
 
 
-
-
-
+                  FutureBuilder<List<Orders>>(
+                    future: DeliveredOrdersList(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                                contentPadding:
+                                EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
+                                leading: Text(snapshot.data![index].soid.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 22.sp)),
+                                trailing: TextButton(
+                                  onPressed: () {
+                                    Get.to(const DeliveredOrderDetails(),
+                                        arguments: [vid,snapshot.data![index].soid]);
+                                  },
+                                  child: Text('Show Details',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 22.sp,
+                                          decoration: TextDecoration.underline)),
+                                ));
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
                 ],
               ),
             ),

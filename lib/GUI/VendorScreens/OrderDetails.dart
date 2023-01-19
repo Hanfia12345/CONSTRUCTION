@@ -74,7 +74,6 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
     //print(response.body);
     //print(response.statusCode);
     if (response.statusCode == 200) {
-
       var res = orderdetailssFromJson(response.bodyString!);
       //List res = jsonDecode(response.bodyString!);
       //return res.map((e) => OrderDetailss.fromJson(e)).toList();
@@ -89,6 +88,24 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
 
   String DropdownValue = 'In Progress';
   var items = ['In Progress', 'Delivered'];
+
+
+  void UpdateStatus() async {
+    print(DropdownValue);
+    var httprequest = GetConnect();
+    var response = await httprequest.post(
+      "${global.url}/updateOrderStatus?oid=${vid[1]}&status=$DropdownValue",{}
+    );
+
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", response.body);
+    } else {
+      print(response.statusCode);
+      Get.snackbar("Message", response.body);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -342,6 +359,9 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                   padding: EdgeInsets.only(left: 210.w),
                   child: ElevatedButton(
                     onPressed: () {
+                      print(vid[1]);
+                      print(DropdownValue);
+                      UpdateStatus();
                       Get.off(const ShowOrders(), arguments: "${vid[0]}");
                     },
                     style: ElevatedButton.styleFrom(
@@ -371,10 +391,29 @@ class DeliveredOrderDetails extends StatefulWidget {
 }
 
 class _DeliveredOrderDetailsState extends State<DeliveredOrderDetails> {
+  var vid = Get.arguments;
+
+  List<dynamic> OrderItems = List.empty(growable: true);
+  List<dynamic> ItemsQty = List.empty(growable: true);
+  List<dynamic> ItemsCtg = List.empty(growable: true);
+
+  Future<List<Orderdetailss>> GetOrdersDetail() async {
+    var httprequest = GetConnect();
+    var response =
+    await httprequest.get("${global.url}/orderdetails?oid=${vid[1]}");
+    if (response.statusCode == 200) {
+      var res = orderdetailssFromJson(response.bodyString!);
+      return res;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 110, 43),
+        backgroundColor: Colors.orangeAccent[200],
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 255, 81, 0),
@@ -383,161 +422,245 @@ class _DeliveredOrderDetailsState extends State<DeliveredOrderDetails> {
             style: TextStyle(color: Colors.white, fontSize: 38.sp),
           ),
         ),
-        body: Column(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: ListView(
           children: [
-            SizedBox(
-              height: 70.h,
-            ),
-            Row(
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 25.w,
+                  height: 20.h,
                 ),
-                Text(
-                  'Order Id :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
+                FutureBuilder<List<Orderdetailss>>(
+                  future: GetOrdersDetail(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Orderdetailss> Order =
+                      snapshot.data as List<Orderdetailss>;
+                      if (OrderItems.isEmpty) {
+                        for (var i in Order) {
+                          OrderItems.add(i.pDesc);
+                          //OrderItems.add(i.pQty);
+                        }
+                      }
+                      if (ItemsQty.isEmpty) {
+                        for (var i in Order) {
+                          ItemsQty.add(i.pQty);
+                          //OrderItems.add(i.pQty);
+                        }
+                      }
+                      if (ItemsCtg.isEmpty) {
+                        for (var i in Order) {
+                          ItemsCtg.add(i.pCtg);
+                          //OrderItems.add(i.pQty);
+                        }
+                      }
+                      //print(snapshot.data);
+
+                      //print(snapshot.data![0].name.toString());
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Ordered Items & Quantity',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 25.sp)),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          SizedBox(
+                            height: 300.h,
+                            child: ListView.builder(
+                                itemCount: OrderItems.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    contentPadding:
+                                    const EdgeInsets.fromLTRB(20, 0, 40, 0),
+                                    leading: Text(
+                                      ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                    trailing: Text(
+                                      ItemsQty[index].toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                  );
+                                }),
+                          ),
+                          const Divider(
+                            height: 3,
+                            color: Colors.white,
+                          ),
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              //print(vid[1]);
+
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                      Text(
+                                        'Order Id :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 75.w,
+                                      ),
+                                      Text(
+                                        vid[1].toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                      Text(
+                                        'Order By :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 70.w,
+                                      ),
+                                      Text(
+                                        snapshot.data![index].name.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                      Text(
+                                        'Order Date :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 50.w,
+                                      ),
+                                      SizedBox(
+                                        width: 190.w,
+                                        child: Text(
+                                          "${snapshot.data![index].oDate.day.toString()}/${snapshot.data![index].oDate.month.toString()}/${snapshot.data![index].oDate.year.toString()}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22.sp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                      Text(
+                                        'Delivery Time :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 22.w,
+                                      ),
+                                      SizedBox(
+                                        width: 190.w,
+                                        child: Text(
+                                          "${snapshot.data![index].deliveryTime.day.toString()}/${snapshot.data![index].deliveryTime.month.toString()}/${snapshot.data![index].deliveryTime.year.toString()}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22.sp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                      Text(
+                                        'Order Status :',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 25.w,
+                                      ),
+                                     Text("Delivered",style: TextStyle(
+                                         color: Colors.white,
+                                         fontSize: 22.sp),)
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  },
                 ),
                 SizedBox(
-                  width: 75.w,
+                  height: 100.h,
                 ),
-                Text(
-                  '122231',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Ordered Items :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  width: 20.w,
-                ),
-                SizedBox(
-                  width: 190.w,
-                  child: Text(
-                    'cement , sand , marble , steel',
-                    style: TextStyle(color: Colors.white, fontSize: 22.sp),
+                Padding(
+                  padding: EdgeInsets.only(left: 210.w),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Get.off(const ShowOrders(), arguments: "${vid[0]}");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[400],
+                    ),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Order By :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  width: 70.w,
-                ),
-                Text(
-                  'Hanfia',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Order Date :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  width: 50.w,
-                ),
-                Text(
-                  '22/07/2022',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Delivery Time :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  width: 22.w,
-                ),
-                Text(
-                  '28/07/2022',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Order Status :',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-                SizedBox(
-                  width: 25.w,
-                ),
-                Text(
-                  'Delivered',
-                  style: TextStyle(color: Colors.white, fontSize: 22.sp),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 100.h,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 210.w),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ShowOrders()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green[400],
-                ),
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                      fontSize: 22.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
             ),
           ],
         ));

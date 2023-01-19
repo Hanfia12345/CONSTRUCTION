@@ -205,7 +205,7 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
                             fontSize: 16.sp,
                           ),
                           decoration: InputDecoration(
-                            hintText: "Wall Lenght (Foot)",
+                            hintText: "Wall Length (Foot)",
                             // hintStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
