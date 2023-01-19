@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:the_builders/GUI/CustomerScreens/AllProduct.dart';
+//import 'package:the_builders/GUI/CustomerScreens/AllProduct.dart';
 import 'package:the_builders/GUI/CustomerScreens/Cart.dart';
 import 'package:the_builders/GUI/CustomerScreens/Construct.dart';
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
+import 'package:the_builders/GUI/CustomerScreens/addAddress.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:the_builders/API/CustomerApis/productDetails.dart'
     as CustomerApi;
@@ -393,7 +394,9 @@ class _ProductDetailState extends State<ProductDetail> {
             BottomNavigationBarItem(
               label: 'Buy Now',
               icon: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const AddAddressincart());
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
                   backgroundColor: const Color.fromARGB(255, 253, 166, 3),
