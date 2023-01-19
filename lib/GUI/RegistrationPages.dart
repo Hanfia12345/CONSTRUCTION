@@ -52,6 +52,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: name,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText:  "Enter Your Name" ,
                         hintText: "Enter Your Name",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -73,6 +74,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: address,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Address",
                         hintText: "Enter Your Address",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -95,6 +97,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: phone,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText:  "Enter Your Phone No" ,
                         hintText: "Enter Your Phone No",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -117,6 +120,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: email,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Email",
                         hintText: "Enter Email",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -138,6 +142,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: password,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter password",
                         hintText: "Enter Password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -159,6 +164,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       controller: confirmpassword,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Confirm password",
                         hintText: "Confirm password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -297,6 +303,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: name,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Name",
                         hintText: "Enter Your Name",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -318,6 +325,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: address,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Address" ,
                         hintText: "Enter Your Address",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -340,6 +348,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: phone,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Phone No",
                         hintText: "Enter Your Phone No",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -362,6 +371,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: email,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText:"Enter Email" ,
                         hintText: "Enter Email",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -383,6 +393,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: password,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Password",
                         hintText: "Enter Password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -404,6 +415,7 @@ class _RegisterAsCustomerState extends State<RegisterAsCustomer> {
                       controller: confirmpassword,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Confirm password",
                         hintText: "Confirm password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -547,6 +559,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: name,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Name",
                         hintText: "Enter Your Name",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -568,6 +581,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: address,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Address",
                         hintText: "Enter Your Address",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -590,6 +604,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: phone,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Your Phone No",
                         hintText: "Enter Your Phone No",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -612,6 +627,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: email,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText:"Enter Email" ,
                         hintText: "Enter Email",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -633,6 +649,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: password,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Enter Password",
                         hintText: "Enter Password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
@@ -654,6 +671,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       controller: confirmpassword,
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
+                        labelText: "Confirm password",
                         hintText: "Confirm password",
                         hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
