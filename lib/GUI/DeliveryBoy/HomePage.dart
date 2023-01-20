@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:the_builders/GUI/DeliveryBoy/TrackingPage.dart';
+import 'package:get/get.dart';
+import 'package:the_builders/GUI/DeliveryBoy/AddVehicle.dart';
+import 'package:the_builders/GUI/DeliveryBoy/VehicleDetail.dart';
+import 'package:the_builders/GUI/DeliveryBoy/ViewOrders.dart';
 import 'package:the_builders/GUI/loginpages.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,9 +19,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromRGBO(245, 240, 246, 1.0),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+        backgroundColor: const Color.fromRGBO(204, 41, 54, 1.0),
         title: Text(
           'Home',
           style: TextStyle(color: Colors.white, fontSize: 38.sp),
@@ -31,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             DrawerHeader(
               decoration:
-                  const BoxDecoration(color: Color.fromARGB(255, 255, 110, 43)),
+                  const BoxDecoration(color: Color.fromRGBO(204, 41, 54, 1.0)),
               child: Text(
                 'My Profile',
                 style: TextStyle(color: Colors.white, fontSize: 28.sp),
@@ -52,6 +55,42 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const HomePage()));
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.history,
+                color: const Color.fromARGB(255, 255, 81, 0),
+                size: 33.r,
+              ),
+              title: Text(
+                'Order History',
+                style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 81, 0),
+                    fontSize: 22.sp),
+              ),
+              onTap: () {
+
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const HomePage()));
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.fire_truck,
+                color: const Color.fromARGB(255, 255, 81, 0),
+                size: 33.r,
+              ),
+              title: Text(
+                'Vehicle Detail',
+                style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 81, 0),
+                    fontSize: 22.sp),
+              ),
+              onTap: () {
+              Get.to(()=>const VehicleDetails());
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const HomePage()));
               },
             ),
             ListTile(
@@ -77,400 +116,92 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-                height: 70.h,
-                width: 300.w,
-                margin: const EdgeInsets.all(20),
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(132, 229, 255, 0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    )),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Order Requests',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Icon(
-                          Icons.fire_truck_outlined,
-                          size: 34.r,
-                          color: Colors.green,
-                        ),
-                      ],
+            SizedBox(
+              height: 140.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+
+                Get.to(const AddVehicle());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(102, 103, 171, 1.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
+                child: Text(
+                  'ADD Vehicle',
+                  style: TextStyle(
+                      fontSize: 22.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                 Get.to(() => const ViewOrders());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(102, 103, 171, 1.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
+                child: Text(
+                  'View Orders',
+                  style: TextStyle(
+                      fontSize: 22.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+
+            SizedBox(
+              height: 30.h,
+            ),
+            Text('___OR___',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: const Color.fromRGBO(102, 103, 171, 0.2),
+                )),
+            SizedBox(
+              height: 30.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // SizedBox(
+                //   width: 42.w,
+                // ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Get.defaultDialog(onConfirm: () {
+                    //   Get.to(const login());
+                    // });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(102, 103, 171, 1.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(100, 10, 100, 10),
+                    child: Text(
+                      'LogOut',
+                      style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ],
-                )),
-            Container(
-                height: 220.h,
-                margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(29, 255, 102, 0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    )),
-                child: Table(
-                  children: [
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'Product:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'steel,bricks',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'From:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Commercial Market Road',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'To:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Raja Bazar',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                        child: Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TrackingPage()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 81, 0),
-                              //maximumSize: Size(100.w, 40.h),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                          child: Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 81, 0),
-                            //maximumSize: Size(100.w, 40.h),
-                            padding: const EdgeInsets.all(20),
-                          ),
-                          child: Text(
-                            'Reject',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.white,
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ))
-                    ]),
-                  ],
-                )),
-            Container(
-                height: 220.h,
-                margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(29, 255, 102, 0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    )),
-                child: Table(
-                  children: [
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'Product:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'crush,steel',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'From:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        '6th Road rwp',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'To:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Ra.Bazar Rwp',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                        child: Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TrackingPage()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 81, 0),
-                              //maximumSize: Size(100.w, 40.h),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                          child: Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 81, 0),
-                            //maximumSize: Size(100.w, 40.h),
-                            padding: const EdgeInsets.all(20),
-                          ),
-                          child: Text(
-                            'Reject',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.white,
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ))
-                    ]),
-                  ],
-                )),
-            Container(
-                height: 220.h,
-                margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(29, 255, 102, 0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    )),
-                child: Table(
-                  children: [
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'Product:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Sand',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'From:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Saidpur Road rwp',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                          child: Text(
-                        'To:',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      )),
-                      TableCell(
-                          child: Text(
-                        'Sadiqabad rwp',
-                        style: TextStyle(
-                            fontSize: 22.sp,
-                            color: const Color.fromARGB(255, 255, 81, 0),
-                            fontWeight: FontWeight.bold),
-                      ))
-                    ]),
-                    TableRow(children: [
-                      TableCell(
-                        child: Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TrackingPage()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 81, 0),
-                              //maximumSize: Size(100.w, 40.h),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                          child: Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 81, 0),
-                            //maximumSize: Size(100.w, 40.h),
-                            padding: const EdgeInsets.all(20),
-                          ),
-                          child: Text(
-                            'Reject',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.white,
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ))
-                    ]),
-                  ],
-                )),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

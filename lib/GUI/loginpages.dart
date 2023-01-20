@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:the_builders/API/api.dart';
+
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/RegistrationPages.dart';
@@ -174,7 +174,7 @@ class _loginState extends State<login> {
               ),
               TextButton(
                 onPressed: () {
-                  Get.to(RegisterAsCustomer());
+                  Get.to(const RegisterAsCustomer());
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
