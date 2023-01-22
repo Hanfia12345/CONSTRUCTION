@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+import 'package:the_builders/Global/global.dart';
 //import 'package:geocoding/geocoding.dart';
 
 class AddAddressincart extends StatefulWidget {
@@ -33,15 +35,29 @@ class _AddAddressincartState extends State<AddAddressincart> {
       long = position?.longitude;
       print(lat);
       print(long);
-      print(position);
+      //print(position);
 
       reload();
     }
   }
 
+
+
   void reload() async {
     await Future.delayed(const Duration(milliseconds: 10));
     setState(() {});
+  }
+
+  Future<void> getlatlng()async {
+
+    var httprequest = GetConnect();
+    var response = await httprequest.post(
+      "${global.url}/addLocation?lat=$lat&lng=$long&uid=${int.parse(login_user_id!)}",{});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", "Address added");
+    } else {
+      Get.snackbar("Message", "Address not added");
+    }
   }
 
   // searchLocationByTextfield() async {
@@ -60,8 +76,8 @@ class _AddAddressincartState extends State<AddAddressincart> {
   //   }
   // }
 
-  static const _initialCameraPosition =
-      CameraPosition(target: LatLng(35.6431168, 75.0769498), zoom: 13.5);
+  // static const _initialCameraPosition =
+  //     CameraPosition(target: LatLng(35.6431168, 75.0769498), zoom: 13.5);
 
   @override
   void initState() {
@@ -123,16 +139,21 @@ class _AddAddressincartState extends State<AddAddressincart> {
               },
             ),
           ),
-          FloatingActionButton(
-            onPressed: () {
-              mapcontroller.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                      target: LatLng(position?.latitude ?? 33.6431168,
-                          position?.longitude ?? 73.0769498),
-                      zoom: 14.0)));
-            },
-            child: Icon(Icons.center_focus_strong),
-          ),
+
+          ElevatedButton(onPressed: (){
+            getlatlng();
+          }, child: Text("Use Current Location")),
+          // FloatingActionButton(
+          //   onPressed: () {
+          //     mapcontroller.animateCamera(CameraUpdate.newCameraPosition(
+          //         CameraPosition(
+          //             target: LatLng(position?.latitude ?? 33.6431168,
+          //                 position?.longitude ?? 73.0769498),
+          //             zoom: 14.0)));
+          //   },
+          //   child: Icon(Icons.center_focus_strong),
+          // ),
+
           SizedBox(
             height: 20.h,
           ),

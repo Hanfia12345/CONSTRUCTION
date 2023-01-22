@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(393, 851),
         builder: ((context, child) {
           return const GetMaterialApp(
+            //theme: ThemeData(),
             debugShowCheckedModeBanner: false,
             home: loadingscreen(),
           );
