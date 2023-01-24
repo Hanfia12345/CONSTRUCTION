@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:the_builders/API/Registration/RegisterUser.dart' as register;
+import 'package:get/get.dart';
+import 'package:the_builders/GUI/VendorScreens/SetLocation.dart';
 //import 'loginpages.dart';
 
 class RegisterAsVendor extends StatefulWidget {
@@ -18,6 +20,8 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
   String label = "";
+  // var arg=Get.arguments;
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,8 +169,8 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
                         labelText: "Confirm password",
-                        hintText: "Confirm password",
-                        hintStyle: const TextStyle(color: Colors.white),
+
+                        labelStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -177,8 +181,31 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                 ),
                 Text(label),
                 SizedBox(
-                  height: 60.h,
+                  height: 20.h,
                 ),
+                SizedBox(
+                  height: 40.h,
+                  //width: 100.w,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Get.to(const SetLocation());
+                    },
+                    style: ElevatedButton.styleFrom(
+
+                      backgroundColor: Colors.green[400],
+                    ),
+                    icon:const Icon(Icons.location_on_outlined),
+                    label: Text(
+                      'Set Shop Location',
+                      style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 40.h,),
                 SizedBox(
                   height: 40.h,
                   width: 100.w,
@@ -672,8 +699,7 @@ class _RegisterAsDeliveryBoyState extends State<RegisterAsDeliveryBoy> {
                       style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       decoration: InputDecoration(
                         labelText: "Confirm password",
-                        hintText: "Confirm password",
-                        hintStyle: const TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
