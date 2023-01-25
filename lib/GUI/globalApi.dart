@@ -2,7 +2,7 @@
 
 // ignore_for_file: file_names
 
-var ip = "192.168.43.215";
+var ip = "192.168.53.215";
 var url = "http://$ip/apii/api/apii";
 var pImagesUrl = "http://$ip/apii/Images/productImages/";
 const String googleApiKey="AIzaSyD5lSuZ29sF8t99w8nzNFCwSzW0HXFi1NE";

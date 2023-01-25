@@ -1,3 +1,4 @@
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:the_builders/GUI/RegistrationPages.dart';
 
-//import 'package:the_builders/GUI/globalApi.dart' as global;
+import 'package:the_builders/Global/global.dart' as g;
+
 class SetLocation extends StatefulWidget {
   const SetLocation({Key? key}) : super(key: key);
 
@@ -16,35 +17,31 @@ class SetLocation extends StatefulWidget {
 }
 
 class _SetLocationState extends State<SetLocation> {
-
-
-
   TextEditingController address = TextEditingController();
   //final geocoding=GoogleMapsGeocoding(apiKey: global.googleApiKey);
 
   late GoogleMapController mapcontroller;
   Position? position;
-  double? lat;
-  double? long;
+  // double? lat;
+  // double? long;
   double Latitude = 35.6431345;
   double Longitude = 75.0769348;
 
-  Future<void> getSearchedLocation()async {
+  Future<void> getSearchedLocation() async {
     var permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       List<Location> locations = await locationFromAddress(address.text);
-      lat = locations.first.latitude;
-      long = locations.first.longitude;
+      g.lat = locations.last.latitude;
+      g.long = locations.last.longitude;
       mapcontroller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-            target: LatLng(lat!, long!),
+            target: LatLng(g.lat!, g.long!),
             zoom: 16.0,
           ),
         ),
       );
-
 
       reload();
     }
@@ -56,13 +53,13 @@ class _SetLocationState extends State<SetLocation> {
         permission == LocationPermission.always) {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      lat = position?.latitude;
-      long = position?.longitude;
+      g.lat = position?.latitude;
+      g.long = position?.longitude;
 
       mapcontroller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-            target: LatLng(lat!, long!),
+            target: LatLng(g.lat!, g.long!),
             zoom: 12.0,
           ),
         ),
@@ -80,8 +77,6 @@ class _SetLocationState extends State<SetLocation> {
     setState(() {});
   }
 
-
-
   // @override
   // void dispose() {
   //   mapcontroller.dispose();
@@ -89,13 +84,12 @@ class _SetLocationState extends State<SetLocation> {
   //   super.dispose();
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orangeAccent[200],
       appBar: AppBar(
-        automaticallyImplyLeading : false,
+        automaticallyImplyLeading: false,
         foregroundColor: Colors.white,
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 255, 81, 0),
@@ -107,66 +101,66 @@ class _SetLocationState extends State<SetLocation> {
       body: Column(
         children: [
           TextField(
-              controller: address,
-              style: TextStyle(fontSize: 16.sp, color: Colors.black),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(onPressed: () {
+            controller: address,
+            style: TextStyle(fontSize: 16.sp, color: Colors.black),
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () {
                   getSearchedLocation();
-
-                }, icon: const Icon(Icons.search_sharp),),
-                filled: true,fillColor: Colors.white,
-                hintText: "Enter Your Address",
-                hintStyle: const TextStyle(color: Colors.black),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
-                  ),
+                },
+                icon: const Icon(Icons.search_sharp),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              hintText: "Enter Your Address",
+              hintStyle: const TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: Colors.black,
                 ),
               ),
-
+            ),
           ),
           Expanded(
             child: GoogleMap(
               //myLocationEnabled: true,
               initialCameraPosition: CameraPosition(
-                  target: LatLng(lat ?? Latitude,
-                      long ?? Longitude),
+                  target: LatLng(g.lat ?? Latitude, g.long ?? Longitude),
                   zoom: 13.5),
               onMapCreated: (controller) => mapcontroller = controller,
               markers: {
                 Marker(
                   markerId: const MarkerId("current_location"),
-                  position: LatLng(lat ?? Latitude,
-                      long ?? Longitude),
+                  position: LatLng(g.lat ?? Latitude, g.long ?? Longitude),
                 )
               },
             ),
           ),
-
-          ElevatedButton(onPressed: (){
-            getcurrentlocation();
-            //reload();
-          },style: ElevatedButton.styleFrom(
+          ElevatedButton(
+            onPressed: () {
+              getcurrentlocation();
+              //reload();
+            },
+            style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green[400],
-            ), child:  Text("Use Current Location",style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold),)
-          ,
+            ),
+            child: Text(
+              "Use Current Location",
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-
-
           SizedBox(
             height: 10.h,
           ),
           ElevatedButton(
             onPressed: () {
+              Get.back();
 
-
-         //Get.off(const RegisterAsVendor(),arguments: [lat,long]);
-
-        // reload();
+              // reload();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green[400],
@@ -179,7 +173,6 @@ class _SetLocationState extends State<SetLocation> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-
         ],
       ),
     );

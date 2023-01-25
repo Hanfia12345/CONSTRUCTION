@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:the_builders/API/Registration/RegisterUser.dart' as register;
 import 'package:get/get.dart';
 import 'package:the_builders/GUI/VendorScreens/SetLocation.dart';
+import 'package:the_builders/Global/global.dart';
 //import 'loginpages.dart';
 
 class RegisterAsVendor extends StatefulWidget {
@@ -20,7 +21,7 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
   TextEditingController password = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
   String label = "";
-  // var arg=Get.arguments;
+
 
 
   @override
@@ -211,7 +212,8 @@ class _RegisterAsVendorState extends State<RegisterAsVendor> {
                   width: 100.w,
                   child: ElevatedButton(
                     onPressed: () {
-
+                      print(lat);
+                      print(long);
                       if (password.text == confirmpassword.text) {
                         register.RegistorUser(name.text, address.text,
                             phone.text, email.text, password.text, 'vendor');

@@ -2,11 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/GUI/DeliveryBoy/AddVehicle.dart';
 import 'package:the_builders/GUI/DeliveryBoy/VehicleDetail.dart';
 import 'package:the_builders/GUI/DeliveryBoy/ViewOrders.dart';
 import 'package:the_builders/GUI/loginpages.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+
+import '../../Global/global.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,11 +20,45 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Position? position;
+  double? lat;
+  double? long;
+  Future<void> addLocation(double lt,double lg) async {
+      var httprequest=GetConnect();
+      var response=await httprequest.post("${global.url}/addLocation?lat=$lt&lng=$lg&uid=${int.parse(login_user_id!)}", {});
+      if(response.statusCode==200){
+
+      }else{
+      }
+  }
+
+  Future<void> getCurrentLocation() async {
+
+    var permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      lat = position?.latitude;
+      long = position?.longitude;
+
+      addLocation(lat!,long!);
+      // setState(() {
+      //
+      // });
+      //reload();
+    }
+  }
+  void reload() async {
+    await Future.delayed(const Duration(milliseconds: 10));
+    setState(() {});
+
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
+    getCurrentLocation();
     super.initState();
-
   }
 
   @override

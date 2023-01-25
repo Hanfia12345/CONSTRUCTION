@@ -5,3 +5,5 @@ String? vendor_product_id;
 String? Customer_product_id;
 String? Vendor_product_id_in_customer;
 String vtype = '';
+double? lat;
+double? long;
