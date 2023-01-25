@@ -68,7 +68,7 @@ class _AddNewProductState extends State<AddNewProduct> {
           style: TextStyle(color: Colors.white, fontSize: 38.sp),
         ),
       ),
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       body: SingleChildScrollView(
         child: Column(
           children: [

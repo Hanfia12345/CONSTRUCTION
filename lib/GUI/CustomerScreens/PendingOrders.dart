@@ -32,7 +32,7 @@ class _CustomerOrdersState extends State<CustomerOrders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.orangeAccent[200],
+        backgroundColor: Colors.grey,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 255, 81, 0),
@@ -123,7 +123,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.orangeAccent[200],
+        backgroundColor: Colors.grey,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 255, 81, 0),

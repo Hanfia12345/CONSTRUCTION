@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:the_builders/GUI/CustomerScreens/BookVehicle.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
-import 'package:the_builders/Global/global.dart';
-//import 'package:geocoding/geocoding.dart';
+import 'package:the_builders/Global/global.dart' as g;
+import 'package:geocoding/geocoding.dart';
 
 class AddAddressincart extends StatefulWidget {
   const AddAddressincart({Key? key}) : super(key: key);
@@ -20,8 +22,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
 
   late GoogleMapController mapcontroller;
   Position? position;
-  double? lat;
-  double? long;
+
   double Latitude = 35.6431345;
   double Longitude = 75.0769348;
 
@@ -31,12 +32,37 @@ class _AddAddressincartState extends State<AddAddressincart> {
         permission == LocationPermission.always) {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      lat = position?.latitude;
-      long = position?.longitude;
-      print(lat);
-      print(long);
-      //print(position);
+      g.lat = position?.latitude;
+      g.long = position?.longitude;
+      mapcontroller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(g.lat!, g.long!),
+            zoom: 16.0,
+          ),
+        ),
+      );
 
+      getlatlng(g.lat!, g.long!);
+      reload();
+    }
+  }
+  Future<void> getSearchedLocation() async {
+    var permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      List<Location> locations = await locationFromAddress(address.text);
+      g.lat = locations.last.latitude;
+      g.long = locations.last.longitude;
+      mapcontroller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(g.lat!, g.long!),
+            zoom: 16.0,
+          ),
+        ),
+      );
+      getlatlng(g.lat!, g.long!);
       reload();
     }
   }
@@ -48,11 +74,11 @@ class _AddAddressincartState extends State<AddAddressincart> {
     setState(() {});
   }
 
-  Future<void> getlatlng()async {
+  Future<void> getlatlng(double lt,double lng)async {
 
     var httprequest = GetConnect();
     var response = await httprequest.post(
-      "${global.url}/addLocation?lat=$lat&lng=$long&uid=${int.parse(login_user_id!)}",{});
+      "${global.url}/addLocation?lat=$lt&lng=$lng&uid=${int.parse(g.login_user_id!)}",{});
     if (response.statusCode == 200) {
       Get.snackbar("Message", "Address added");
     } else {
@@ -79,13 +105,13 @@ class _AddAddressincartState extends State<AddAddressincart> {
   // static const _initialCameraPosition =
   //     CameraPosition(target: LatLng(35.6431168, 75.0769498), zoom: 13.5);
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    getcurrentlocation();
-    reload();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   getcurrentlocation();
+  //   reload();
+  //   super.initState();
+  // }
 
   @override
   void dispose() {
@@ -97,7 +123,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -126,23 +152,53 @@ class _AddAddressincartState extends State<AddAddressincart> {
             child: GoogleMap(
               myLocationEnabled: true,
               initialCameraPosition: CameraPosition(
-                  target: LatLng(position?.latitude ?? 33.6431168,
-                      position?.longitude ?? 73.0769498),
+                  target: LatLng(g.lat ?? Latitude, g.long ?? Longitude),
                   zoom: 13.5),
               onMapCreated: (controller) => mapcontroller = controller,
               markers: {
                 Marker(
-                  markerId: MarkerId("current_location"),
-                  position: LatLng(position?.latitude ?? Latitude,
-                      position?.longitude ?? Longitude),
+                  markerId: const MarkerId("current_location"),
+                  position: LatLng(g.lat ?? Latitude, g.long ?? Longitude),
                 )
               },
             ),
           ),
 
-          ElevatedButton(onPressed: (){
-            getlatlng();
-          }, child: Text("Use Current Location")),
+          ElevatedButton(
+            onPressed: () {
+              getcurrentlocation();
+              //reload();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green[400],
+            ),
+            child: Text(
+              "Use Current Location",
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              getSearchedLocation();
+              // reload();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green[400],
+            ),
+            child: Text(
+              ' Use Search Location',
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           // FloatingActionButton(
           //   onPressed: () {
           //     mapcontroller.animateCamera(CameraUpdate.newCameraPosition(
@@ -159,7 +215,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
           ),
           ElevatedButton(
             onPressed: () {
-              getcurrentlocation();
+              //getcurrentlocation();
               Get.to(() => const BookVehicle());
             },
             style: ElevatedButton.styleFrom(

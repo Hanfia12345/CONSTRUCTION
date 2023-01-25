@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:the_builders/GUI/VendorScreens/AddNewProduct.dart';
 import 'package:the_builders/GUI/VendorScreens/ShowOrders.dart';
+import 'package:the_builders/GUI/VendorScreens/UpdateLocation.dart';
 import 'package:the_builders/GUI/VendorScreens/ViewProduct.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,7 @@ class _VendorHomeState extends State<VendorHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       //const Color.fromARGB(255, 255, 110, 43),
       appBar: AppBar(
         centerTitle: true,
@@ -48,11 +49,41 @@ class _VendorHomeState extends State<VendorHome> {
                 style: TextStyle(color: Colors.white, fontSize: 28.sp),
               ),
             ),
-            const ListTile(
+            ListTile(
               leading: Icon(
                 Icons.home,
+                color: const Color.fromARGB(255, 255, 81, 0),
+                size: 33.r,
               ),
-            )
+              title: Text(
+                'Home',
+                style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 81, 0),
+                    fontSize: 22.sp),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VendorHome()));
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.location_on_outlined,
+                color: const Color.fromARGB(255, 255, 81, 0),
+                size: 33.r,
+              ),
+              title: Text(
+                'Update Location',
+                style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 81, 0),
+                    fontSize: 22.sp),
+              ),
+              onTap: () {
+                Get.to(const UpdateLocation());
+              },
+            ),
           ],
         ),
       ),

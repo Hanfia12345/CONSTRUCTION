@@ -65,7 +65,7 @@ class _ShowOrdersState extends State<ShowOrders> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.orangeAccent[200],
+        backgroundColor: Colors.grey,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 255, 81, 0),

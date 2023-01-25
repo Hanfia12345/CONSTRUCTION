@@ -823,7 +823,7 @@ class _RoofEstimateState extends State<RoofEstimate> {
     var wetVolumeincft= int.parse(RoofLength.text)*int.parse(RoofWidth.text)*thicknessinfoot ;
     //for steel calculation convert wet volume from cft to m3 or metre cube;
     var wetvolumeinmetrecube=wetVolumeincft/35.3147;
-    //80 kg steel per one metre cube;
+    // Thumb rule : 80 kg steel per one metre cube;
     var steeltotal=wetvolumeinmetrecube*80;
 
     // after applying water to the dry concrete mix, the volume of the dry concrete mix is reduced by about 54%. = 1.54;
@@ -835,7 +835,6 @@ class _RoofEstimateState extends State<RoofEstimate> {
     // volume of one cement bag is 1.22 cft. to convert cement from cft to bags we mill divide it by 1.22;
 
     cementrequired.text="${(cementtotal/1.22).toStringAsFixed(2)} bags";
-
     steelrequired.text="${(steeltotal/1000).toStringAsFixed(2)} Ton";
     sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
     crushrequired.text="${(dryVolumeincft*int.parse(crushpart.text)/totalratio).toStringAsFixed(2)} cft";

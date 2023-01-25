@@ -65,7 +65,7 @@ class searchProducts extends SearchDelegate{
   @override
   Widget buildResults(BuildContext context) {
    return Scaffold(
-       backgroundColor: Colors.orangeAccent[200],
+       backgroundColor: Colors.grey,
      body:FutureBuilder<List<homeapi.ViewAllProducts>>(
        future: homeapi.GetAllProducts(query:  query),
        builder: (context, snapshot) {
@@ -168,7 +168,7 @@ class searchProducts extends SearchDelegate{
   @override
   Widget buildSuggestions(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       body:FutureBuilder<List<homeapi.ViewAllProducts>>(
         future: homeapi.GetAllProducts(query:  query),
         builder: (context, snapshot) {

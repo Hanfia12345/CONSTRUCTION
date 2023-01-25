@@ -61,7 +61,7 @@ class _AddToCartState extends State<AddToCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -367,7 +367,7 @@ var total=Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         foregroundColor: Colors.white,
         centerTitle: true,

@@ -15,7 +15,7 @@ class _BookVehicleState extends State<BookVehicle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent[200],
+      backgroundColor: Colors.grey,
       body: ListView(
         children: [
           Container(

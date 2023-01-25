@@ -28,7 +28,7 @@ class _CustomerHomeState extends State<CustomerHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.orangeAccent[200],
+        backgroundColor: Colors.grey,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 255, 81, 0),
