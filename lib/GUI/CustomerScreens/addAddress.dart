@@ -216,7 +216,11 @@ class _AddAddressincartState extends State<AddAddressincart> {
           ElevatedButton(
             onPressed: () {
               //getcurrentlocation();
+             // getDistance();
+              //print(totalDistance);
+
               Get.to(() => const BookVehicle());
+
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green[400],

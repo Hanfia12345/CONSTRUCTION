@@ -4,9 +4,9 @@ import 'package:the_builders/GUI/globalApi.dart' as global;
 
 
 
-void PlaceOrder(var id)async{
+void PlaceOrder(var id,String vtype)async{
   var httprequest =GetConnect();
-  var response=await httprequest.post('${global.url}/addOrder?cid=$id', {});
+  var response=await httprequest.post('${global.url}/addOrder?cid=$id&vtype=$vtype', {});
   print(response.statusCode);
   if (response.statusCode == 200) {
 

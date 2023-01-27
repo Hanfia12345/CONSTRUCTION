@@ -4,6 +4,7 @@ String? login_user_id;
 String? vendor_product_id;
 String? Customer_product_id;
 String? Vendor_product_id_in_customer;
-String vtype = '';
+String? vtype;
 double? lat;
 double? long;
+int deliveryCharges=0;

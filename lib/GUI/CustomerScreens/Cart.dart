@@ -282,7 +282,7 @@ class _AddToCartState extends State<AddToCart> {
             ),
           ),
           Text(
-            '1300',
+            '$deliveryCharges',
             style: TextStyle(
               color:  Colors.white,
               fontSize: 22.sp,
@@ -317,7 +317,7 @@ class _AddToCartState extends State<AddToCart> {
                       ),
                     ),
                     Text(
-                      "${total+1300}",
+                      "${total+deliveryCharges}",
                       style: TextStyle(
                         color: const Color.fromARGB(255, 255, 81, 0),
                         fontSize: 22.sp,
@@ -524,7 +524,7 @@ var total=Get.arguments;
                        ),
                      ),
                      Text(
-                       '1300',
+                       '$deliveryCharges',
                        style: TextStyle(
                          color:  const Color.fromARGB(255, 255, 81, 0),
                          fontSize: 22.sp,
@@ -562,7 +562,7 @@ var total=Get.arguments;
                       ),
                     ),
                     Text(
-                      '${total[0]+1300}',
+                      '${total[0]+deliveryCharges}',
                       style: TextStyle(
                         color: const Color.fromARGB(255, 255, 81, 0),
                         fontSize: 22.sp,
@@ -578,7 +578,7 @@ var total=Get.arguments;
                   //     context,
                   //     MaterialPageRoute(
                   //         builder: (context) => const OrderPlaced()));
-                  PlaceOrder(login_user_id);
+                  PlaceOrder(login_user_id,vtype!);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
