@@ -7,4 +7,5 @@ String? Vendor_product_id_in_customer;
 String? vtype;
 double? lat;
 double? long;
+String? Address;
 int deliveryCharges=0;

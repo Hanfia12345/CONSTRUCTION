@@ -27,6 +27,19 @@ class _SetLocationState extends State<SetLocation> {
   double Latitude = 35.6431345;
   double Longitude = 75.0769348;
 
+
+ Future<void> adddAddress(double clat, double clong) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(clat, clong);
+   g.Address="${placemarks.first.street} " "${placemarks.first.subLocality}";
+   print(g.Address);
+   //Toaddress = addresses.first;
+    //print("${placemarks}");
+    setState(() {});
+    //reload();
+  }
+
+
+
   Future<void> getSearchedLocation() async {
     var permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.whileInUse ||
@@ -34,6 +47,8 @@ class _SetLocationState extends State<SetLocation> {
       List<Location> locations = await locationFromAddress(address.text);
       g.lat = locations.last.latitude;
       g.long = locations.last.longitude;
+      g.Address=address.text;
+      print(g.Address);
       mapcontroller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -55,7 +70,7 @@ class _SetLocationState extends State<SetLocation> {
           desiredAccuracy: LocationAccuracy.high);
       g.lat = position?.latitude;
       g.long = position?.longitude;
-
+      adddAddress(g.lat!,g.long!);
       mapcontroller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(

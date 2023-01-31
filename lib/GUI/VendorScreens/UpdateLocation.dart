@@ -69,13 +69,26 @@ class _UpdateLocationState extends State<UpdateLocation> {
   double Latitude = 35.6431345;
   double Longitude = 75.0769348;
 
+  Future<void> adddAddress(double clat, double clong) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(clat, clong);
+    g.Address="${placemarks.first.street} " "${placemarks.first.subLocality}";
+    print(g.Address);
+    //Toaddress = addresses.first;
+    //print("${placemarks}");
+    setState(() {});
+    //reload();
+  }
+
+
   Future<void> getSearchedLocation() async {
     var permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       List<Location> locations = await locationFromAddress(address.text);
+      g.Address=address.text;
       g.lat = locations.last.latitude;
       g.long = locations.last.longitude;
+
       mapcontroller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -95,6 +108,9 @@ class _UpdateLocationState extends State<UpdateLocation> {
         permission == LocationPermission.always) {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
+      g.Address="${placemarks.first.street} " "${placemarks.first.subLocality}";
+      print(g.Address);
       g.lat = position?.latitude;
       g.long = position?.longitude;
 
@@ -106,16 +122,18 @@ class _UpdateLocationState extends State<UpdateLocation> {
           ),
         ),
       );
-      addLatLong(g.lat!, g.long!);
+      addLatLong(g.lat!, g.long!,g.Address!);
       reload();
     }
   }
 
 
-  Future<void> addLatLong(double lt,double lng)async {
+  Future<void> addLatLong(double lt,double lng,String address)async {
+    Future.delayed(Duration(milliseconds: 50));
     var httprequest = GetConnect();
     var response = await httprequest.post(
-        "${global.url}/addLocation?lat=$lt&lng=$lng&uid=${int.parse(g.login_user_id!)}",{});
+        "${global.url}/addLocation?lat=$lt&lng=$lng&address=$address&uid=${int.parse(g.login_user_id!)}",{});
+    print(response.statusCode);
     if (response.statusCode == 200) {
       Get.off(const VendorHome());
       Get.snackbar("Message", "Address added");
@@ -211,7 +229,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
           ElevatedButton(
             onPressed: () {
               if(g.lat!=null && g.long!=null){
-                addLatLong(g.lat!,g.long!);
+                addLatLong(g.lat!,g.long!,g.Address!);
               }
               // reload();
             },

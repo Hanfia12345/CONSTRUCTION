@@ -32,6 +32,8 @@ class _AddAddressincartState extends State<AddAddressincart> {
         permission == LocationPermission.always) {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
+      g.Address="${placemarks.first.street} " "${placemarks.first.subLocality}";
       g.lat = position?.latitude;
       g.long = position?.longitude;
       mapcontroller.animateCamera(
@@ -43,7 +45,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
         ),
       );
 
-      getlatlng(g.lat!, g.long!);
+      getlatlng(g.lat!, g.long!,g.Address!);
       reload();
     }
   }
@@ -52,6 +54,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       List<Location> locations = await locationFromAddress(address.text);
+      g.Address=address.text;
       g.lat = locations.last.latitude;
       g.long = locations.last.longitude;
       mapcontroller.animateCamera(
@@ -62,7 +65,7 @@ class _AddAddressincartState extends State<AddAddressincart> {
           ),
         ),
       );
-      getlatlng(g.lat!, g.long!);
+      getlatlng(g.lat!, g.long!,g.Address!);
       reload();
     }
   }
@@ -74,11 +77,11 @@ class _AddAddressincartState extends State<AddAddressincart> {
     setState(() {});
   }
 
-  Future<void> getlatlng(double lt,double lng)async {
-
+  Future<void> getlatlng(double lt,double lng,String address)async {
+    Future.delayed(Duration(milliseconds: 50));
     var httprequest = GetConnect();
     var response = await httprequest.post(
-      "${global.url}/addLocation?lat=$lt&lng=$lng&uid=${int.parse(g.login_user_id!)}",{});
+        "${global.url}/addLocation?lat=$lt&lng=$lng&address=$address&uid=${int.parse(g.login_user_id!)}",{});
     if (response.statusCode == 200) {
       Get.snackbar("Message", "Address added");
     } else {

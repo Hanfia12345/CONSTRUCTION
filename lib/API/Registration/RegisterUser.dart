@@ -10,7 +10,8 @@ void RegistorUser(String name, String location, String phoneno, String email,
       '${global.url}/UserResgister?name=$name&location=$location&phoneno=$phoneno&email=$email&pass=$pass&vtype=$type',
       {
         "lat":lat,
-        "lng":long
+        "lng":long,
+        "address":Address,
       });
   print(response.body);
   print(response.statusCode);
