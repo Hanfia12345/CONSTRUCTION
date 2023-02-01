@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:the_builders/API/TransporterApi/LatLongForTracking.dart';
 import 'package:the_builders/API/TransporterApi/ShowOrdersForDeliveryBoy.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/DeliveryBoy/OrderDetails.dart';
@@ -32,6 +33,11 @@ class _ViewOrdersState extends State<ViewOrders> {
     //reload();
   }
 
+  // void goToTracking()async{
+  //
+  // }
+
+
   void reload() async {
     await Future.delayed(const Duration(milliseconds: 100));
     setState(() {});
@@ -41,11 +47,13 @@ class _ViewOrdersState extends State<ViewOrders> {
 // @override
   @override
   void initState() {
+
     // TODO: implement initState
     super.initState();
     // ordersFordb= ordersForDeliveryBoy();
-
-    setState(() {});
+      //llList.clear();
+    latlngList.clear();
+    //setState(() {});
   }
 
   @override
@@ -192,7 +200,10 @@ class _ViewOrdersState extends State<ViewOrders> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     ElevatedButton(
-                                        onPressed: () {
+                                        onPressed: () async{
+
+                                         await latlongforTracking(int.parse(snapshot.data![index].oid.toString()) );
+                                          //print(llList.first.lat);
                                           Get.to(const TrackingPage());
                                         },
                                         style: ElevatedButton.styleFrom(

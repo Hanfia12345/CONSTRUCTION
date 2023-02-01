@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:the_builders/API/TransporterApi/LatLongForTracking.dart';
+//import 'package:get/get.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,18 +17,72 @@ class TrackingPage extends StatefulWidget {
 }
 
 class _TrackingPageState extends State<TrackingPage> {
+  late GoogleMapController mapcontroller;
+  Position? position;
+
+
+
   static const _initialCameraPosition =
       CameraPosition(target: LatLng(33.6431168, 73.0769498), zoom: 13.5);
 
-// import 'package:geolocator/geolocator.dart';
+    Set<Marker> markers={};
+    Set<Polyline> polyLines={};
+  late List<LatLng> latlonglist;
 
-// // Get the current position
-// Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  Future<void> getCurrentLocation() async {
 
-// // Extract the latitude and longitude from the position object
-// double latitude = position.latitude;
-// double longitude = position.longitude;
+    var permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      // lat = position?.latitude;
+      // long = position?.longitude;
+      // g.lat=lat;
+      // g.long=long;
 
+      // // setState(() {
+      // //
+      // // });
+
+    }
+  }
+
+  void reload() async {
+    await Future.delayed(const Duration(milliseconds: 10));
+    setState(() {});
+  }
+
+@override
+  void initState() {
+   reload();
+
+
+    // TODO: implement initState
+    super.initState();
+    for(int i=0;i<latlngList.length;i++){
+      print(latlngList[i]);
+      markers.add(Marker(markerId: MarkerId(i.toString()),
+      position: latlngList[i],
+      infoWindow: const InfoWindow(
+        title: 'delivery points',
+            snippet: 'delivery routes',
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+      ),
+
+      );
+      setState(() {
+
+      });
+      polyLines.add(Polyline(polylineId: PolylineId('1'),
+          points: latlngList
+      ),
+      );
+    }
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,24 +143,23 @@ class _TrackingPageState extends State<TrackingPage> {
           ],
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          SizedBox(
-              height: 400.h,
-              child: const GoogleMap(
-                  initialCameraPosition: _initialCameraPosition)),
-          // Container(
-          //   height: 400.h,
-          //   decoration: const BoxDecoration(
-          //       image: DecorationImage(
-          //     image: AssetImage(
-          //       'assets/map.png',
-          //     ),
-          //     fit: BoxFit.fill,
-          //   )),
-          // ),
+           Expanded(
+            child: GoogleMap(
+              myLocationEnabled: true,
+              markers: markers,
+
+                initialCameraPosition: _initialCameraPosition,
+            onMapCreated: (controller)=> mapcontroller = controller,
+              polylines: polyLines,
+            ),
+
+          ),
+
+
           Container(
-              height: 220.h,
+            //height: 220.h,
               margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
@@ -116,92 +172,92 @@ class _TrackingPageState extends State<TrackingPage> {
                   TableRow(children: [
                     TableCell(
                         child: Text(
-                      'Ordered By:',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    )),
+                          'Ordered By:',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        )),
                     TableCell(
                         child: Text(
-                      'Mr Ali.',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    ))
+                          'Mr Ali.',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        ))
                   ]),
                   TableRow(children: [
                     TableCell(
                         child: Text(
-                      'Product:',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    )),
+                          'Product:',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        )),
                     TableCell(
                         child: Text(
-                      'Sand',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    ))
+                          'Sand',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        ))
                   ]),
                   TableRow(children: [
                     TableCell(
                         child: Text(
-                      'From:',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    )),
+                          'From:',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        )),
                     TableCell(
                         child: Text(
-                      'Saidpur Road rwp',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    ))
+                          'Saidpur Road rwp',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        ))
                   ]),
                   TableRow(children: [
                     TableCell(
                         child: Text(
-                      'To:',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    )),
+                          'To:',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        )),
                     TableCell(
                         child: Text(
-                      'Sadiqabad rwp',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    ))
+                          'Sadiqabad rwp',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        ))
                   ]),
                   TableRow(children: [
                     TableCell(
                         child: Text(
-                      'Contact:',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    )),
+                          'Contact:',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        )),
                     TableCell(
                         child: Text(
-                      '03037275402',
-                      style: TextStyle(
-                          fontSize: 22.sp,
-                          color: const Color.fromARGB(255, 255, 81, 0),
-                          fontWeight: FontWeight.bold),
-                    ))
+                          '03037275402',
+                          style: TextStyle(
+                              fontSize: 22.sp,
+                              color: const Color.fromARGB(255, 255, 81, 0),
+                              fontWeight: FontWeight.bold),
+                        ))
                   ]),
                 ],
               )),
@@ -248,6 +304,8 @@ class _TrackingPageState extends State<TrackingPage> {
               ),
             ),
           ]),
+
+
         ],
       ),
     );

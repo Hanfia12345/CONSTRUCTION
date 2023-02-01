@@ -9,6 +9,7 @@ import 'package:the_builders/GUI/DeliveryBoy/VehicleDetail.dart';
 import 'package:the_builders/GUI/DeliveryBoy/ViewOrders.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
+import 'package:the_builders/Global/global.dart' as g;
 
 import '../../Global/global.dart';
 
@@ -41,7 +42,8 @@ class _HomePageState extends State<HomePage> {
           desiredAccuracy: LocationAccuracy.high);
       lat = position?.latitude;
       long = position?.longitude;
-
+      g.lat=lat;
+      g.long=long;
       addLocation(lat!,long!);
       // setState(() {
       //
@@ -59,6 +61,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     getCurrentLocation();
     super.initState();
+    setState(() {
+
+    });
   }
 
   @override

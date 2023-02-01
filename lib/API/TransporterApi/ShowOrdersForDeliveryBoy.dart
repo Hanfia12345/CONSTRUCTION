@@ -51,11 +51,6 @@ Future<List<OrdersForDelivery>> ordersForDelivery() async {
 
 
 
-// To parse this JSON data, do
-//
-//     final orderDetailsForDelivery = orderDetailsForDeliveryFromJson(jsonString);
-
-
 
 List<OrderDetailsForDelivery> orderDetailsForDeliveryFromJson(String str) => List<OrderDetailsForDelivery>.from(json.decode(str).map((x) => OrderDetailsForDelivery.fromJson(x)));
 
