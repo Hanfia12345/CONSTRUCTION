@@ -182,18 +182,31 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                           child: ListView.builder(
                               itemCount: OrderItems.length,
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  contentPadding:
-                                  const EdgeInsets.fromLTRB(20, 0, 40, 0),
-                                  leading: Text(
-                                    ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 22.sp),
-                                  ),
-                                  trailing: Text(
-                                    ItemsQty[index].toString(),
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 22.sp),
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              ">${OrderItems[index].toString()} : ",style: TextStyle(
+                                                color: Colors.white, fontSize: 22.sp),),
+                                            //SizedBox(width: 10.w,),
+                                            Text(
+                                              "${ItemsQty[index].toString()} ",style: TextStyle(
+                                                color: Colors.white, fontSize: 22.sp),),
+
+
+                                          ],
+                                        ),
+
+                                        Text(
+                                          "${ItemsCtg[index].toString()} "
+                                          ,style: TextStyle(
+                                            color: Colors.white, fontSize: 16.sp),),
+                                        Divider(height: 2,color: Colors.white,)
+                                      ],),
                                   ),
                                 );
                               }),
@@ -250,13 +263,16 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     SizedBox(
                                       width: 20.w,
                                     ),
-                                    Text(
-                                     overflow:TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      snapshot.data![index].name.toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                    SizedBox(
+                                      width: 218.w,
+                                      child: Text(
+                                       //overflow:TextOverflow.ellipsis,
+                                       // maxLines: 1,
+                                        snapshot.data![index].name.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
                                     ),
                                   ],
                                 ),

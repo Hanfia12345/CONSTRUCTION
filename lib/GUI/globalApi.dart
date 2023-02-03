@@ -2,10 +2,13 @@
 
 // ignore_for_file: file_names
 
-var ip = "192.168.1.11";
+var ip = "192.168.207.215";
 var url = "http://$ip/apii/api/apii";
 var pImagesUrl = "http://$ip/apii/Images/productImages/";
 const String googleApiKey="AIzaSyD5lSuZ29sF8t99w8nzNFCwSzW0HXFi1NE";
+
+
+//jaffar api key   AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U
 
 
 // Sir Umar Api Key=AIzaSyCUZZGOTmZFTBTmLpLKi87UokDL4d4FanA

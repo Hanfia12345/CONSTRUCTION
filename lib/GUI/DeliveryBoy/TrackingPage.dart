@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,7 +10,7 @@ import 'package:the_builders/API/TransporterApi/LatLongForTracking.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 //import 'package:the_builders/GUI/globalApi.dart' as global;
 
 class TrackingPage extends StatefulWidget {
@@ -39,6 +41,7 @@ class _TrackingPageState extends State<TrackingPage> {
         permission == LocationPermission.always) {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+
       // lat = position?.latitude;
       // long = position?.longitude;
       // g.lat=lat;
@@ -54,29 +57,50 @@ class _TrackingPageState extends State<TrackingPage> {
   List<LatLng> polylinesss=[];
 
 
-  void getroute()async{
-    //await latlngList;
-    //for (var i = 0; i < latlngList.length - 1; i++) {
-      //var j = i + 1;
-      //LatLng first = latlngList[i];
-      //LatLng second = latlngList[j];
-      //print("list = ${latlngList[i]}");
-      // PolylinePoints polylinePoints = PolylinePoints();
-      // PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyD5lSuZ29sF8t99w8nzNFCwSzW0HXFi1NE", const PointLatLng(33.64313507080078, 73.07691955566406), const PointLatLng(33.69390869140625, 72.97705841064453));
-      // print("Result of route = ${result.points.first}");
-     // for (var point in result.points) {
-      //  polylinesss.add(LatLng(point.latitude, point.longitude));
-      //}
+  Future<void> getroute()async{
+    await latlngList;
 
-    //}
+
+    for (var i = 0; i < latlngList.length; i++) {
+      print(latlngList[i].latitude);
+      print(latlngList[i].longitude);
+      var j = i + 1;
+      LatLng first = latlngList[i];
+      LatLng second = latlngList[j];
+      print(first.longitude);
+      print(second.longitude);
+      PolylinePoints polylinePoints = PolylinePoints();
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude));
+
+      result.points.forEach((PointLatLng point) => polylinesss.add(LatLng(point.latitude, point.longitude)));
+    }
+
+
+    // for (var i = 0; i < latlngList.length - 1; i++) {
+    //   var j = i + 1;
+    //   LatLng first = latlngList[i];
+    //   LatLng second = latlngList[j];
+    //   //print("list = ${latlngList[i]}");
+    //   PolylinePoints polylinePoints = PolylinePoints();
+    //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", const PointLatLng(33.64313507080078, 73.07691955566406), const PointLatLng(33.69390869140625, 72.97705841064453));
+    //   print("Result of route = ${result.points.first}");
+    //   for (var point in result.points) {
+    //     polylinesss.add(LatLng(point.latitude, point.longitude));
+    //   }
+    //
+    // }
 //print("Result is = ${polylinesss}");
-//     setState(() {
-//
-//     });
+    reload();
   }
   void reload() async {
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 50));
     setState(() {});
+  }  void timer()  {
+    Timer(Duration(seconds: 1), () {
+      setState(() {});
+
+
+    });
   }
 
 @override
@@ -90,28 +114,46 @@ class _TrackingPageState extends State<TrackingPage> {
     super.initState();
     for(int i=0;i<latlngList.length;i++){
       //print(latlngList[i]);
-      markers.add(Marker(markerId: MarkerId(i.toString()),
-      position: latlngList[i],
-      infoWindow: const InfoWindow(
-        title: 'delivery points',
-            snippet: 'delivery routes',
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-      ),
+      if(i<=latlngList.length-2){
+        markers.add(Marker(markerId: MarkerId(i.toString()),
+          position: latlngList[i],
+          infoWindow:  InfoWindow(
+            title: 'Delivery Point : ${i+1}',
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+        );
+      }else  {
+        markers.add(Marker(markerId: MarkerId(i.toString()),
+          position: latlngList[i],
+          infoWindow:  const InfoWindow(
+            title: 'Customer Location',
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(250),
+        ),
+        );
+      }
 
-      );
-      setState(() {
 
-      });
-      getroute();
-      polyLines.add(Polyline(polylineId: const PolylineId('1'),
-          points: latlngList,
-          color: Colors.orangeAccent
-      ),
-      );
+      //getroute();
+
+      // polyLines.add(Polyline(polylineId: const PolylineId('1'),
+      //     points: latlngList,
+      //     color: Colors.orangeAccent
+      // ),
+      // );
     }
-
-
+    timer();
+    // markers.add(Marker(markerId: MarkerId('customer location'),
+    //   position: latlonglist.last,
+    //   infoWindow:  InfoWindow(
+    //     title: 'Customer points',
+    //     snippet: 'customer point',
+    //   ),
+    // ));
+    // setState(() {
+    //
+    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -182,13 +224,15 @@ class _TrackingPageState extends State<TrackingPage> {
 
                 initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller)=> mapcontroller = controller,
-              polylines: polyLines,
-                // {
-                //   Polyline(
-                //       polylineId: PolylineId("route"),
-                //       points: polylinesss
-                //   )
-                // }
+              polylines:{
+                Polyline(
+                    polylineId: PolylineId("route"),
+                    //points: polylinesss,
+                    color: Colors.red,
+                    width: 4
+                )
+              } ,
+
             ),
 
           ),
