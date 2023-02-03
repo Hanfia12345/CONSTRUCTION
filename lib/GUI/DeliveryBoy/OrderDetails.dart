@@ -113,20 +113,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                              "${pUnitt[index].toString()} ",style: TextStyle(
                                                color: Colors.white, fontSize: 22.sp),),
 
-                                  //   ListTile(
-                                  //   contentPadding:
-                                  //       const EdgeInsets.fromLTRB(20, 0, 40, 0),
-                                  //   leading: Text(
-                                  //     ">${OrderItems[index].toString()} ",
-                                  //     style: TextStyle(
-                                  //         color: Colors.white, fontSize: 22.sp),
-                                  //   ),
-                                  //   trailing: Text(
-                                  //     ItemsQty[index].toString(),
-                                  //     style: TextStyle(
-                                  //         color: Colors.white, fontSize: 22.sp),
-                                  //   ),
-                                  // );
+
                                          ],
                                        ),
                                         Text(

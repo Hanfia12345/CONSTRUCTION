@@ -2,15 +2,15 @@
 
 // ignore_for_file: file_names
 
-var ip = "192.168.43.92";
+var ip = "192.168.1.11";
 var url = "http://$ip/apii/api/apii";
 var pImagesUrl = "http://$ip/apii/Images/productImages/";
 const String googleApiKey="AIzaSyD5lSuZ29sF8t99w8nzNFCwSzW0HXFi1NE";
 
 
+// Sir Umar Api Key=AIzaSyCUZZGOTmZFTBTmLpLKi87UokDL4d4FanA
 
-
-
+// 192.168.43.92
 
 // String ipAddress = await getIpAddress();
 

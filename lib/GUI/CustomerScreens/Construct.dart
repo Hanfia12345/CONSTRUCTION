@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:the_builders/Construction_Estimation/HouseEstimation.dart';
+import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
+
+import '../../Construction_Estimation/10MarlaHouse.dart';
+import '../../Construction_Estimation/3MarlaHouse.dart';
 
 class Estimate extends StatefulWidget {
   const Estimate({Key? key}) : super(key: key);
@@ -128,6 +132,9 @@ class _EstimateState extends State<Estimate> {
                         if (DropdownValue == 'wall Paster') {
                           Get.to(() => const Plaster());
                         }
+                        if (DropdownValue == 'Floor') {
+                          Get.to(() => const FloorEstimate());
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green[400],
@@ -150,7 +157,7 @@ class _EstimateState extends State<Estimate> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const fiveMarlaHouse()));
+                      builder: (context) => const threeMarlaHouse()));
             },
             child: Container(
                 margin: const EdgeInsets.all(20),
@@ -218,7 +225,7 @@ class _EstimateState extends State<Estimate> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const fiveMarlaHouse()));
+                      builder: (context) => const tenMarlaHouse()));
             },
             child: Container(
                 margin: const EdgeInsets.all(20),
@@ -594,8 +601,9 @@ class _EstimateButtonState extends State<EstimateButton> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        visible = !visible;
-                        setState(() {});
+                        Get.to(const CustomerHome());
+                        // visible = !visible;
+                        // setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -605,7 +613,7 @@ class _EstimateButtonState extends State<EstimateButton> {
                         padding: const EdgeInsets.all(20),
                       ),
                       child: Text(
-                        'Calculate Cost',
+                        'Go To Shop',
                         style: TextStyle(
                           fontSize: 22.sp,
                           color: Colors.white,
@@ -1220,6 +1228,30 @@ class _RoofEstimateState extends State<RoofEstimate> {
                             ),
                           ],
                         ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(const CustomerHome());
+                              // visible = !visible;
+                              // setState(() {});
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32)),
+                              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                              //maximumSize: Size(100.w, 40.h),
+                              padding: const EdgeInsets.all(20),
+                            ),
+                            child: Text(
+                              'Go To Shop',
+                              style: TextStyle(
+                                fontSize: 22.sp,
+                                color: Colors.white,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
                       ])))
         ]));
   }
@@ -1242,22 +1274,24 @@ class _PlasterState extends State<Plaster> {
   TextEditingController wallLength = TextEditingController();
   TextEditingController cementrequired = TextEditingController();
   TextEditingController sandrequired = TextEditingController();
+  TextEditingController sandpart = TextEditingController();
+  TextEditingController cementpart = TextEditingController();
+  TextEditingController thickness = TextEditingController();
+
   bool isvisible = false;
   bool visible = false;
   void PlasterEstimate() {
+    var totalratio=int.parse(cementpart.text)+int.parse(sandpart.text);
+    var thicknessinfoot=double.parse(thickness.text)/12;
+    var wetVolumeincft= int.parse(wallLength.text)*int.parse(wallheight.text)*thicknessinfoot ;
+    // after applying water to the dry mortar mix , the volume of the dry mortar mix is reduced by about 33%. = 1.33;
+    // so to calculate dryvolume multplying wetvolume with 1.34;
+    var dryVolumeincft=wetVolumeincft*1.33;
+    var cementtotal=dryVolumeincft*int.parse(cementpart.text)/totalratio;
+    // volume of one cement bag is 1.22 cft. to convert cement from cft to bags we mill divide it by 1.22;
+    cementrequired.text="${(cementtotal/1.22).toStringAsFixed(2)} bags";
+    sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
 
-      int length = int.parse(wallLength.text);
-      int height = int.parse(wallheight.text);
-      var total_sqft = length * height;
-
-      //var cement_sqft = 0.0194444444;
-      var cement_sqft = 0.0085141796;
-      //var sand_sqft = 0.071875;
-      var sand_sqft = 0.0418897637;
-      var totalsand = (total_sqft * sand_sqft).toStringAsFixed(2);
-      var totalcement = (total_sqft * cement_sqft).toStringAsFixed(2);
-      cementrequired.text = "$totalcement bags";
-      sandrequired.text = "$totalsand cuft";
   }
 
   @override
@@ -1274,7 +1308,7 @@ class _PlasterState extends State<Plaster> {
       body: ListView(
         children: [
           Container(
-            height: 300.h,
+            height: 500.h,
             margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
@@ -1341,6 +1375,83 @@ class _PlasterState extends State<Plaster> {
                     ),
                   ],
                 ),
+
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: cementpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Cement Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: sandpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Sand Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: thickness,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Thickness in inchess",
+                            hintText: "0.5..",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+
 
               ],
             ),
@@ -1463,8 +1574,9 @@ class _PlasterState extends State<Plaster> {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        visible = !visible;
-                        setState(() {});
+                        Get.to(const CustomerHome());
+                        // visible = !visible;
+                        // setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -1474,7 +1586,7 @@ class _PlasterState extends State<Plaster> {
                         padding: const EdgeInsets.all(20),
                       ),
                       child: Text(
-                        'Calculate Cost',
+                        'Go To Shop',
                         style: TextStyle(
                           fontSize: 22.sp,
                           color: Colors.white,
@@ -1618,5 +1730,413 @@ class _PlasterState extends State<Plaster> {
         ],
       ),
     );
+  }
+}
+
+
+
+class FloorEstimate extends StatefulWidget {
+  const FloorEstimate({Key? key}) : super(key: key);
+
+  @override
+  State<FloorEstimate> createState() => _FloorEstimateState();
+}
+
+class _FloorEstimateState extends State<FloorEstimate> {
+
+  TextEditingController floorWidth = TextEditingController();
+  TextEditingController floorLength = TextEditingController();
+  TextEditingController crushrequired = TextEditingController();
+  TextEditingController cementrequired = TextEditingController();
+  TextEditingController sandrequired = TextEditingController();
+  TextEditingController cementpart = TextEditingController();
+  TextEditingController sandpart = TextEditingController();
+  TextEditingController crushpart = TextEditingController();
+  TextEditingController thickness = TextEditingController();
+
+  bool isvisible = false;
+  bool visible = false;
+  void FloorEstimate() {
+
+    var totalratio=int.parse(cementpart.text)+int.parse(sandpart.text)+int.parse(crushpart.text);
+    var thicknessinfoot=int.parse(thickness.text)/12;
+    var wetVolumeincft= int.parse(floorLength.text)*int.parse(floorWidth.text)*thicknessinfoot ;
+    // after applying water to the dry concrete mix, the volume of the dry concrete mix is reduced by about 54%. = 1.54;
+    // so to calculate dryvolume multplying wetvolume with 1.54;
+    var dryVolumeincft=wetVolumeincft*1.54;
+
+    var cementtotal=dryVolumeincft*int.parse(cementpart.text)/totalratio;
+
+    // volume of one cement bag is 1.22 cft. to convert cement from cft to bags we mill divide it by 1.22;
+
+    cementrequired.text="${(cementtotal/1.22).toStringAsFixed(2)} bags";
+    sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
+    crushrequired.text="${(dryVolumeincft*int.parse(crushpart.text)/totalratio).toStringAsFixed(2)} cft";
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+          title: Text(
+            'Floor',
+            style: TextStyle(color: Colors.white, fontSize: 38.sp),
+          ),
+        ),
+        body: ListView(children: [
+          Container(
+            height: 500.h,
+            margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(29, 255, 102, 0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Floor Dimensions',
+                      style: TextStyle(
+                          color: const Color.fromARGB(255, 255, 81, 0),
+                          fontSize: 28.sp),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: floorLength,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Length",
+                            hintText: "Floor Length (Feet)",
+                            // hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: floorWidth,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Width",
+                            hintText: "Floor Width (Feet)",
+                            //contentPadding: EdgeInsets.only(top: 10),
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: cementpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Cement Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: sandpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Sand Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: crushpart,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Crush Part",
+                            hintText: "1-9",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 55.h,
+                      width: 340.w,
+                      child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: thickness,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Thickness in Inches",
+                            hintText: "1-9..",
+                            //hintStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                FloorEstimate();
+                isvisible = !isvisible;
+                setState(() {});
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32)),
+                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                //maximumSize: Size(100.w, 40.h),
+                padding: const EdgeInsets.all(20),
+              ),
+              child: Text(
+                'Calculate',
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  color: Colors.white,
+                  //fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+              visible: isvisible,
+              child: Container(
+                  height: 450.h,
+                  margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(29, 255, 102, 0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Floor Requirements',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 255, 81, 0),
+                                  fontSize: 28.sp),
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'cement Required',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 255, 81, 0),
+                                  fontSize: 20.sp),
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                              width: 180.w,
+                              child: TextField(
+                                  readOnly: true,
+                                  controller: cementrequired,
+                                  style: TextStyle(
+                                    color:
+                                    const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 16.sp,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Sand Required',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 255, 81, 0),
+                                  fontSize: 20.sp),
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                              width: 180.w,
+                              child: TextField(
+                                  readOnly: true,
+                                  controller: sandrequired,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color:
+                                    const Color.fromARGB(255, 255, 81, 0),
+                                  ),
+                                  decoration: InputDecoration(
+                                    //hintText: "10.35 cft",
+                                    hintStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 255, 81, 0)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'crush Required',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 255, 81, 0),
+                                  fontSize: 20.sp),
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                              width: 180.w,
+                              child: TextField(
+                                  readOnly: true,
+                                  controller: crushrequired,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color:
+                                    const Color.fromARGB(255, 255, 81, 0),
+                                  ),
+                                  decoration: InputDecoration(
+                                    //hintText: "10.35 cft",
+                                    hintStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 255, 81, 0)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(const CustomerHome());
+                              // visible = !visible;
+                              // setState(() {});
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32)),
+                              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                              //maximumSize: Size(100.w, 40.h),
+                              padding: const EdgeInsets.all(20),
+                            ),
+                            child: Text(
+                              'Go To Shop',
+                              style: TextStyle(
+                                fontSize: 22.sp,
+                                color: Colors.white,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                      ])))
+        ]));
   }
 }

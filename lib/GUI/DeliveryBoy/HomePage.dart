@@ -84,10 +84,40 @@ class _HomePageState extends State<HomePage> {
           children: [
             DrawerHeader(
               decoration:
-                  const BoxDecoration(color: Color.fromRGBO(204, 41, 54, 1.0)),
-              child: Text(
-                'My Profile',
-                style: TextStyle(color: Colors.white, fontSize: 28.sp),
+              const BoxDecoration(color: Color.fromARGB(255, 255, 110, 43)),
+              child: Column(
+                children: [
+                  // Text(
+                  //   'My Profile',
+                  //   style: TextStyle(color: Colors.white, fontSize: 22.sp),
+                  // ),
+                  Expanded(
+                    child: Stack(
+                        children:[
+                          const CircleAvatar(backgroundColor: Colors.white,radius: 50.0,
+                          ),
+
+                          Positioned(
+                            bottom: 10,
+                            right: 0,
+                            child: IconButton(
+                              icon: const Icon(Icons.camera),color: Colors.black38,
+                              onPressed: () {
+                                // add your onPressed function here
+                              },
+                            ),
+                          ),
+                        ]
+                    ),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(login_user_name!,style: TextStyle(color: Colors.white),),
+                      // IconButton(onPressed: (){}, icon: Icon(Icons.settings),color: Colors.white,)
+                    ],
+                  ),
+
+                ],
               ),
             ),
             ListTile(

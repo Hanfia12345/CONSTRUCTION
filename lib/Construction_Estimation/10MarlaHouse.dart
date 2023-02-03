@@ -1,18 +1,17 @@
-// ignore_for_file: file_names, camel_case_types, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 
-class fiveMarlaHouse extends StatefulWidget {
-  const fiveMarlaHouse({Key? key}) : super(key: key);
+import '../GUI/CustomerScreens/HomePage.dart';
+
+class tenMarlaHouse extends StatefulWidget {
+  const tenMarlaHouse({Key? key}) : super(key: key);
 
   @override
-  State<fiveMarlaHouse> createState() => _fiveMarlaHouseState();
+  State<tenMarlaHouse> createState() => _tenMarlaHouseState();
 }
 
-class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
+class _tenMarlaHouseState extends State<tenMarlaHouse> {
   TextEditingController coveredarea = TextEditingController();
   TextEditingController wallLength = TextEditingController();
   TextEditingController wallHeight = TextEditingController();
@@ -67,29 +66,29 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
 
     //Foundation Material Requirements for 3 feet
 
-      //for 22.5" inch wall 1 feet height
-        var bricks_persqft_in_22_inch=bricks_sqft*2.5;
-        var cement_persqft_in_22_inch=cement_sqft*2.5;
-        var sand_persqft_in_22_inch=sand_sqft*2.5;
-        var total_bricks_in_22_inch=bricks_persqft_in_22_inch*int.parse(wallLength.text);
-        var total_cement_in_22_inch=cement_persqft_in_22_inch*int.parse(wallLength.text);
-        var total_sand_in_22_inch=sand_persqft_in_22_inch*int.parse(wallLength.text);
+    //for 22.5" inch wall 1 feet height
+    var bricks_persqft_in_22_inch=bricks_sqft*2.5;
+    var cement_persqft_in_22_inch=cement_sqft*2.5;
+    var sand_persqft_in_22_inch=sand_sqft*2.5;
+    var total_bricks_in_22_inch=bricks_persqft_in_22_inch*int.parse(wallLength.text);
+    var total_cement_in_22_inch=cement_persqft_in_22_inch*int.parse(wallLength.text);
+    var total_sand_in_22_inch=sand_persqft_in_22_inch*int.parse(wallLength.text);
 
-      //for 18" inch wall 1 feet height
-        var bricks_persqft_in_18_inch=bricks_sqft*2;
-        var cement_persqft_in_18_inch=cement_sqft*2;
-        var sand_persqft_in_18_inch = sand_sqft*2;
-        var total_bricks_in_18_inch=bricks_persqft_in_18_inch*int.parse(wallLength.text);
-        var total_cement_in_18_inch=cement_persqft_in_18_inch*int.parse(wallLength.text);
-        var total_sand_in_18_inch=sand_persqft_in_18_inch*int.parse(wallLength.text);
+    //for 18" inch wall 1 feet height
+    var bricks_persqft_in_18_inch=bricks_sqft*2;
+    var cement_persqft_in_18_inch=cement_sqft*2;
+    var sand_persqft_in_18_inch = sand_sqft*2;
+    var total_bricks_in_18_inch=bricks_persqft_in_18_inch*int.parse(wallLength.text);
+    var total_cement_in_18_inch=cement_persqft_in_18_inch*int.parse(wallLength.text);
+    var total_sand_in_18_inch=sand_persqft_in_18_inch*int.parse(wallLength.text);
 
-      //for 13.5" inch wall 1 feet height
-        var bricks_persqft_in_13_inch=bricks_sqft*1.5;
-        var cement_persqft_in_13_inch=cement_sqft*1.5;
-        var sand_persqft_in_13_inch=sand_sqft*1.5;
-        var total_sand_in_13_inch=sand_persqft_in_13_inch*int.parse(wallLength.text);
-        var total_bricks_in_13_inch=bricks_persqft_in_13_inch*int.parse(wallLength.text);
-        var total_cement_in_13_inch=cement_persqft_in_13_inch*int.parse(wallLength.text);
+    //for 13.5" inch wall 1 feet height
+    var bricks_persqft_in_13_inch=bricks_sqft*1.5;
+    var cement_persqft_in_13_inch=cement_sqft*1.5;
+    var sand_persqft_in_13_inch=sand_sqft*1.5;
+    var total_sand_in_13_inch=sand_persqft_in_13_inch*int.parse(wallLength.text);
+    var total_bricks_in_13_inch=bricks_persqft_in_13_inch*int.parse(wallLength.text);
+    var total_cement_in_13_inch=cement_persqft_in_13_inch*int.parse(wallLength.text);
     var total_bricks_in_foundation=total_bricks_in_22_inch+total_bricks_in_18_inch+total_bricks_in_13_inch;
     var total_cement_in_foundation=total_cement_in_22_inch+total_cement_in_18_inch+total_cement_in_13_inch;
     var total_sand_in_foundation=total_sand_in_22_inch+total_sand_in_18_inch+total_sand_in_13_inch;
@@ -100,11 +99,11 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
 
     var total_Steel_Required = total_steel_for_Roof.toStringAsFixed(2);
     var total_Sand_Required =
-        (totalsand_for_Roof + totalsand+total_sand_in_foundation).toStringAsFixed(2);
+    (totalsand_for_Roof + totalsand+total_sand_in_foundation).toStringAsFixed(2);
     var total_Crush_Required = total_crush_for_Roof.toStringAsFixed(2);
     var total_Bricks_Required = totalbricks+total_bricks_in_foundation;
     var total_Cement_Required =
-        (totalcement_for_Roof + totalcement+total_cement_in_foundation).toStringAsFixed(2);
+    (totalcement_for_Roof + totalcement+total_cement_in_foundation).toStringAsFixed(2);
     print(total_Bricks_Required);
     print(total_Sand_Required);
     print(total_Cement_Required);
@@ -138,7 +137,7 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
               height: 50.h,
               color: Colors.green,
               child: Center(
-                  child: Text('Gray Structure Cost - 5 Marla House',
+                  child: Text('Gray Structure Cost - 10 Marla House',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.sp,
@@ -250,12 +249,12 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
             child: ElevatedButton(
               onPressed: () {
                 int coveredArea = int.parse(coveredarea.text);
-                if (coveredArea < 1250 && coveredArea > 0) {
+                if (coveredArea < 2500 && coveredArea > 0) {
                   RequiredMatrialForHouse();
                   isvisible = !isvisible;
                   setState(() {});
-                } else if (coveredArea > 1250) {
-                  label = "Covered Aread Should be less than 1250";
+                } else if (coveredArea > 2500) {
+                  label = "Covered Aread Should be less than 2500";
                   setState(() {});
                 } else if (coveredArea < 0) {
                   label = "Covered Aread Should not be less than 0";
@@ -296,7 +295,7 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
                   Row(
                     children: [
                       Text(
-                        'Grey Structure 5 Marla House',
+                        'Grey Structure 10 Marla House',
                         style: TextStyle(
                             color: const Color.fromARGB(255, 255, 81, 0),
                             fontSize: 22.sp),

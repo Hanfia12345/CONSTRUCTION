@@ -38,7 +38,9 @@ class _loginState extends State<login> {
         var res = jsonDecode(response.body) as Map<String, dynamic>;
         var type = res['user_ctg'];
         var vid = res['id'].toString();
+        var name=res['name'].toString();
         login_user_id = vid;
+        login_user_name=name;
         //id = vid;
         //print(id);
 

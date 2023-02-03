@@ -169,18 +169,31 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                             child: ListView.builder(
                                 itemCount: OrderItems.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 0, 40, 0),
-                                    leading: Text(
-                                      ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22.sp),
-                                    ),
-                                    trailing: Text(
-                                      ItemsQty[index].toString(),
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22.sp),
+                                  return SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                ">${OrderItems[index].toString()} : ",style: TextStyle(
+                                                  color: Colors.white, fontSize: 22.sp),),
+                                              //SizedBox(width: 10.w,),
+                                              Text(
+                                                "${ItemsQty[index].toString()} ",style: TextStyle(
+                                                  color: Colors.white, fontSize: 22.sp),),
+
+
+                                            ],
+                                          ),
+
+                                          Text(
+                                            "${ItemsCtg[index].toString()} "
+                                            ,style: TextStyle(
+                                              color: Colors.white, fontSize: 16.sp),),
+                                          Divider(height: 2,color: Colors.white,)
+                                        ],),
                                     ),
                                   );
                                 }),
@@ -473,18 +486,31 @@ class _DeliveredOrderDetailsState extends State<DeliveredOrderDetails> {
                             child: ListView.builder(
                                 itemCount: OrderItems.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    contentPadding:
-                                    const EdgeInsets.fromLTRB(20, 0, 40, 0),
-                                    leading: Text(
-                                      ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22.sp),
-                                    ),
-                                    trailing: Text(
-                                      ItemsQty[index].toString(),
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22.sp),
+                                  return SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                ">${OrderItems[index].toString()} : ",style: TextStyle(
+                                                  color: Colors.white, fontSize: 22.sp),),
+                                              //SizedBox(width: 10.w,),
+                                              Text(
+                                                "${ItemsQty[index].toString()} ",style: TextStyle(
+                                                  color: Colors.white, fontSize: 22.sp),),
+
+
+                                            ],
+                                          ),
+
+                                          Text(
+                                            "${ItemsCtg[index].toString()} "
+                                            ,style: TextStyle(
+                                              color: Colors.white, fontSize: 16.sp),),
+                                          Divider(height: 2,color: Colors.white,)
+                                        ],),
                                     ),
                                   );
                                 }),

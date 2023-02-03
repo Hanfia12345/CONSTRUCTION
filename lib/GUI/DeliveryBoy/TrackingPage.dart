@@ -8,6 +8,8 @@ import 'package:the_builders/API/TransporterApi/LatLongForTracking.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+//import 'package:the_builders/GUI/globalApi.dart' as global;
 
 class TrackingPage extends StatefulWidget {
   const TrackingPage({Key? key}) : super(key: key);
@@ -20,7 +22,8 @@ class _TrackingPageState extends State<TrackingPage> {
   late GoogleMapController mapcontroller;
   Position? position;
 
-
+  LatLng? sourceLocation;
+  LatLng? destinationLocation;
 
   static const _initialCameraPosition =
       CameraPosition(target: LatLng(33.6431168, 73.0769498), zoom: 13.5);
@@ -48,6 +51,29 @@ class _TrackingPageState extends State<TrackingPage> {
     }
   }
 
+  List<LatLng> polylinesss=[];
+
+
+  void getroute()async{
+    //await latlngList;
+    //for (var i = 0; i < latlngList.length - 1; i++) {
+      //var j = i + 1;
+      //LatLng first = latlngList[i];
+      //LatLng second = latlngList[j];
+      //print("list = ${latlngList[i]}");
+      // PolylinePoints polylinePoints = PolylinePoints();
+      // PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyD5lSuZ29sF8t99w8nzNFCwSzW0HXFi1NE", const PointLatLng(33.64313507080078, 73.07691955566406), const PointLatLng(33.69390869140625, 72.97705841064453));
+      // print("Result of route = ${result.points.first}");
+     // for (var point in result.points) {
+      //  polylinesss.add(LatLng(point.latitude, point.longitude));
+      //}
+
+    //}
+//print("Result is = ${polylinesss}");
+//     setState(() {
+//
+//     });
+  }
   void reload() async {
     await Future.delayed(const Duration(milliseconds: 10));
     setState(() {});
@@ -55,13 +81,15 @@ class _TrackingPageState extends State<TrackingPage> {
 
 @override
   void initState() {
-   reload();
 
-
+   //reload();
+   //getroute();
+   // sourceLocation=latlngList.first;
+   // destinationLocation=latlngList.last;
     // TODO: implement initState
     super.initState();
     for(int i=0;i<latlngList.length;i++){
-      print(latlngList[i]);
+      //print(latlngList[i]);
       markers.add(Marker(markerId: MarkerId(i.toString()),
       position: latlngList[i],
       infoWindow: const InfoWindow(
@@ -75,8 +103,10 @@ class _TrackingPageState extends State<TrackingPage> {
       setState(() {
 
       });
-      polyLines.add(Polyline(polylineId: PolylineId('1'),
-          points: latlngList
+      getroute();
+      polyLines.add(Polyline(polylineId: const PolylineId('1'),
+          points: latlngList,
+          color: Colors.orangeAccent
       ),
       );
     }
@@ -153,6 +183,12 @@ class _TrackingPageState extends State<TrackingPage> {
                 initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller)=> mapcontroller = controller,
               polylines: polyLines,
+                // {
+                //   Polyline(
+                //       polylineId: PolylineId("route"),
+                //       points: polylinesss
+                //   )
+                // }
             ),
 
           ),

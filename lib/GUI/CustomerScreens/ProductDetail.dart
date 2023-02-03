@@ -19,6 +19,7 @@ import 'package:the_builders/API/CustomerApis/productDetails.dart'
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
 //import 'package:http/http.dart' as http;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 
 
@@ -251,7 +252,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     Container(
                       color: Colors.white,
-                      height: 120.h,
+                      height: 140.h,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,8 +267,21 @@ class _ProductDetailState extends State<ProductDetail> {
                                   fontSize: 28.sp),
                             ),
                           ),
+                          // Expanded(
+                          //   flex: 1,
+                          //   child: RatingBarIndicator(
+                          //     rating: 3.5,
+                          //     itemBuilder: (context, index) => Icon(
+                          //       Icons.star,
+                          //       color: Colors.amber,
+                          //     ),
+                          //     itemCount: 5,
+                          //     itemSize: 20.0,
+                          //     direction: Axis.horizontal,
+                          //   ),
+                          // ),
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               'Location ',
                               style: TextStyle(
