@@ -72,6 +72,7 @@ class _ProductDetailState extends State<ProductDetail> {
       backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
+        //123
         backgroundColor: const Color.fromARGB(255, 255, 81, 0),
         title: Text(
           'Product Details',
