@@ -71,7 +71,7 @@ class _TrackingPageState extends State<TrackingPage> {
       LatLng first = latlngList[i];
       LatLng second = latlngList[j];
       PolylinePoints polylinePoints = PolylinePoints();
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude),travelMode: TravelMode.driving);
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("your key", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude),travelMode: TravelMode.driving);
 
       for (var point in result.points) {
         polylinesss.add(LatLng(point.latitude, point.longitude));
@@ -85,7 +85,7 @@ class _TrackingPageState extends State<TrackingPage> {
     //   LatLng second = latlngList[j];
     //   //print("list = ${latlngList[i]}");
     //   PolylinePoints polylinePoints = PolylinePoints();
-    //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", const PointLatLng(33.64313507080078, 73.07691955566406), const PointLatLng(33.69390869140625, 72.97705841064453));
+    //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("your api key", const PointLatLng(33.64313507080078, 73.07691955566406), const PointLatLng(33.69390869140625, 72.97705841064453));
     //   print("Result of route = ${result.points.first}");
     //   for (var point in result.points) {
     //     polylinesss.add(LatLng(point.latitude, point.longitude));

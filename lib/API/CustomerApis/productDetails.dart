@@ -21,6 +21,7 @@ class ProductDetail {
     this.name,
     this.location,
     this.pCtg,
+   required this.stock,
   });
 
   String? pDesc;
@@ -30,6 +31,7 @@ class ProductDetail {
   String? name;
   String? location;
   String? pCtg;
+  int stock;
 
   factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
         pDesc: json["p_desc"],
@@ -39,6 +41,7 @@ class ProductDetail {
         location: json["location"],
         pCtg: json["p_ctg"],
         Pid: json["pid"],
+        stock:json["stock"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +52,7 @@ class ProductDetail {
         "location": location,
         "p_ctg":pCtg,
         "pid":Pid,
+        "stock":stock,
       };
 }
 

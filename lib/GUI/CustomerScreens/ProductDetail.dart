@@ -19,7 +19,7 @@ import 'package:the_builders/API/CustomerApis/productDetails.dart'
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
 //import 'package:http/http.dart' as http;
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+//import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 
 
@@ -31,11 +31,12 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  TextEditingController quantity =TextEditingController();
+  TextEditingController quantity =TextEditingController(text: "1");
   var pid = Get.arguments;
   late String pname;
   late String pimage;
   late int unitcost;
+  late int stock;
 
   Future<void> addtocart() async {
     var httprequest=GetConnect();
@@ -151,6 +152,8 @@ class _ProductDetailState extends State<ProductDetail> {
             pimage = snapshot.data![0].pImage!;
             pname = snapshot.data![0].pDesc!;
             unitcost = snapshot.data![0].unitcost!;
+            stock=snapshot.data![0].stock;
+            //print(stock);
             return Column(
               children: [
                 Expanded(
@@ -435,8 +438,21 @@ class _ProductDetailState extends State<ProductDetail> {
                   //print(i);
                   // }
                   //Get.to(const AddToCart(), arguments: CartItems);
-                  Get.off(const AddToCart());
-                  addtocart();
+                  int a =int.parse(quantity.text);
+                  print(a);
+                  if(a>stock){
+                    Get.defaultDialog(title: 'Cannot proceed' ,middleText: 'Out Of Stock' );
+                  }
+                  else if(a>0  && a<= stock){
+                    Get.off(const AddToCart());
+                    addtocart();
+                  }
+
+
+                   // Get.snackbar("", "message");
+
+
+
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
