@@ -5,12 +5,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:the_builders/API/TransporterApi/LatLongForTracking.dart';
 //import 'package:get/get.dart';
 import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+
+import '../../API/TransporterApi/OrderStatus.dart';
+import '../../API/TransporterApi/ShowOrdersForDeliveryBoy.dart';
 //import 'package:the_builders/GUI/globalApi.dart' as global;
 
 class TrackingPage extends StatefulWidget {
@@ -21,36 +25,37 @@ class TrackingPage extends StatefulWidget {
 }
 
 class _TrackingPageState extends State<TrackingPage> {
+  var oid=Get.arguments;
   late GoogleMapController mapcontroller;
   Position? position;
 
-  LatLng? sourceLocation;
-  LatLng? destinationLocation;
+ late double lat;
+  late double long;
+  //LatLng? destinationLocation;
 
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(33.6431168, 73.0769498), zoom: 13.5);
+      CameraPosition(target: LatLng(33.6431168, 73.0769498), zoom: 14);
 
     Set<Marker> markers={};
     Set<Polyline> polyLines={};
   late List<LatLng> latlonglist;
-
   Future<void> getCurrentLocation() async {
 
     var permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
-      position = await Geolocator.getCurrentPosition(
+        position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-
-      // lat = position?.latitude;
-      // long = position?.longitude;
-      // g.lat=lat;
-      // g.long=long;
-
-      // // setState(() {
-      // //
-      // // });
-
+          lat=position!.latitude;
+          long=position!.longitude;
+        mapcontroller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(lat, long),
+              zoom: 12.0,
+            ),
+          ),
+        );
     }
   }
 
@@ -58,21 +63,19 @@ class _TrackingPageState extends State<TrackingPage> {
 
 
   Future<void> getroute()async{
-    await latlngList;
+    latlngList;
 
 
-    for (var i = 0; i < latlngList.length; i++) {
-      print(latlngList[i].latitude);
-      print(latlngList[i].longitude);
+    for (var i = 0; i < latlngList.length-2; i++) {
       var j = i + 1;
       LatLng first = latlngList[i];
       LatLng second = latlngList[j];
-      print(first.longitude);
-      print(second.longitude);
       PolylinePoints polylinePoints = PolylinePoints();
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude));
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("AIzaSyDjzFHeTqGM_I05Nv15Tos-2vlmNV2pH5U", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude),travelMode: TravelMode.driving);
 
-      result.points.forEach((PointLatLng point) => polylinesss.add(LatLng(point.latitude, point.longitude)));
+      for (var point in result.points) {
+        polylinesss.add(LatLng(point.latitude, point.longitude));
+      }
     }
 
 
@@ -95,17 +98,16 @@ class _TrackingPageState extends State<TrackingPage> {
   void reload() async {
     await Future.delayed(const Duration(milliseconds: 50));
     setState(() {});
-  }  void timer()  {
-    Timer(Duration(seconds: 1), () {
+  }
+  void timer()  {
+    Timer(const Duration(seconds: 1), () {
       setState(() {});
-
-
     });
   }
 
 @override
   void initState() {
-
+  getCurrentLocation();
    //reload();
    //getroute();
    // sourceLocation=latlngList.first;
@@ -135,7 +137,7 @@ class _TrackingPageState extends State<TrackingPage> {
       }
 
 
-      //getroute();
+      getroute();
 
       // polyLines.add(Polyline(polylineId: const PolylineId('1'),
       //     points: latlngList,
@@ -226,8 +228,8 @@ class _TrackingPageState extends State<TrackingPage> {
             onMapCreated: (controller)=> mapcontroller = controller,
               polylines:{
                 Polyline(
-                    polylineId: PolylineId("route"),
-                    //points: polylinesss,
+                    polylineId: const PolylineId("route"),
+                    points: polylinesss,
                     color: Colors.red,
                     width: 4
                 )
@@ -236,111 +238,113 @@ class _TrackingPageState extends State<TrackingPage> {
             ),
 
           ),
+          FutureBuilder<List<OrderDetailsForDelivery>>(
+            future: ordersDetailsDeliveryBoy(int.parse(oid[0])),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+
+                return Column(
+                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        //print(vid[1]);
+
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 200.h,
+                                      //margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: const BoxDecoration(
+                                      color: Color.fromARGB(29, 255, 102, 0),
+                                      borderRadius: BorderRadius.all(
+                                      Radius.circular(15),
+                                      )),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+
+                                    Text(
+                                      'Name  :',
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 255, 81, 0),
+                                          fontSize: 22.sp,fontWeight: FontWeight.bold),
+                                    ),
+
+                                    Text(
+                                      snapshot.data![index].customername.toString(),
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 255, 81, 0),
+                                          fontSize: 22.sp,fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+
+                                    Text(
+                                      'Contact No :',
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 255, 81, 0),
+                                          fontSize: 22.sp,fontWeight: FontWeight.bold,),
+                                    ),
+
+                                    Text(
+                                      snapshot.data![index].customernumber.toString(),
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 255, 81, 0),
+                                          fontSize: 22.sp,fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+
+                                    Text(
+                                      'Delivery Address : ',
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(255, 255, 81, 0),
+                                          fontSize: 22.sp,fontWeight: FontWeight.bold),
+                                    ),
+
+                                    SizedBox(width: 155.w,
+                                      child: Text(
+                                        snapshot.data![index].customerAddress.toString(),
+                                        style: TextStyle(
+                                            color: const Color.fromARGB(255, 255, 81, 0),
+                                            fontSize: 20.sp,fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
 
 
-          Container(
-            //height: 220.h,
-              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(29, 255, 102, 0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  )),
-              child: Table(
-                children: [
-                  TableRow(children: [
-                    TableCell(
-                        child: Text(
-                          'Ordered By:',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        )),
-                    TableCell(
-                        child: Text(
-                          'Mr Ali.',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ))
-                  ]),
-                  TableRow(children: [
-                    TableCell(
-                        child: Text(
-                          'Product:',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        )),
-                    TableCell(
-                        child: Text(
-                          'Sand',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ))
-                  ]),
-                  TableRow(children: [
-                    TableCell(
-                        child: Text(
-                          'From:',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        )),
-                    TableCell(
-                        child: Text(
-                          'Saidpur Road rwp',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ))
-                  ]),
-                  TableRow(children: [
-                    TableCell(
-                        child: Text(
-                          'To:',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        )),
-                    TableCell(
-                        child: Text(
-                          'Sadiqabad rwp',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ))
-                  ]),
-                  TableRow(children: [
-                    TableCell(
-                        child: Text(
-                          'Contact:',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        )),
-                    TableCell(
-                        child: Text(
-                          '03037275402',
-                          style: TextStyle(
-                              fontSize: 22.sp,
-                              color: const Color.fromARGB(255, 255, 81, 0),
-                              fontWeight: FontWeight.bold),
-                        ))
-                  ]),
-                ],
-              )),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+
+
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             ElevatedButton(
               onPressed: () {},
@@ -356,12 +360,13 @@ class _TrackingPageState extends State<TrackingPage> {
                 style: TextStyle(
                   fontSize: 18.sp,
                   color: Colors.white,
-                  //fontWeight: FontWeight.bold
+
                 ),
               ),
             ),
             ElevatedButton(
               onPressed: () {
+                UpdateOrderStatus(int.parse(oid[0]),"Delivered");
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -391,3 +396,110 @@ class _TrackingPageState extends State<TrackingPage> {
     );
   }
 }
+
+
+
+
+// Container(
+// //height: 220.h,
+// margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+// padding: const EdgeInsets.all(10),
+// decoration: const BoxDecoration(
+// color: Color.fromARGB(29, 255, 102, 0),
+// borderRadius: BorderRadius.all(
+// Radius.circular(15),
+// )),
+// child: Table(
+// children: [
+// TableRow(children: [
+// TableCell(
+// child: Text(
+// 'Ordered By:',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// )),
+// TableCell(
+// child: Text(
+// 'Mr Ali.',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// ))
+// ]),
+// TableRow(children: [
+// TableCell(
+// child: Text(
+// 'Product:',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// )),
+// TableCell(
+// child: Text(
+// 'Sand',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// ))
+// ]),
+// TableRow(children: [
+// TableCell(
+// child: Text(
+// 'From:',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// )),
+// TableCell(
+// child: Text(
+// 'Saidpur Road rwp',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// ))
+// ]),
+// TableRow(children: [
+// TableCell(
+// child: Text(
+// 'To:',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// )),
+// TableCell(
+// child: Text(
+// 'Sadiqabad rwp',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// ))
+// ]),
+// TableRow(children: [
+// TableCell(
+// child: Text(
+// 'Contact:',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// )),
+// TableCell(
+// child: Text(
+// '03037275402',
+// style: TextStyle(
+// fontSize: 22.sp,
+// color: const Color.fromARGB(255, 255, 81, 0),
+// fontWeight: FontWeight.bold),
+// ))
+// ]),
+// ],
+// )),

@@ -236,7 +236,6 @@ class _CustomerHomeState extends State<CustomerHome> {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
                                 child: Text(
                                   snapshot.data![index].pDesc.toString(),
                                   style: TextStyle(
@@ -244,15 +243,18 @@ class _CustomerHomeState extends State<CustomerHome> {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
-                                child: Text(
-                                  snapshot.data![index].name.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 20.sp),
+
+                                child: SizedBox(width: double.infinity,
+                                  child: Text(
+                                    snapshot.data![index].name.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20.sp,overflow: TextOverflow.ellipsis),
+
+                                  ),
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
+                                //flex: 1,
                                 child: Row(
                                   children: [
                                     Text(

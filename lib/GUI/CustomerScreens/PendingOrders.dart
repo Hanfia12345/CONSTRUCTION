@@ -67,29 +67,32 @@ class _CustomerOrdersState extends State<CustomerOrders> {
               future: customerOrdersList(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                          contentPadding:
-                          EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
-                          leading: Text(snapshot.data![index].soid.toString(),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 22.sp)),
-                          trailing: TextButton(
-                            onPressed: () {
-                              Get.to(const CustomerOrderDetails(),
-                                  arguments: [snapshot.data![index].soid]);
-                            },
-                            child: Text('Show Details',
+                  return SizedBox(
+                    height: 650.h,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            contentPadding:
+                            EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
+                            leading: Text(snapshot.data![index].soid.toString(),
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22.sp,
-                                    decoration: TextDecoration.underline)),
-                          ));
-                    },
+                                    color: Colors.white, fontSize: 22.sp)),
+                            trailing: TextButton(
+                              onPressed: () {
+                                Get.to(const CustomerOrderDetails(),
+                                    arguments: [snapshot.data![index].soid]);
+                              },
+                              child: Text('Show Details',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22.sp,
+                                      decoration: TextDecoration.underline)),
+                            ));
+                      },
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
@@ -205,7 +208,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                           "${ItemsCtg[index].toString()} "
                                           ,style: TextStyle(
                                             color: Colors.white, fontSize: 16.sp),),
-                                        Divider(height: 2,color: Colors.white,)
+                                        const Divider(height: 2,color: Colors.white,)
                                       ],),
                                   ),
                                 );

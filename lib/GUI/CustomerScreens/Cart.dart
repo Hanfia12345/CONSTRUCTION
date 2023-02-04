@@ -579,6 +579,10 @@ var total=Get.arguments;
                   //     MaterialPageRoute(
                   //         builder: (context) => const OrderPlaced()));
                   PlaceOrder(login_user_id,vtype!);
+                  deliveryCharges=0;
+                  setState(() {
+
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(20),

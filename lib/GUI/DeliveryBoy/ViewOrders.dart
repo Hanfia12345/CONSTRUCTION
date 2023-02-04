@@ -13,6 +13,8 @@ import 'package:the_builders/GUI/DeliveryBoy/OrderDetails.dart';
 import 'package:the_builders/GUI/DeliveryBoy/TrackingPage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 
+import '../../API/TransporterApi/OrderStatus.dart';
+
 class ViewOrders extends StatefulWidget {
   const ViewOrders({Key? key}) : super(key: key);
 
@@ -156,13 +158,14 @@ class _ViewOrdersState extends State<ViewOrders> {
               future: ordersForDelivery(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return SingleChildScrollView(
-                        child: Container(
+                  return SizedBox(
+                    height: 625.h,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return Container(
                             padding: const EdgeInsets.all(10),
                             margin: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
@@ -204,7 +207,8 @@ class _ViewOrdersState extends State<ViewOrders> {
 
                                          await latlongforTracking(int.parse(snapshot.data![index].oid.toString()) );
                                           //print(llList.first.lat);
-                                          Get.to(const TrackingPage());
+                                         UpdateOrderStatus(snapshot.data![index].oid,"On The Way");
+                                          Get.to(const TrackingPage(),arguments: [snapshot.data![index].oid.toString()]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
@@ -231,9 +235,9 @@ class _ViewOrdersState extends State<ViewOrders> {
                                   ],
                                 )
                               ],
-                            )),
-                      );
-                    },
+                            ));
+                      },
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');

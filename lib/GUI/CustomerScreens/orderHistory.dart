@@ -63,29 +63,31 @@ class _OrderHistoryState extends State<OrderHistory> {
             future: historOrderList(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                        contentPadding:
-                        EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
-                        leading: Text(snapshot.data![index].soid.toString(),
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 22.sp)),
-                        trailing: TextButton(
-                          onPressed: () {
-                            Get.to(const HistoryOrderDetails(),
-                                arguments: [snapshot.data![index].soid]);
-                          },
-                          child: Text('Show Details',
+                return SizedBox(height: 650.h,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          contentPadding:
+                          EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
+                          leading: Text(snapshot.data![index].soid.toString(),
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22.sp,
-                                  decoration: TextDecoration.underline)),
-                        ));
-                  },
+                                  color: Colors.white, fontSize: 22.sp)),
+                          trailing: TextButton(
+                            onPressed: () {
+                              Get.to(const HistoryOrderDetails(),
+                                  arguments: [snapshot.data![index].soid]);
+                            },
+                            child: Text('Show Details',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22.sp,
+                                    decoration: TextDecoration.underline)),
+                          ));
+                    },
+                  ),
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
@@ -172,21 +174,34 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
                         ),
                         SizedBox(
                           height: 300.h,
-                          child: ListView.builder(
+                          child:  ListView.builder(
                               itemCount: OrderItems.length,
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  contentPadding:
-                                  const EdgeInsets.fromLTRB(20, 0, 40, 0),
-                                  leading: Text(
-                                    ">${OrderItems[index].toString()} : ${ItemsCtg[index].toString()}",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 22.sp),
-                                  ),
-                                  trailing: Text(
-                                    ItemsQty[index].toString(),
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 22.sp),
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              ">${OrderItems[index].toString()} : ",style: TextStyle(
+                                                color: Colors.white, fontSize: 22.sp),),
+                                            //SizedBox(width: 10.w,),
+                                            Text(
+                                              "${ItemsQty[index].toString()} ",style: TextStyle(
+                                                color: Colors.white, fontSize: 22.sp),),
+
+
+                                          ],
+                                        ),
+
+                                        Text(
+                                          "${ItemsCtg[index].toString()} "
+                                          ,style: TextStyle(
+                                            color: Colors.white, fontSize: 16.sp),),
+                                        const Divider(height: 2,color: Colors.white,)
+                                      ],),
                                   ),
                                 );
                               }),
@@ -243,13 +258,14 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
                                     SizedBox(
                                       width: 20.w,
                                     ),
-                                    Text(
-                                      overflow:TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      snapshot.data![index].name.toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                    SizedBox(width: 218.w,
+                                      child: Text(
+
+                                        snapshot.data![index].name.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
                                     ),
                                   ],
                                 ),

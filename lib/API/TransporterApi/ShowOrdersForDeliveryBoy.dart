@@ -63,6 +63,7 @@ class OrderDetailsForDelivery {
     required this.customerlat,
     required this.customerlong,
     required this.customerAddress,
+    required this.customernumber,
     required this.vendorid,
     required this.productid,
     required this.productname,
@@ -78,6 +79,7 @@ class OrderDetailsForDelivery {
   double customerlat;
   double customerlong;
   String customerAddress;
+  String customernumber;
   int vendorid;
   int productid;
   String productname;
@@ -93,6 +95,7 @@ class OrderDetailsForDelivery {
     customerlat: json["customerlat"]?.toDouble(),
     customerlong: json["customerlong"]?.toDouble(),
     customerAddress:json["customerAddress"],
+    customernumber:json["customernumber"],
     vendorid: json["vendorid"],
     productid: json["productid"],
     productname:json["productname"],
@@ -109,6 +112,7 @@ class OrderDetailsForDelivery {
     "customerlat": customerlat,
     "customerlong": customerlong,
     "customerAddress": customerAddress,
+    "customernumber":customernumber,
     "vendorid": vendorid,
     "productid": productid,
     "productname":productname,
