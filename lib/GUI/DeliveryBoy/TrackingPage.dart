@@ -37,8 +37,8 @@ class _TrackingPageState extends State<TrackingPage> {
       CameraPosition(target: LatLng(33.6431168, 73.0769498), zoom: 14);
 
     Set<Marker> markers={};
-    Set<Polyline> polyLines={};
-  late List<LatLng> latlonglist;
+    //Set<Polyline> polyLines={};
+  //late List<LatLng> latlonglist;
   Future<void> getCurrentLocation() async {
 
     var permission = await Geolocator.requestPermission();
@@ -59,19 +59,27 @@ class _TrackingPageState extends State<TrackingPage> {
     }
   }
 
+
+  // List<LatLng> latlngListtt = [
+  //   LatLng(37.4219999,-122.0840575),
+  //   LatLng(37.4629101,-122.2449094),
+  //   LatLng(37.3092293,-122.1136845),
+  //   LatLng(37.33233141,-122.0312186),
+  // ];
+
   List<LatLng> polylinesss=[];
 
 
   Future<void> getroute()async{
-    latlngList;
+    //latlngList;
 
 
-    for (var i = 0; i < latlngList.length-2; i++) {
+    for (var i = 0; i < latlngList.length-1; i++) {
       var j = i + 1;
       LatLng first = latlngList[i];
       LatLng second = latlngList[j];
       PolylinePoints polylinePoints = PolylinePoints();
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("your key", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude, second.longitude),travelMode: TravelMode.driving);
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates("Your Api Key", PointLatLng(first.latitude, first.longitude), PointLatLng(second.latitude,second.longitude),travelMode: TravelMode.driving);
 
       for (var point in result.points) {
         polylinesss.add(LatLng(point.latitude, point.longitude));
@@ -109,7 +117,8 @@ class _TrackingPageState extends State<TrackingPage> {
   void initState() {
   getCurrentLocation();
    //reload();
-   //getroute();
+
+  //getroute();
    // sourceLocation=latlngList.first;
    // destinationLocation=latlngList.last;
     // TODO: implement initState
@@ -137,7 +146,7 @@ class _TrackingPageState extends State<TrackingPage> {
       }
 
 
-      getroute();
+
 
       // polyLines.add(Polyline(polylineId: const PolylineId('1'),
       //     points: latlngList,
@@ -145,6 +154,7 @@ class _TrackingPageState extends State<TrackingPage> {
       // ),
       // );
     }
+  getroute();
     timer();
     // markers.add(Marker(markerId: MarkerId('customer location'),
     //   position: latlonglist.last,

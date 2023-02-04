@@ -41,11 +41,12 @@ class _ProductDetailState extends State<ProductDetail> {
   Future<void> addtocart() async {
     var httprequest=GetConnect();
     var response =
-        await httprequest.post("${global.url}/addCartItem?pid=${Customer_product_id.toString()}&p_desc=$pname&p_image=$pimage&cid=${login_user_id.toString()}&unitprice=${unitcost.toString()}&vid=${Vendor_product_id_in_customer.toString()}&qty=${quantity.text}",{});
+        await httprequest.post("${global.url}/addCartItem?pid=${int.parse(Customer_product_id!)}&p_desc=$pname&p_image=$pimage&cid=${int.parse(login_user_id!)}&unitprice=${unitcost.toString()}&vid=${Vendor_product_id_in_customer.toString()}&qty=${quantity.text}",{});
     if (response.statusCode == 200) {
-      Get.snackbar("Message", "Product  added");
+      Get.snackbar("Message", response.body);
     } else {
-      Get.snackbar("Message", "Product not added");
+      print(response.statusCode);
+      Get.snackbar("Message", response.body);
     }
   }
 
