@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:the_builders/API/TransporterApi/VehicleDetailss.dart';
 import 'package:the_builders/Global/global.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+
 class VehicleDetails extends StatefulWidget {
   const VehicleDetails({Key? key}) : super(key: key);
 
@@ -10,6 +13,32 @@ class VehicleDetails extends StatefulWidget {
 }
 
 class _VehicleDetailsState extends State<VehicleDetails> {
+
+  bool check=true;
+
+  Future<List<VehicleDetail>> vehicledetail(int dbid)async{
+    var httprequest =GetConnect();
+    var response= await httprequest.get("${global.url}/VehicleDetail?dbid=$dbid");
+    var res=vehicleDetailFromJson(response.bodyString!);
+    if(res.isEmpty){
+      check=false;
+    };
+    setState(() {
+
+    });
+    return res;
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +51,7 @@ class _VehicleDetailsState extends State<VehicleDetails> {
             style: TextStyle(color: Colors.white, fontSize: 38.sp),
           ),
         ),
-        body: Center(
+        body: check ? Center(
           child: FutureBuilder<List<VehicleDetail>>(
             future: vehicledetail(int.parse(login_user_id!)),
             builder: (context, snapshot) {
@@ -163,6 +192,6 @@ class _VehicleDetailsState extends State<VehicleDetails> {
               return const Center(child: CircularProgressIndicator());
             },
           ),
-        ));
+        ): const Center(child: Text("No Vehicle Added")));
   }
 }

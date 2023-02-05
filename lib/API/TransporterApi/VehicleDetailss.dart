@@ -1,7 +1,5 @@
 
 import 'dart:convert';
-import 'package:the_builders/GUI/globalApi.dart' as global;
-import 'package:get/get.dart';
 
 List<VehicleDetail> vehicleDetailFromJson(String str) => List<VehicleDetail>.from(json.decode(str).map((x) => VehicleDetail.fromJson(x)));
 
@@ -43,9 +41,3 @@ class VehicleDetail {
   };
 }
 
-Future<List<VehicleDetail>> vehicledetail(int dbid)async{
-  var httprequest =GetConnect();
-  var response= await httprequest.get("${global.url}/VehicleDetail?dbid=$dbid");
-  var res=vehicleDetailFromJson(response.bodyString!);
-  return res;
-}

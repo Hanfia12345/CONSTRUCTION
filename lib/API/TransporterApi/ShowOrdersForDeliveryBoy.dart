@@ -30,16 +30,20 @@ class OrdersForDelivery {
 }
 
 
+
+
 Future<List<OrdersForDelivery>> ordersForDelivery() async {
   var httprequest = GetConnect();
-  print(login_user_id);
   var response =
   await httprequest.get("${global.url}/ShowOrdersIdToDeliveryBoy?dbid=${int.parse(login_user_id!)}");
   if (response.statusCode == 200) {
     var res = ordersForDeliveryFromJson(response.bodyString!);
-    print(response.bodyString);
     return res;
-  } else {
+  }
+  else if (response.statusCode == 404) {
+    throw Exception('Please Add Your Vehicle');
+  }
+  else {
     throw Exception('Failed to load data');
   }
 }
@@ -128,10 +132,8 @@ class OrderDetailsForDelivery {
 
 List<LatLongListForDistance> latlongfordeliveryboy=[];
 
-
 Future<List<OrderDetailsForDelivery>> ordersDetailsDeliveryBoy(int oid) async {
   var httprequest = GetConnect();
-  print(login_user_id);
   var response =
   await httprequest.get("${global.url}/ShowOrderDetailsToDeliveryBoy?oid=$oid");
   if (response.statusCode == 200) {
@@ -143,10 +145,7 @@ Future<List<OrderDetailsForDelivery>> ordersDetailsDeliveryBoy(int oid) async {
     }
 
     latlongfordeliveryboy.forEach((element) {
-      print(element.lat);
-      print(element.long);
     });
-    print(latlongfordeliveryboy);
     //latlongfordeliveryboy.add(LatLongListForDistance(lat: double.parse(res['lat']), long: res['lat'],distance: 0 ));
     return res;
   } else {

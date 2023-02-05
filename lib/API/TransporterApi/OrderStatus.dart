@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
-void UpdateOrderStatus(int oid,String status) async {
+void UpdateOrderStatus(int uid,String tstatus,int oid,String status) async {
 
   var httprequest = GetConnect();
   var response = await httprequest.post(
-      "${global.url}/updateOrderStatusFromDeliverySide?oid=$oid&status=$status",{}
+      "${global.url}/updateOrderStatusFromDeliverySide?userid=$uid&tstatus=$tstatus&oid=$oid&status=$status",{}
   );
 
   if (response.statusCode == 200) {

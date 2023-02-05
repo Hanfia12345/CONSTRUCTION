@@ -12,7 +12,7 @@ import 'package:the_builders/GUI/DeliveryBoy/HomePage.dart';
 import 'package:the_builders/GUI/DeliveryBoy/OrderDetails.dart';
 import 'package:the_builders/GUI/DeliveryBoy/TrackingPage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
-
+import 'package:the_builders/Global/global.dart';
 import '../../API/TransporterApi/OrderStatus.dart';
 
 class ViewOrders extends StatefulWidget {
@@ -207,7 +207,7 @@ class _ViewOrdersState extends State<ViewOrders> {
 
                                          await latlongforTracking(int.parse(snapshot.data![index].oid.toString()) );
                                           //print(llList.first.lat);
-                                         UpdateOrderStatus(snapshot.data![index].oid,"On The Way");
+                                         UpdateOrderStatus(int.parse(login_user_id!),"Not Available",snapshot.data![index].oid,"On The Way");
                                           Get.to(const TrackingPage(),arguments: [snapshot.data![index].oid.toString()]);
                                         },
                                         style: ElevatedButton.styleFrom(
