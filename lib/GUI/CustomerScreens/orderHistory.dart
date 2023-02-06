@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +20,7 @@ class _OrderHistoryState extends State<OrderHistory> {
 
   Future<List<orddetails.Orders>> historOrderList() async {
     var response = await http.get(Uri.parse(
-      "${global.url}/ShowDeliveredOrdersAgainstCustomer?cid=$login_user_id",
+      "${global.url}/ShowDeliveredOrdersIdAgainstCustomer?cid=$login_user_id",
     ));
     if (response.statusCode == 200) {
       List res = jsonDecode(response.body);
@@ -72,13 +74,13 @@ class _OrderHistoryState extends State<OrderHistory> {
                       return ListTile(
                           contentPadding:
                           EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
-                          leading: Text(snapshot.data![index].soid.toString(),
+                          leading: Text(snapshot.data![index].oid.toString(),
                               style: TextStyle(
                                   color: Colors.white, fontSize: 22.sp)),
                           trailing: TextButton(
                             onPressed: () {
                               Get.to(const HistoryOrderDetails(),
-                                  arguments: [snapshot.data![index].soid]);
+                                  arguments: [snapshot.data![index].oid]);
                             },
                             child: Text('Show Details',
                                 style: TextStyle(
@@ -134,27 +136,27 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
               SizedBox(
                 height: 20.h,
               ),
-              FutureBuilder<List<orddetails.CustomerOrderDetails>>(
-                future: orddetails.getOrdersDetail(vid[0]),
+              FutureBuilder<List<orddetails.CustomerOrderDetail>>(
+                future: orddetails.getOrdersDetails(vid[0]),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List<orddetails.CustomerOrderDetails> Order =
-                    snapshot.data as List<orddetails.CustomerOrderDetails>;
+                    List<orddetails.CustomerOrderDetail> Order =
+                    snapshot.data as List<orddetails.CustomerOrderDetail>;
                     if (OrderItems.isEmpty) {
                       for (var i in Order) {
-                        OrderItems.add(i.pDesc);
+                        OrderItems.add(i.productname);
                         //OrderItems.add(i.pQty);
                       }
                     }
                     if (ItemsQty.isEmpty) {
                       for (var i in Order) {
-                        ItemsQty.add(i.pQty);
+                        ItemsQty.add(i.pqty);
                         //OrderItems.add(i.pQty);
                       }
                     }
                     if (ItemsCtg.isEmpty) {
                       for (var i in Order) {
-                        ItemsCtg.add(i.pCtg);
+                        ItemsCtg.add(i.productctg);
                         //OrderItems.add(i.pQty);
                       }
                     }
@@ -261,7 +263,7 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
                                     SizedBox(width: 218.w,
                                       child: Text(
 
-                                        snapshot.data![index].name.toString(),
+                                        snapshot.data![index].vendorname.toString(),
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 22.sp),
@@ -289,7 +291,7 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
                                     SizedBox(
                                       width: 190.w,
                                       child: Text(
-                                        "${snapshot.data![index].oDate.day.toString()}/${snapshot.data![index].oDate.month.toString()}/${snapshot.data![index].oDate.year.toString()}",
+                                        "${snapshot.data![index].orderdate?.day.toString()}/${snapshot.data![index].orderdate?.month.toString()}/${snapshot.data![index].orderdate?.year.toString()}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 22.sp),
@@ -317,7 +319,7 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
 
                                     Text(overflow:TextOverflow.fade,
 
-                                      "${snapshot.data![index].deliveryTime.day.toString()}/${snapshot.data![index].deliveryTime.month.toString()}/${snapshot.data![index].deliveryTime.year.toString()}",
+                                      "${snapshot.data![index].deliverytime?.day.toString()}/${snapshot.data![index].deliverytime?.month.toString()}/${snapshot.data![index].deliverytime?.year.toString()}",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 22.sp),
@@ -342,7 +344,7 @@ class _HistoryOrderDetailsState extends State<HistoryOrderDetails> {
                                       width: 25.w,
                                     ),
                                     Text(
-                                      snapshot.data![index].status.toString(),
+                                      snapshot.data![index].orderstatus.toString(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 22.sp),

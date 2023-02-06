@@ -14,6 +14,8 @@ import 'package:the_builders/GUI/DeliveryBoy/TrackingPage.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:the_builders/Global/global.dart';
 import '../../API/TransporterApi/OrderStatus.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+
 
 class ViewOrders extends StatefulWidget {
   const ViewOrders({Key? key}) : super(key: key);
@@ -24,6 +26,17 @@ class ViewOrders extends StatefulWidget {
 
 class _ViewOrdersState extends State<ViewOrders> {
   late var Toaddress;
+
+  void saveLocationForTracking(int oid, double lat,double long)async{
+    var httprequest = GetConnect();
+    var response=await httprequest.post("${global.url}/addDeliveryBoyLiveLocation?lat=$lat&lng=$long&oid=$oid", {});
+    if(response.statusCode==200){
+      print(response.body);
+    }else{
+      print(response.body);
+    }
+  }
+
 
   toAddress(double clat, double clong) async {
     List<Placemark> placemarks = await placemarkFromCoordinates(clat, clong);
@@ -208,7 +221,8 @@ class _ViewOrdersState extends State<ViewOrders> {
                                          await latlongforTracking(int.parse(snapshot.data![index].oid.toString()) );
                                           //print(llList.first.lat);
                                          UpdateOrderStatus(int.parse(login_user_id!),"Not Available",snapshot.data![index].oid,"On The Way");
-                                          Get.to(const TrackingPage(),arguments: [snapshot.data![index].oid.toString()]);
+                                         saveLocationForTracking(snapshot.data![index].oid,lat!,long!);
+                                         Get.to(const TrackingPage(),arguments: [snapshot.data![index].oid.toString()]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(

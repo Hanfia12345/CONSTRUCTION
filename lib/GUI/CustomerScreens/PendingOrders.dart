@@ -7,7 +7,6 @@ import 'package:the_builders/GUI/globalApi.dart' as global;
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/API/CustomerApis/OrderDetails.dart' as orddetails;
 
-
 class CustomerOrders extends StatefulWidget {
   const CustomerOrders({Key? key}) : super(key: key);
 
@@ -16,10 +15,9 @@ class CustomerOrders extends StatefulWidget {
 }
 
 class _CustomerOrdersState extends State<CustomerOrders> {
-
   Future<List<orddetails.Orders>> customerOrdersList() async {
     var response = await http.get(Uri.parse(
-      "${global.url}/ShowOrdersAgainstCustomer?cid=$login_user_id",
+      "${global.url}/ShowOrdersIdAgainstCustomer?cid=$login_user_id",
     ));
     //print(response.statusCode);
     if (response.statusCode == 200) {
@@ -29,81 +27,79 @@ class _CustomerOrdersState extends State<CustomerOrders> {
       throw Exception('Failed to load data');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey,
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 255, 81, 0),
-          title: Text(
-            'Orders',
-            style: TextStyle(color: Colors.white, fontSize: 38.sp),
+      backgroundColor: Colors.grey,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+        title: Text(
+          'Orders',
+          style: TextStyle(color: Colors.white, fontSize: 38.sp),
+        ),
+      ),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 150.h,
+            child: Center(
+                child: Text('Pending',
+                    style: TextStyle(color: Colors.white, fontSize: 38.sp))),
           ),
-
-        ),
-
-        body: ListView(
-          children: [
-            SizedBox(
-              height: 150.h,
-              child: Center(
-                  child: Text('Pending',
-                      style: TextStyle(color: Colors.white, fontSize: 38.sp))),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 50.w,
-                ),
-                Text('Order Id ',
-                    style: TextStyle(color: Colors.white, fontSize: 22.sp)),
-              ],
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            FutureBuilder<List<orddetails.Orders>>(
-              future: customerOrdersList(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SizedBox(
-                    height: 650.h,
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                            contentPadding:
-                            EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
-                            leading: Text(snapshot.data![index].soid.toString(),
+          Row(
+            children: [
+              SizedBox(
+                width: 50.w,
+              ),
+              Text('Order Id ',
+                  style: TextStyle(color: Colors.white, fontSize: 22.sp)),
+            ],
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          FutureBuilder<List<orddetails.Orders>>(
+            future: customerOrdersList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SizedBox(
+                  height: 650.h,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(70.w, 0.h, 30.w, 0.h),
+                          leading: Text(snapshot.data![index].oid.toString(),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 22.sp)),
+                          trailing: TextButton(
+                            onPressed: () {
+                              Get.to(const CustomerOrderDetails(),
+                                  arguments: [snapshot.data![index].oid]);
+                            },
+                            child: Text('Show Details',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 22.sp)),
-                            trailing: TextButton(
-                              onPressed: () {
-                                Get.to(const CustomerOrderDetails(),
-                                    arguments: [snapshot.data![index].soid]);
-                              },
-                              child: Text('Show Details',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22.sp,
-                                      decoration: TextDecoration.underline)),
-                            ));
-                      },
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              },
-            ),
-
-          ],
-        ),
-      );
+                                    color: Colors.white,
+                                    fontSize: 22.sp,
+                                    decoration: TextDecoration.underline)),
+                          ));
+                    },
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -120,8 +116,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
   List<dynamic> OrderItems = List.empty(growable: true);
   List<dynamic> ItemsQty = List.empty(growable: true);
   List<dynamic> ItemsCtg = List.empty(growable: true);
-
-
+  List<dynamic> VendorName = List.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
@@ -142,27 +137,33 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
               SizedBox(
                 height: 20.h,
               ),
-              FutureBuilder<List<orddetails.CustomerOrderDetails>>(
-                future: orddetails.getOrdersDetail(vid[0]),
+              FutureBuilder<List<orddetails.CustomerOrderDetail>>(
+                future: orddetails.getOrdersDetails(vid[0]),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List<orddetails.CustomerOrderDetails> Order =
-                    snapshot.data as List<orddetails.CustomerOrderDetails>;
+                    List<orddetails.CustomerOrderDetail> Order =
+                        snapshot.data as List<orddetails.CustomerOrderDetail>;
                     if (OrderItems.isEmpty) {
                       for (var i in Order) {
-                        OrderItems.add(i.pDesc);
+                        OrderItems.add(i.productname);
                         //OrderItems.add(i.pQty);
                       }
                     }
                     if (ItemsQty.isEmpty) {
                       for (var i in Order) {
-                        ItemsQty.add(i.pQty);
+                        ItemsQty.add(i.pqty);
                         //OrderItems.add(i.pQty);
                       }
                     }
                     if (ItemsCtg.isEmpty) {
                       for (var i in Order) {
-                        ItemsCtg.add(i.pCtg);
+                        ItemsCtg.add(i.productctg);
+                        //OrderItems.add(i.pQty);
+                      }
+                    }
+                    if (VendorName.isEmpty) {
+                      for (var i in Order) {
+                        VendorName.add(i.vendorname);
                         //OrderItems.add(i.pQty);
                       }
                     }
@@ -172,52 +173,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Ordered Items & Quantity',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 25.sp)),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SizedBox(
-                          height: 300.h,
-                          child: ListView.builder(
-                              itemCount: OrderItems.length,
-                              itemBuilder: (context, index) {
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              ">${OrderItems[index].toString()} : ",style: TextStyle(
-                                                color: Colors.white, fontSize: 22.sp),),
-                                            //SizedBox(width: 10.w,),
-                                            Text(
-                                              "${ItemsQty[index].toString()} ",style: TextStyle(
-                                                color: Colors.white, fontSize: 22.sp),),
 
-
-                                          ],
-                                        ),
-
-                                        Text(
-                                          "${ItemsCtg[index].toString()} "
-                                          ,style: TextStyle(
-                                            color: Colors.white, fontSize: 16.sp),),
-                                        const Divider(height: 2,color: Colors.white,)
-                                      ],),
-                                  ),
-                                );
-                              }),
-                        ),
-                        const Divider(
-                          height: 3,
-                          color: Colors.white,
-                        ),
                         ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -235,8 +191,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     Text(
                                       'Order Id :',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                     SizedBox(
                                       width: 75.w,
@@ -244,40 +199,48 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     Text(
                                       vid[0].toString(),
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 25.w,
-                                    ),
-                                    Text(
-                                      'Seller Name :',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
-                                    ),
-                                    SizedBox(
-                                      width: 20.w,
-                                    ),
-                                    SizedBox(
-                                      width: 218.w,
-                                      child: Text(
-                                       //overflow:TextOverflow.ellipsis,
-                                       // maxLines: 1,
-                                        snapshot.data![index].name.toString(),
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22.sp),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: 80.h,
+                                  child: ListView.builder(
+                                    itemCount: VendorName.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      return Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 25.w,
+                                          ),
+                                          Text(
+                                            'Seller Name :',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 22.sp),
+                                          ),
+                                          SizedBox(
+                                            width: 20.w,
+                                          ),
+                                          SizedBox(
+                                            width: 218.w,
+                                            child: Text(
+                                              //overflow:TextOverflow.ellipsis,
+                                              // maxLines: 1,
+                                              snapshot.data![index].vendorname
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22.sp),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 10.h,
@@ -290,8 +253,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     Text(
                                       'Order Date :',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                     SizedBox(
                                       width: 30.w,
@@ -299,7 +261,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     SizedBox(
                                       width: 190.w,
                                       child: Text(
-                                        "${snapshot.data![index].oDate.day.toString()}/${snapshot.data![index].oDate.month.toString()}/${snapshot.data![index].oDate.year.toString()}",
+                                        "${snapshot.data![index].orderdate.day.toString()}/${snapshot.data![index].orderdate.month.toString()}/${snapshot.data![index].orderdate.year.toString()}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 22.sp),
@@ -318,19 +280,16 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     Text(
                                       'Expected Delivery Time :',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                     SizedBox(
                                       width: 22.w,
                                     ),
-
-                                    Text(overflow:TextOverflow.fade,
-
-                                      "${snapshot.data![index].deliveryTime.day.toString()}/${snapshot.data![index].deliveryTime.month.toString()}/${snapshot.data![index].deliveryTime.year.toString()}",
+                                    Text(
+                                      overflow: TextOverflow.fade,
+                                      "${snapshot.data![index].deliverytime.day.toString()}/${snapshot.data![index].deliverytime.month.toString()}/${snapshot.data![index].deliverytime.year.toString()}",
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                   ],
                                 ),
@@ -345,23 +304,82 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                     Text(
                                       'Order Status :',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                     SizedBox(
                                       width: 25.w,
                                     ),
                                     Text(
-                                      snapshot.data![index].status.toString(),
+                                      snapshot.data![index].orderstatus
+                                          .toString(),
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22.sp),
+                                          color: Colors.white, fontSize: 22.sp),
                                     ),
                                   ],
                                 ),
                               ],
                             );
                           },
+                        ),
+                        const Divider(
+                          height: 3,
+                          color: Colors.white,
+                        ),
+
+                        Center(
+                          child: Text(' Ordered Items & Quantity',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 25.sp)),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        SizedBox(
+                          height: 300.h,
+                          child: ListView.builder(
+                              itemCount: OrderItems.length,
+                              itemBuilder: (context, index) {
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              ">${OrderItems[index].toString()} : ",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22.sp),
+                                            ),
+//SizedBox(width: 10.w,),
+                                            Text(
+                                              "${ItemsQty[index].toString()} ",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22.sp),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          "${ItemsCtg[index].toString()} ",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.sp),
+                                        ),
+                                        const Divider(
+                                          height: 2,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
                       ],
                     );
@@ -376,3 +394,6 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
         ));
   }
 }
+
+
+

@@ -23,21 +23,12 @@ class _VehicleDetailsState extends State<VehicleDetails> {
     if(res.isEmpty){
       check=false;
     };
+
     setState(() {
-
     });
+
     return res;
-
   }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
