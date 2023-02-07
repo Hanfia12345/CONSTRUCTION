@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -112,12 +113,48 @@ class CustomerOrderDetails extends StatefulWidget {
 
 class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
   var vid = Get.arguments;
+  bool deliveryboy=false;
+  //bool rating=false;
+  //var status;
 
   List<dynamic> OrderItems = List.empty(growable: true);
   List<dynamic> ItemsQty = List.empty(growable: true);
   List<dynamic> ItemsCtg = List.empty(growable: true);
   List<dynamic> VendorName = List.empty(growable: true);
 
+  // void getOrdersDetails() async {
+  //   var httprequest = GetConnect();
+  //   var response =
+  //   await httprequest.get("${global.url}/CustomersOrderdetails?oid=${vid[0]}");
+  //   if (response.statusCode == 200) {
+  //     var stts=jsonDecode(response.bodyString!);
+  //     Map<String,dynamic> sttts=stts[0];
+  //     var orderstatus=sttts['orderstatus'];
+  //     if(orderstatus=="On The Way"){
+  //       deliveryboy=true;
+  //       }
+  //     if(orderstatus=="Delivered"){
+  //       rating=true;
+  //     }
+  //
+  //
+  //   }
+  // }
+  // void startTimer() {
+  //   Timer.periodic(const Duration(minutes: 1), (timer) {
+  //    setState(() {
+  //      getOrdersDetails();
+  //    });
+  //   });
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+   // startTimer();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +177,9 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
               FutureBuilder<List<orddetails.CustomerOrderDetail>>(
                 future: orddetails.getOrdersDetails(vid[0]),
                 builder: (context, snapshot) {
+
                   if (snapshot.hasData) {
+
                     List<orddetails.CustomerOrderDetail> Order =
                         snapshot.data as List<orddetails.CustomerOrderDetail>;
                     if (OrderItems.isEmpty) {
@@ -175,12 +214,14 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                       children: [
 
                         ListView.builder(
+
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           itemCount: 1,
                           itemBuilder: (context, index) {
                             //print(vid[1]);
-
+                           // status=snapshot.data![index].orderstatus
+                               // .toString();
                             return Column(
                               children: [
                                 Row(
@@ -318,6 +359,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                                   ],
                                 ),
                               ],
+
                             );
                           },
                         ),
@@ -389,6 +431,39 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                   return const CircularProgressIndicator();
                 },
               ),
+
+              Visibility(visible: deliveryboy,
+                child: Column(children: [
+                  Text("Name    :"),
+                  Text("Vehicle :")
+                ],),
+              ),
+              Visibility(
+                //visible: rating,
+                child: Column(children: [
+                  //Text("Rate this Order:"),
+                 // Text("Status : $status"),
+
+                // RatingBar.builder(
+                //   initialRating: 3,
+                //   minRating: 1,
+                //   direction: Axis.horizontal,
+                //   allowHalfRating: true,
+                //   itemCount: 5,
+                //   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                //   itemBuilder: (context, _) => Icon(
+                //     Icons.star,
+                //     color: Colors.amber,
+                //   ),
+                //   onRatingUpdate: (rating) {
+                //     print(rating);
+                //   },
+                // ),
+
+                ],),
+              ),
+
+
             ],
           ),
         ));

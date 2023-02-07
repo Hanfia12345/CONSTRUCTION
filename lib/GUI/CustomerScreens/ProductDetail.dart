@@ -3,23 +3,23 @@
 //import 'dart:html';
 //import 'dart:io';
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-//import 'package:the_builders/GUI/CustomerScreens/AllProduct.dart';
 import 'package:the_builders/GUI/CustomerScreens/Cart.dart';
 import 'package:the_builders/GUI/CustomerScreens/Construct.dart';
 import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
-import 'package:the_builders/GUI/CustomerScreens/addAddress.dart';
 import 'package:the_builders/GUI/loginpages.dart';
 import 'package:the_builders/API/CustomerApis/productDetails.dart'
     as CustomerApi;
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
-//import 'package:http/http.dart' as http;
-//import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 
 
 
@@ -37,7 +37,7 @@ class _ProductDetailState extends State<ProductDetail> {
   late String pimage;
   late int unitcost;
   late int stock;
-
+ // var ratingss=3.0;
   Future<void> addtocart() async {
     var httprequest=GetConnect();
     var response =
@@ -50,12 +50,33 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
+//   void avgRating() async {
+//     var request=GetConnect();
+//     var response = await request.get(
+//       "${global.url}/averageRating?vid=$Vendor_product_id_in_customer",
+//     );
+//    var rat=jsonDecode(response.bodyString!);
+//    //print(rat);
+//    var ratt= rat["avg_stars"];
+// if(ratt!=null){
+//   ratingss=ratt;
+// }
+//
+//
+//    print(ratingss);
+//    setState(() {
+//
+// });
+//   }
+
+
 
 
 
 
   Future<List<CustomerApi.ProductDetail>>? pdetails;
   Future<List<CustomerApi.ProductDetail>>? Suggestions;
+
 
   @override
   void initState() {
@@ -64,6 +85,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
     pdetails = CustomerApi.viewProductDetails(Customer_product_id);
     Suggestions = CustomerApi.SuggestionList(Customer_product_id);
+   // avgRating();
 
   }
 
@@ -119,7 +141,7 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               title: Text(
                 'Construct',
-                style: TextStyle(
+                 style: TextStyle(
                     color: const Color.fromARGB(255, 255, 81, 0),
                     fontSize: 22.sp),
               ),
@@ -321,8 +343,8 @@ class _ProductDetailState extends State<ProductDetail> {
                           // Expanded(
                           //   flex: 1,
                           //   child: RatingBarIndicator(
-                          //     rating: 3.5,
-                          //     itemBuilder: (context, index) => Icon(
+                          //     rating: ratingss,
+                          //     itemBuilder: (context, index) => const Icon(
                           //       Icons.star,
                           //       color: Colors.amber,
                           //     ),

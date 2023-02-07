@@ -32,7 +32,7 @@ class _loginState extends State<login> {
       var response = await http.get(Uri.parse(
         "${global.url}/UserLogin?email=${username.text}&pass=${password.text}",
       ));
-
+print(response.statusCode);
       //print(response.body);
       if (response.statusCode == 200) {
         var res = jsonDecode(response.body) as Map<String, dynamic>;
@@ -60,6 +60,7 @@ class _loginState extends State<login> {
           const SnackBar(content: Text('Blank Fields not Allowed')));
     }
   }
+
 
   TextField textfield(TextEditingController cntrlr, String htxt) {
     return TextField(
@@ -136,8 +137,9 @@ class _loginState extends State<login> {
             padding: EdgeInsets.only(top: 20.h, left: 210.w),
             child: FloatingActionButton(
               backgroundColor: Colors.green[400],
-              onPressed: () async {
+              onPressed: (){
                 UserLogin();
+
                 username.clear();
                 password.clear();
                 // String? body =
