@@ -8,6 +8,8 @@ import 'package:the_builders/GUI/globalApi.dart' as global;
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/API/CustomerApis/OrderDetails.dart' as orddetails;
 
+import '../../API/CustomerApis/DeliveryBoyDetailTocustomer.dart';
+
 class CustomerOrders extends StatefulWidget {
   const CustomerOrders({Key? key}) : super(key: key);
 
@@ -28,6 +30,9 @@ class _CustomerOrdersState extends State<CustomerOrders> {
       throw Exception('Failed to load data');
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +127,24 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
   List<dynamic> ItemsCtg = List.empty(growable: true);
   List<dynamic> VendorName = List.empty(growable: true);
 
+ // List<DeliveryBoyDetailToCustomer> listofdetail=[DeliveryBoyDetailToCustomer(lat:"not found",long:"not found")]
+
+  Future<List<DeliveryBoyDetailToCustomer>> deliveryBoyDetail() async {
+   print(vid[0]) ;
+    var httprequest=GetConnect();
+    var response = await httprequest.get(
+      "${global.url}/ShowDeliveryBoyDetailToCustomer?oid=${vid[0]}",
+    );
+    //print(response.statusCode);
+var res = deliveryBoyDetailToCustomerFromJson(response.bodyString!);
+return res;
+
+
+
+  }
+
+
+
   // void getOrdersDetails() async {
   //   var httprequest = GetConnect();
   //   var response =
@@ -151,7 +174,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
   @override
   void initState() {
     // TODO: implement initState
-
+    //deliveryBoyDetail();
    // startTimer();
     super.initState();
   }
@@ -379,7 +402,7 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                           height: 20.h,
                         ),
                         SizedBox(
-                          height: 300.h,
+                          height: 220.h,
                           child: ListView.builder(
                               itemCount: OrderItems.length,
                               itemBuilder: (context, index) {
@@ -429,6 +452,115 @@ class _CustomerOrderDetailsState extends State<CustomerOrderDetails> {
                     return Text('${snapshot.error}');
                   }
                   return const CircularProgressIndicator();
+                },
+              ),
+
+              FutureBuilder<List<DeliveryBoyDetailToCustomer>>(
+                future: deliveryBoyDetail(),
+                builder: (context, snapshot) {
+
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                Text("Driver Information",style: TextStyle(
+                                   color: Colors.white, fontSize: 22.sp),),
+                                SizedBox(height: 20.h),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25.w,
+                                    ),
+                                    Text(
+                                      'Driver Name :',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                    SizedBox(
+                                      width: 55.w,
+                                    ),
+                                    Text(
+                                      snapshot.data![index].name.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25.w,
+                                    ),
+                                    Text(
+                                      'Driver No',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                    SizedBox(
+                                      width: 30.w,
+                                    ),
+                                    SizedBox(
+                                      width: 190.w,
+                                      child: Text(
+                                        snapshot.data![index].phoneno.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25.w,
+                                    ),
+                                    Text(
+                                      'Vehicle No :',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                    SizedBox(
+                                      width: 22.w,
+                                    ),
+                                    Text(
+                                      snapshot.data![index].tNo.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22.sp),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+
+                            );
+                          },
+                        ),
+
+
+                      ],
+                    );
+                  }
+                  else if (snapshot.hasError) {
+                    return Text("Error");
+                  }else return const Text("aaa");
                 },
               ),
 

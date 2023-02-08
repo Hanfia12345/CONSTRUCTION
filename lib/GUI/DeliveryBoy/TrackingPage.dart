@@ -72,7 +72,9 @@ class _TrackingPageState extends State<TrackingPage> {
           title: 'Delivery boy',
         ),
       ));
+
     }
+  reload();
   }
 
   void startTimer() {
@@ -145,7 +147,7 @@ class _TrackingPageState extends State<TrackingPage> {
 
     getCurrentLocation();
     //startTimer();
-    getroute();
+    //getroute();
     //timer();
   }
 
