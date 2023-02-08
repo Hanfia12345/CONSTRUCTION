@@ -78,7 +78,7 @@ class _ViewOrdersState extends State<ViewOrders> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 255, 81, 0),
         title: Text(
-          'Home',
+          'Orders',
           style: TextStyle(color: Colors.white, fontSize: 38.sp),
         ),
       ),

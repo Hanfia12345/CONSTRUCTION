@@ -43,7 +43,7 @@ class _fiveMarlaHouseState extends State<fiveMarlaHouse> {
     var totalWall_in_sqft =
         int.parse(wallLength.text) * int.parse(wallHeight.text);
     //print(totalWall_in_sqft);
-    var bricks_sqft = 12;
+    var bricks_sqft = 9;
     //var cement_sqft = 0.0194444444;
     var cement_sqft = 0.015;
     //var sand_sqft = 0.071875;

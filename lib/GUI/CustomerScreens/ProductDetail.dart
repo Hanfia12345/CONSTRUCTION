@@ -18,7 +18,7 @@ import 'package:the_builders/API/CustomerApis/productDetails.dart'
     as CustomerApi;
 import 'package:the_builders/Global/global.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+//import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 
 
@@ -510,82 +510,7 @@ class _ProductDetailState extends State<ProductDetail> {
           return const Center(child: CircularProgressIndicator());
         },
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //     // Add your onPressed code here!
-      //   },
-      //   label: const Text('Add To Cart'),
-      //   icon: const Icon(Icons.add_shopping_cart),
-      //   backgroundColor: Colors.pink,
-      // ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //     selectedFontSize: 0.sp,
-      //
-      //     //backgroundColor: Colors.grey,
-      //     showSelectedLabels: false,
-      //     showUnselectedLabels: false,
-      //     items:[
-      //       BottomNavigationBarItem(
-      //         label: 'Buy Now',
-      //         icon: ElevatedButton(
-      //           onPressed: () {
-      //             Get.to(const AddAddressincart());
-      //           },
-      //           style: ElevatedButton.styleFrom(
-      //             padding: const EdgeInsets.all(20),
-      //             backgroundColor: const Color.fromARGB(255, 253, 166, 3),
-      //           ),
-      //           child: Text(
-      //             'Buy Now ',
-      //             style: TextStyle(
-      //               fontSize: 22.sp,
-      //               color: Colors.white,
-      //               // fontWeight: FontWeight.bold
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //       BottomNavigationBarItem(
-      //         label: 'Add To Cart',
-      //         icon: ElevatedButton(
-      //           onPressed: () {
-      //             //CartItems.add(Customer_product_id);
-      //             //cart.list();
-      //             // for (var i in CartItems) {
-      //             //print(i);
-      //             // }
-      //             //Get.to(const AddToCart(), arguments: CartItems);
-      //             int a =int.parse(quantity.text);
-      //             print(a);
-      //             if(a>stock){
-      //               Get.defaultDialog(title: 'Cannot proceed' ,middleText: 'Out Of Stock' );
-      //             }
-      //             else if(a>0  && a<= stock){
-      //               Get.off(const AddToCart());
-      //               addtocart();
-      //             }
-      //
-      //
-      //              // Get.snackbar("", "message");
-      //
-      //
-      //
-      //           },
-      //           style: ElevatedButton.styleFrom(
-      //             padding: const EdgeInsets.all(20),
-      //             backgroundColor: const Color.fromARGB(255, 255, 81, 0),
-      //           ),
-      //           child: Text(
-      //             'Add to Cart',
-      //             style: TextStyle(
-      //               fontSize: 22.sp,
-      //               color: Colors.white,
-      //               //fontWeight: FontWeight.bold
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ]),
+
     );
   }
 }

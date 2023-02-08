@@ -145,7 +145,7 @@ class _TrackingPageState extends State<TrackingPage> {
 
     getCurrentLocation();
     //startTimer();
-    //getroute();
+    getroute();
     //timer();
   }
 
@@ -333,23 +333,23 @@ class _TrackingPageState extends State<TrackingPage> {
               },
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: const Color.fromARGB(255, 255, 81, 0),
-                  //maximumSize: Size(100.w, 40.h),
-                  padding: const EdgeInsets.all(20),
-                ),
-                child: Text(
-                  'Not Found',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   style: ElevatedButton.styleFrom(
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(12)),
+              //     backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+              //     //maximumSize: Size(100.w, 40.h),
+              //     padding: const EdgeInsets.all(20),
+              //   ),
+              //   child: Text(
+              //     'Not Found',
+              //     style: TextStyle(
+              //       fontSize: 18.sp,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
               ElevatedButton(
                 onPressed: () {
                   DeliveryCompleted=true;

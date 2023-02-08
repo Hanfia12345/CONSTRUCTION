@@ -138,6 +138,8 @@ Future<List<OrderDetailsForDelivery>> ordersDetailsDeliveryBoy(int oid) async {
   await httprequest.get("${global.url}/ShowOrderDetailsToDeliveryBoy?oid=$oid");
   if (response.statusCode == 200) {
     var res = orderDetailsForDeliveryFromJson(response.bodyString!);
+
+
     if(latlongfordeliveryboy.isEmpty){
       res.forEach((element) {
         latlongfordeliveryboy.add(LatLongListForDistance(lat: element.vendorlat, long: element.vendorlong));

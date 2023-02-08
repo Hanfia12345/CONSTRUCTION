@@ -22,6 +22,7 @@ class Orderdetailss {
     this.pCtg,
     required this.oDate,
     required this.deliveryTime,
+    this.O_status,
   });
 
   String? name;
@@ -30,6 +31,7 @@ class Orderdetailss {
   int? pQty;
   DateTime oDate;
   DateTime deliveryTime;
+  String? O_status;
 
   factory Orderdetailss.fromJson(Map<String, dynamic> json) => Orderdetailss(
         name: json["name"],
@@ -38,6 +40,7 @@ class Orderdetailss {
         pQty: json["p_qty"],
         oDate: DateTime.parse(json["O_date"]),
         deliveryTime: DateTime.parse(json["Delivery_time"]),
+        O_status:json["O_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +50,7 @@ class Orderdetailss {
         "p_qty": pQty,
         "O_date": oDate.toIso8601String(),
         "Delivery_time": deliveryTime.toIso8601String(),
+        "O_status":O_status,
       };
 }
 
@@ -86,24 +90,24 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
     }
   }
 
-  String DropdownValue = 'In Progress';
-  var items = ['In Progress', 'Delivered'];
+  // String DropdownValue = 'In Progress';
+  // var items = ['In Progress', 'Delivered'];
 
 
-  void UpdateStatus() async {
-    print(DropdownValue);
-    var httprequest = GetConnect();
-    var response = await httprequest.post(
-      "${global.url}/updateOrderStatus?oid=${vid[1]}&status=$DropdownValue",{}
-    );
-
-    if (response.statusCode == 200) {
-      Get.snackbar("Message", response.body);
-    } else {
-      print(response.statusCode);
-      Get.snackbar("Message", response.body);
-    }
-  }
+  // void UpdateStatus() async {
+  //   print(DropdownValue);
+  //   var httprequest = GetConnect();
+  //   var response = await httprequest.post(
+  //     "${global.url}/updateOrderStatus?oid=${vid[1]}&status=$DropdownValue",{}
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     Get.snackbar("Message", response.body);
+  //   } else {
+  //     print(response.statusCode);
+  //     Get.snackbar("Message", response.body);
+  //   }
+  // }
 
 
   @override
@@ -331,26 +335,30 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                                       SizedBox(
                                         width: 25.w,
                                       ),
-                                      DropdownButton(
-                                          value: DropdownValue,
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
-                                          items: items.map((String items) {
-                                            return DropdownMenuItem(
-                                              value: items,
-                                              child: Text(
-                                                items,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 22.sp),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              DropdownValue = newValue!;
-                                            });
-                                          })
+
+                                      Text("${snapshot.data![index].O_status}",style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 22.sp),),
+                                      // DropdownButton(
+                                      //     value: DropdownValue,
+                                      //     icon: const Icon(
+                                      //         Icons.keyboard_arrow_down),
+                                      //     items: items.map((String items) {
+                                      //       return DropdownMenuItem(
+                                      //         value: items,
+                                      //         child: Text(
+                                      //           items,
+                                      //           style: TextStyle(
+                                      //               color: Colors.black,
+                                      //               fontSize: 22.sp),
+                                      //         ),
+                                      //       );
+                                      //     }).toList(),
+                                      //     onChanged: (String? newValue) {
+                                      //       setState(() {
+                                      //         DropdownValue = newValue!;
+                                      //       });
+                                      //     })
                                     ],
                                   ),
                                 ],
@@ -372,9 +380,9 @@ class _PendingOrderDetailsState extends State<PendingOrderDetails> {
                   padding: EdgeInsets.only(left: 210.w),
                   child: ElevatedButton(
                     onPressed: () {
-                      print(vid[1]);
-                      print(DropdownValue);
-                      UpdateStatus();
+                      // print(vid[1]);
+                      // print(DropdownValue);
+                      // UpdateStatus();
                       Get.off(const ShowOrders(), arguments: "${vid[0]}");
                     },
                     style: ElevatedButton.styleFrom(
