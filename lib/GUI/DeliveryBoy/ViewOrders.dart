@@ -16,6 +16,8 @@ import 'package:the_builders/Global/global.dart';
 import '../../API/TransporterApi/OrderStatus.dart';
 import 'package:the_builders/GUI/globalApi.dart' as global;
 
+import 'newTest.dart';
+
 
 class ViewOrders extends StatefulWidget {
   const ViewOrders({Key? key}) : super(key: key);
@@ -235,6 +237,8 @@ class _ViewOrdersState extends State<ViewOrders> {
                                         child: const Text("ACCEPT")),
                                     ElevatedButton(
                                         onPressed: () {
+                                          //Get.to(OrderHistory());
+
                                           Get.to(OrderDetail(),arguments: [snapshot.data![index].oid.toString()]);
                                         },
                                         style: ElevatedButton.styleFrom(

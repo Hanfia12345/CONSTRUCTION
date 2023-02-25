@@ -10,6 +10,10 @@ import 'package:the_builders/GUI/CustomerScreens/HomePage.dart';
 
 import '../../Construction_Estimation/10MarlaHouse.dart';
 import '../../Construction_Estimation/3MarlaHouse.dart';
+import '../../Construction_Estimation/showestimation.dart';
+import '../../Global/global.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+
 
 class Estimate extends StatefulWidget {
   const Estimate({Key? key}) : super(key: key);
@@ -276,6 +280,55 @@ class _EstimateButtonState extends State<EstimateButton> {
   TextEditingController bricksrequired = TextEditingController();
   TextEditingController cementrequired = TextEditingController();
   TextEditingController sandrequired = TextEditingController();
+
+  var schemeName;
+  var cementreq;
+  var sandreq;
+  var brickreq;
+
+  void storeestimation(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionbrick?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+    else{
+      Get.snackbar("Message", "${response.statusCode}");
+      print(response.body);
+    }
+  }
+  void storeestimationsand(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsand?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+  void storeestimationcement(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncement?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+  // var sandinplaster;
+  // var cementinplaster;
+  //
+
   bool isvisible = false;
   bool visible = false;
   void wallEstimate() {
@@ -294,6 +347,10 @@ class _EstimateButtonState extends State<EstimateButton> {
       bricksrequired.text = "$totalbricks Pieces";
       cementrequired.text = "$totalcement bags";
       sandrequired.text = "$totalsand cuft";
+      brickreq=totalbricks;
+      sandreq=totalsand;
+      cementreq=totalcement;
+      schemeName="Wall Length : ${wallLength.text} Height ${wallheight.text}";
     }
     if (DropdownValue == '4.5"') {
       int length = int.parse(wallLength.text);
@@ -310,6 +367,10 @@ class _EstimateButtonState extends State<EstimateButton> {
       bricksrequired.text = "$totalbricks Pieces";
       cementrequired.text = "$totalcement bags";
       sandrequired.text = "$totalsand cuft";
+      brickreq=totalbricks;
+      sandreq=totalsand;
+      cementreq=totalcement;
+      schemeName="Wall Length : ${wallLength.text} Height ${wallheight.text}";
     }
     if (DropdownValue == '13"') {
       int length = int.parse(wallLength.text);
@@ -328,6 +389,10 @@ class _EstimateButtonState extends State<EstimateButton> {
       bricksrequired.text = "$totalbricks Pieces";
       cementrequired.text = "$totalcement bags";
       sandrequired.text = "$totalsand cuft";
+      brickreq=totalbricks;
+      sandreq=totalsand;
+      cementreq=totalcement;
+      schemeName="Wall Length : ${wallLength.text} Height ${wallheight.text}";
     }
   }
 
@@ -477,7 +542,7 @@ class _EstimateButtonState extends State<EstimateButton> {
           Visibility(
             visible: isvisible,
             child: Container(
-              height: 450.h,
+              height: 550.h,
               margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
               padding: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
@@ -498,6 +563,20 @@ class _EstimateButtonState extends State<EstimateButton> {
                       )
                     ],
                   ),
+
+
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       'DropDown For With And Without Plaster',
+                  //       style: TextStyle(
+                  //           color: const Color.fromARGB(255, 255, 81, 0),
+                  //           fontSize: 16.sp),
+                  //     )
+                  //   ],
+                  // ),
+
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -614,6 +693,54 @@ class _EstimateButtonState extends State<EstimateButton> {
                       ),
                       child: Text(
                         'Go To Shop',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(brickreq);
+                        storeestimation(double.parse(brickreq.toString()),"brick");
+                        storeestimationsand(double.parse(sandreq) ,"sand");
+                        storeestimationcement(double.parse(cementreq),"cement");
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Save Requirements',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(ShowEstimation());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'show Requirements',
                         style: TextStyle(
                           fontSize: 22.sp,
                           color: Colors.white,
@@ -782,6 +909,7 @@ class _EstimateButtonState extends State<EstimateButton> {
                       ),
                     ],
                   ),
+
                 ],
               ),
             ),
@@ -813,6 +941,64 @@ class _RoofEstimateState extends State<RoofEstimate> {
   TextEditingController crushpart = TextEditingController();
   bool isvisible = false;
   bool visible = false;
+  var schemeName;
+  var cementreq;
+  var sandreq;
+  var steelreq;
+  var brickreq;
+  var crushreq;
+  var sandinplaster;
+  var cementinplaster;
+
+
+
+  void storeestimationsand(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsand?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+
+    }
+
+  }
+  void storeestimationcrush(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncrush?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+
+    }
+
+  }
+
+
+  void storeestimationsteel(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsteel?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+
+    }
+
+  }
+  void storeestimationcement(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncement?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+
   void RoofEstimate() {
 
     var totalratio=int.parse(cementpart.text)+int.parse(sandpart.text)+int.parse(crushpart.text);
@@ -827,6 +1013,8 @@ class _RoofEstimateState extends State<RoofEstimate> {
     else if(DropdownValue == '6"'){
       thickness=6;
     }
+
+
     var thicknessinfoot=thickness/12;
     var wetVolumeincft= int.parse(RoofLength.text)*int.parse(RoofWidth.text)*thicknessinfoot ;
     //for steel calculation convert wet volume from cft to m3 or metre cube;
@@ -847,6 +1035,11 @@ class _RoofEstimateState extends State<RoofEstimate> {
     sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
     crushrequired.text="${(dryVolumeincft*int.parse(crushpart.text)/totalratio).toStringAsFixed(2)} cft";
 
+    cementreq=cementtotal/1.22;
+    sandreq=dryVolumeincft*int.parse(sandpart.text)/totalratio;
+    steelreq=steeltotal/1000;
+    crushreq=dryVolumeincft*int.parse(crushpart.text)/totalratio;
+    schemeName="Lanter  width${RoofWidth} Length ${RoofLength}";
   }
 
   @override
@@ -1082,177 +1275,231 @@ class _RoofEstimateState extends State<RoofEstimate> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
                       )),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Roof Requirements',
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 28.sp),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'cement Required',
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 20.sp),
-                            ),
-                            SizedBox(
-                              height: 50.h,
-                              width: 180.w,
-                              child: TextField(
-                                  readOnly: true,
-                                  controller: cementrequired,
-                                  style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 255, 81, 0),
-                                    fontSize: 16.sp,
-                                  ),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Roof Requirements',
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 28.sp),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'cement Required',
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 20.sp),
+                              ),
+                              SizedBox(
+                                height: 50.h,
+                                width: 180.w,
+                                child: TextField(
+                                    readOnly: true,
+                                    controller: cementrequired,
+                                    style: TextStyle(
+                                      color:
+                                          const Color.fromARGB(255, 255, 81, 0),
+                                      fontSize: 16.sp,
                                     ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'steel Required',
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 20.sp),
-                            ),
-                            SizedBox(
-                              height: 50.h,
-                              width: 180.w,
-                              child: TextField(
-                                  readOnly: true,
-                                  controller: steelrequired,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color:
-                                        const Color.fromARGB(255, 255, 81, 0),
-                                  ),
-                                  decoration: InputDecoration(
-                                    //hintText: "2.8 bags",
-                                    hintStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 255, 81, 0)),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
                                       ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'steel Required',
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 20.sp),
+                              ),
+                              SizedBox(
+                                height: 50.h,
+                                width: 180.w,
+                                child: TextField(
+                                    readOnly: true,
+                                    controller: steelrequired,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color:
+                                          const Color.fromARGB(255, 255, 81, 0),
                                     ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Sand Required',
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 20.sp),
-                            ),
-                            SizedBox(
-                              height: 50.h,
-                              width: 180.w,
-                              child: TextField(
-                                  readOnly: true,
-                                  controller: sandrequired,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color:
-                                        const Color.fromARGB(255, 255, 81, 0),
-                                  ),
-                                  decoration: InputDecoration(
-                                    //hintText: "10.35 cft",
-                                    hintStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 255, 81, 0)),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
+                                    decoration: InputDecoration(
+                                      //hintText: "2.8 bags",
+                                      hintStyle: const TextStyle(
+                                          color: Color.fromARGB(255, 255, 81, 0)),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
                                       ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Sand Required',
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 20.sp),
+                              ),
+                              SizedBox(
+                                height: 50.h,
+                                width: 180.w,
+                                child: TextField(
+                                    readOnly: true,
+                                    controller: sandrequired,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color:
+                                          const Color.fromARGB(255, 255, 81, 0),
                                     ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'crush Required',
-                              style: TextStyle(
-                                  color: const Color.fromARGB(255, 255, 81, 0),
-                                  fontSize: 20.sp),
-                            ),
-                            SizedBox(
-                              height: 50.h,
-                              width: 180.w,
-                              child: TextField(
-                                  readOnly: true,
-                                  controller: crushrequired,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color:
-                                        const Color.fromARGB(255, 255, 81, 0),
-                                  ),
-                                  decoration: InputDecoration(
-                                    //hintText: "10.35 cft",
-                                    hintStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 255, 81, 0)),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
+                                    decoration: InputDecoration(
+                                      //hintText: "10.35 cft",
+                                      hintStyle: const TextStyle(
+                                          color: Color.fromARGB(255, 255, 81, 0)),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
                                       ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'crush Required',
+                                style: TextStyle(
+                                    color: const Color.fromARGB(255, 255, 81, 0),
+                                    fontSize: 20.sp),
+                              ),
+                              SizedBox(
+                                height: 50.h,
+                                width: 180.w,
+                                child: TextField(
+                                    readOnly: true,
+                                    controller: crushrequired,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color:
+                                          const Color.fromARGB(255, 255, 81, 0),
                                     ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(const CustomerHome());
-                              // visible = !visible;
-                              // setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32)),
-                              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
-                              //maximumSize: Size(100.w, 40.h),
-                              padding: const EdgeInsets.all(20),
-                            ),
-                            child: Text(
-                              'Go To Shop',
-                              style: TextStyle(
-                                fontSize: 22.sp,
-                                color: Colors.white,
-                                //fontWeight: FontWeight.bold
+                                    decoration: InputDecoration(
+                                      //hintText: "10.35 cft",
+                                      hintStyle: const TextStyle(
+                                          color: Color.fromARGB(255, 255, 81, 0)),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Get.to(const CustomerHome());
+                                // visible = !visible;
+                                // setState(() {});
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32)),
+                                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                                //maximumSize: Size(100.w, 40.h),
+                                padding: const EdgeInsets.all(20),
+                              ),
+                              child: Text(
+                                'Go To Shop',
+                                style: TextStyle(
+                                  fontSize: 22.sp,
+                                  color: Colors.white,
+                                  //fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ])))
+
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                //print(brickreq);
+
+                                storeestimationsand(double.parse(sandreq.toString()) ,"sand");
+                                storeestimationcrush(double.parse(crushreq.toString()) ,"crush");
+                                storeestimationsteel(double.parse(crushreq.toString()),"steel");
+                                storeestimationcement(double.parse(cementreq.toString()),"cement");
+
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32)),
+                                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                                //maximumSize: Size(100.w, 40.h),
+                                padding: const EdgeInsets.all(20),
+                              ),
+                              child: Text(
+                                'Save Requirements',
+                                style: TextStyle(
+                                  fontSize: 22.sp,
+                                  color: Colors.white,
+                                  //fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Get.to(ShowEstimation());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32)),
+                                backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                                //maximumSize: Size(100.w, 40.h),
+                                padding: const EdgeInsets.all(20),
+                              ),
+                              child: Text(
+                                'Save Requirements',
+                                style: TextStyle(
+                                  fontSize: 22.sp,
+                                  color: Colors.white,
+                                  //fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ]),
+                  )))
         ]));
   }
 }
@@ -1277,6 +1524,38 @@ class _PlasterState extends State<Plaster> {
   TextEditingController sandpart = TextEditingController();
   TextEditingController cementpart = TextEditingController();
   TextEditingController thickness = TextEditingController();
+  var schemeName;
+  var cementreq;
+  var sandreq;
+
+
+
+
+  void storeestimationsand(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsand?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+
+    }
+
+  }
+  void storeestimationcement(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncement?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+
 
   bool isvisible = false;
   bool visible = false;
@@ -1291,6 +1570,9 @@ class _PlasterState extends State<Plaster> {
     // volume of one cement bag is 1.22 cft. to convert cement from cft to bags we mill divide it by 1.22;
     cementrequired.text="${(cementtotal/1.22).toStringAsFixed(2)} bags";
     sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
+    schemeName="Plaseter wall height${wallheight.text} wall length ${wallLength.text}";
+    cementreq=cementtotal/1.22;
+    sandreq=dryVolumeincft*int.parse(sandpart.text)/totalratio;
 
   }
 
@@ -1595,6 +1877,57 @@ class _PlasterState extends State<Plaster> {
                       ),
                     ),
                   ),
+
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        //print(brickreq);
+
+                        storeestimationsand(double.parse(sandreq.toString()) ,"sand");
+                        storeestimationcement(double.parse(cementreq.toString()),"cement");
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Save Requirements',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(ShowEstimation());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Save Requirements',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+
+
                 ],
               ),
             ),
@@ -1754,6 +2087,58 @@ class _FloorEstimateState extends State<FloorEstimate> {
   TextEditingController crushpart = TextEditingController();
   TextEditingController thickness = TextEditingController();
 
+  var schemeName;
+  var cementreq;
+  var sandreq;
+  var steelreq;
+  var brickreq;
+  var crushreq;
+  var sandinplaster;
+  var cementinplaster;
+
+
+
+  void storeestimationsand(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsand?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+  void storeestimationcrush(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncrush?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+  void storeestimationcement(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncement?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+
   bool isvisible = false;
   bool visible = false;
   void FloorEstimate() {
@@ -1773,6 +2158,12 @@ class _FloorEstimateState extends State<FloorEstimate> {
     sandrequired.text="${(dryVolumeincft*int.parse(sandpart.text)/totalratio).toStringAsFixed(2)} cft";
     crushrequired.text="${(dryVolumeincft*int.parse(crushpart.text)/totalratio).toStringAsFixed(2)} cft";
 
+
+    cementreq=cementtotal/1.22;
+    sandreq=dryVolumeincft*int.parse(sandpart.text)/totalratio;
+    crushreq=dryVolumeincft*int.parse(crushpart.text)/totalratio;
+
+    schemeName="Floor  Width :${floorWidth.text} height : ${floorLength.text} ";
   }
 
   @override
@@ -2135,8 +2526,67 @@ class _FloorEstimateState extends State<FloorEstimate> {
                               ),
                             ),
                           ),
+
+
+
                         ),
+
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              //print(brickreq);
+
+                              storeestimationsand(double.parse(sandreq.toString()) ,"sand");
+                              storeestimationcrush(double.parse(crushreq.toString()) ,"crush");
+                              storeestimationcement(double.parse(cementreq.toString()),"cement");
+
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32)),
+                              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                              //maximumSize: Size(100.w, 40.h),
+                              padding: const EdgeInsets.all(20),
+                            ),
+                            child: Text(
+                              'Save Requirements',
+                              style: TextStyle(
+                                fontSize: 22.sp,
+                                color: Colors.white,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(ShowEstimation());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32)),
+                              backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                              //maximumSize: Size(100.w, 40.h),
+                              padding: const EdgeInsets.all(20),
+                            ),
+                            child: Text(
+                              'show Requirements',
+                              style: TextStyle(
+                                fontSize: 22.sp,
+                                color: Colors.white,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+
                       ])))
         ]));
   }
 }
+
+
+
+
+

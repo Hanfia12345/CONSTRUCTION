@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:the_builders/Construction_Estimation/showestimation.dart';
 
 import '../GUI/CustomerScreens/HomePage.dart';
+import 'estimationModel.dart';
+import 'package:the_builders/GUI/globalApi.dart' as global;
+import 'package:the_builders/Global/global.dart';
 
 class tenMarlaHouse extends StatefulWidget {
   const tenMarlaHouse({Key? key}) : super(key: key);
@@ -33,6 +37,92 @@ class _tenMarlaHouseState extends State<tenMarlaHouse> {
 
   bool isvisible = false;
   bool visible = false;
+
+
+  void storeestimation(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionbrick?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+    else{
+      Get.snackbar("Message", "${response.statusCode}");
+      print(response.body);
+    }
+  }
+
+  void storeestimationsand(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsand?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+  void storeestimationcrush(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncrush?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+  void storeestimationsteel(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructionsteel?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+  void storeestimationcement(double qty,String mat)async{
+    var httprequest =GetConnect();
+    var response = await httprequest.post(
+        '${global.url}/addConstructioncement?cid=${int.parse(login_user_id!)}&name=${schemeName}&material=${mat}&qty=${qty.toString()}',
+        {});
+    if (response.statusCode == 200) {
+      Get.snackbar("Message", " Added ");
+      print(response.statusCode);
+      //Get.off(login());
+    }
+
+  }
+
+
+
+
+
+  List<estimatematerial> listtt=[];
+
+  var schemeName;
+  var cementreq;
+  var sandreq;
+  var steelreq;
+  var brickreq;
+  var crushreq;
+  var sandinplaster;
+  var cementinplaster;
+
+
+
 
   String label = "";
   void RequiredMatrialForHouse() {
@@ -112,6 +202,44 @@ class _tenMarlaHouseState extends State<tenMarlaHouse> {
     sandrequired.text = "$total_Sand_Required Cft";
     steelrequired.text = "$total_Steel_Required Tons";
     crushrequired.text = "$total_Crush_Required Cft";
+
+    var cement_sand_inPlaster=1+6;
+    var thicknessintfoot=0.5/12;
+    var wetVolumeincft= int.parse(wallLength.text)*int.parse(wallHeight.text)*thicknessintfoot;
+    var dryVolumeincft=wetVolumeincft*1.33;
+    var cementtotal=dryVolumeincft*1/cement_sand_inPlaster;
+    var sandtotal= dryVolumeincft*6/cement_sand_inPlaster;
+
+
+    cementinplaster=cementtotal/1.22;
+    sandinplaster=sandtotal;
+    var sandplaster=sandinplaster;
+    sandreq=total_Sand_Required;
+    cementreq=total_Cement_Required;
+    steelreq=total_Steel_Required;
+    crushreq= total_Crush_Required;
+    brickreq=total_Bricks_Required;
+    schemeName="Covered Area : ${coveredArea} Wall Length : ${wallLength.text} Wall Height: ${wallHeight.text}";
+    listtt.clear();
+    if(listtt.isEmpty){
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"bricks" ,qty: brickreq));
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"cement" ,qty:cementreq ));
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"Thin Ravi sand" ,qty:sandreq ));
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"crush" ,qty: crushreq ));
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"steel" ,qty: steelreq ));
+      listtt.add(estimatematerial(schemename: schemeName,pDesc:"Thick Ravi Sand" , qty:sandplaster));
+    }
+
+    for(var i in listtt){
+      print(i.schemename);
+      print(i.pDesc);
+      print(i.qty);
+
+    }
+    // print(listtt);
+
+
+
     // } else if (coveredArea > 1250) {
     //   label = "Covered Aread Should be less than 1250";
     // }
@@ -483,6 +611,57 @@ class _tenMarlaHouseState extends State<tenMarlaHouse> {
                       ),
                       child: Text(
                         'Go To Shop',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(brickreq);
+                        storeestimation(brickreq ,"brick");
+                        storeestimationsand(double.parse(sandreq) ,"sand");
+                        storeestimationcrush(double.parse(crushreq) ,"crush");
+                        storeestimationsteel(double.parse(crushreq),"steel");
+                        storeestimationcement(double.parse(cementreq),"cement");
+
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Save Requirements',
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          color: Colors.white,
+                          //fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(ShowEstimation());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        backgroundColor: const Color.fromARGB(255, 255, 81, 0),
+                        //maximumSize: Size(100.w, 40.h),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: Text(
+                        'Save Requirements',
                         style: TextStyle(
                           fontSize: 22.sp,
                           color: Colors.white,
